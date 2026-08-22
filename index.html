@@ -262,6 +262,13 @@ font-family:"Zen Kaku Gothic New",sans-serif;font-weight:700;font-size:11.5px;pa
 .mx th.op .mgm{display:inline-block;background:var(--violet);color:#0B1B2E;font-size:8px;font-weight:700;border-radius:3px;padding:0 3px;margin-left:2px;vertical-align:1px}
 .fbar button.mg{border-style:dashed;color:var(--violet)}
 .fbar button.mg.on{border-style:solid;border-color:var(--violet);background:var(--surface2)}
+.pill .pn{display:flex;align-items:center;gap:4px}
+.pill .pn b{font-size:9.5px;font-weight:700;margin-left:2px}
+.pill .pn b.yes{color:var(--violet)}.pill .pn b.no{color:var(--dim)}
+.mx th.op .mgm.yes{background:var(--violet);outline:2px solid var(--violet)}
+.tagm{display:inline-block;font-size:9px;font-weight:700;border-radius:4px;padding:1px 5px;margin-left:5px;vertical-align:1px;background:var(--violet);color:#0B1B2E}
+.tagn{display:inline-block;font-size:9px;font-weight:700;border-radius:4px;padding:1px 5px;margin-left:5px;vertical-align:1px;background:#3A566E;color:var(--dim)}
+.fbar button.mm{border-style:dashed;color:var(--amber)}
 </style>
 </head>
 <body>
@@ -1038,9 +1045,13 @@ let my3=null,curPicks=[],fMe=null,fOp=null,fMega=0,rankMe=0,rankOp=0;const seen=
 function partyBuild(){const k=party.slice().sort().join("|");return BUILDS.find(b=>b.mons.map(m=>m.n).sort().join("|")===k)||null}
 function myBuildMon(n){const b=partyBuild();return b?b.mons.find(m=>m.n===n):null}
 const rankMul=r=>r>=0?(2+r)/2:2/(2-r);
-function mySpeed(n){const m=myBuildMon(n);
- if(m)return{s:statOf(n,5,m.ev[5],m.nat),scarf:m.it==="こだわりスカーフ",src:`${m.nat}・S${m.ev[5]}pt${m.it==="こだわりスカーフ"?"・スカーフ":""}（構築シートの配分）`};
- return{s:statOf(n,5,32,"ようき"),scarf:false,src:"最速仮定（32pt＋性格）。構築から読んだパーティなら配分を使います"}}
+function mySpeed(n,eff){const m=myBuildMon(n);const e=eff||n;
+ if(m)return{s:statOf(e,5,m.ev[5],m.nat),scarf:m.it==="こだわりスカーフ",src:`${m.nat}・S${m.ev[5]}pt${m.it==="こだわりスカーフ"?"・スカーフ":""}（構築シートの配分${e!==n?"・通常形態の種族値":""}）`};
+ return{s:statOf(e,5,32,"ようき"),scarf:false,src:"最速仮定（32pt＋性格）。構築から読んだパーティなら配分を使います"}}
+/* フォルムチェンジで種族値が変わるもの（収録235種中）。素早さ・タイプは変わらない */
+const FORMS={ギルガルド:{alt:"ブレードフォルム",st:[60,140,50,140,50,60],note:"攻撃技を使うとブレード（A140・C140／B50・D50）、キングシールドでシールドに戻る"},
+ イルカマン:{alt:"マイティフォルム",st:[100,160,97,106,87,100],note:"一度交代して戻るとマイティ（A160・B97・C106・D87）になる"}};
+function formNote(n){const f=FORMS[baseOf(n)];return f?`<div class="warn tip" style="margin:0 0 9px"><b>${baseOf(n)}は${f.alt}に変化します。</b>${f.note}。素早さとタイプは変わりません。</div>`:""}
 function oppLines(n){const L=[["無振り",statOf(n,5,0,"")],["準速（32pt）",statOf(n,5,32,"")],["最速（32pt＋性格）",statOf(n,5,32,"ようき")],["最速スカーフ",Math.floor(statOf(n,5,32,"ようき")*1.5)]];
  ["メガ"+n,"メガ"+n+"X","メガ"+n+"Y"].forEach(mg=>{if(M[mg]&&M[mg].mega)L.push([mg.replace(n,"")+"（最速）",statOf(mg,5,32,"ようき")])});
  return L}
@@ -1050,15 +1061,17 @@ const effClsDef=v=>v===0?"gd":v>=2?"bd":v===1?"nu":"gd";
 function renderFight(){
  const mine=curPicks.filter(n=>M[n]);const opps=[...foe].filter(n=>M[n]);
  if(!fMe||!mine.includes(fMe))fMe=mine[0]||null;if(!fOp||!foe.has(fOp))fOp=opps[0]||null;
- document.getElementById("fMine").innerHTML=mine.map(n=>`<button class="${n===fMe?"on":""}" data-fme="${n}">${ico(n,"sm")}${n}</button>`).join("");
+ const effMe=n=>nonMega.has(n)?baseOf(n):n;
+ document.getElementById("fMine").innerHTML=mine.map(n=>`<button class="${n===fMe?"on":""}" data-fme="${n}">${ico(effMe(n),"sm")}${effMe(n)}${nonMega.has(n)?'<span class="tagn">通常</span>':curMega===n?'<span class="tagm">メガ</span>':""}</button>`).join("")
+  +(curMega?`<button class="mm" data-mymega="1">メガ役を切替</button>`:"");
  const forms=fOp?[fOp,...megaForms(fOp)]:[];if(fMega>=forms.length)fMega=0;
  const opName=forms[fMega]||fOp;
  document.getElementById("fFoe").innerHTML=opps.map(n=>`<button class="${n===fOp?"on":""}" data-fop="${n}">${ico(n,"sm")}${n}${seen.has(n)?"<i>✓</i>":""}</button>`).join("")
   +(forms.length>1?`<button class="mg${fMega?" on":""}" data-fmega="1">${fMega?"メガ化中"+(forms.length>2?"（"+opName.slice(-1)+"）":"")+" → 戻す":"メガ化した？"}</button>`:"");
  const P=document.getElementById("fPanel");
  if(!fMe||!fOp){P.innerHTML=`<div class="empty"><div class="big">自分3体と相手を選んでください</div></div>`;return}
- const me=M[fMe],op=M[opName];
- const ms=mySpeed(fMe),myS=Math.floor(ms.s*(ms.scarf?1.5:1)*rankMul(rankMe));
+ const meName=effMe(fMe),me=M[meName],op=M[opName];
+ const ms=mySpeed(fMe,meName),myS=Math.floor(ms.s*(ms.scarf?1.5:1)*rankMul(rankMe));
  const lines=oppLines(fOp).map(([l,v])=>{const ov=Math.floor(v*rankMul(rankOp));
   return `<tr><td>${l}</td><td>${ov}</td><td class="${myS>ov?"up":myS<ov?"dn":"eq"}">${myS>ov?"▲ 抜ける":myS<ov?"▼ 抜かれる":"＝ 同速"}</td></tr>`}).join("");
  const bm=myBuildMon(fMe);
@@ -1072,33 +1085,57 @@ function renderFight(){
  const others=mine.filter(n=>n!==fMe).map(n=>{const m=M[n];const take=Math.max(...op.t.map(t=>eff(t,m.t,m.a)));return{n,sc:score(m,op),take}}).sort((a,b)=>b.sc-a.sc||a.take-b.take);
  const swH=others.length?others.map((o,i)=>`<div class="sw">${ico(o.n,"sm")}<div>${o.n}${i===0?' <span style="color:var(--aqua);font-size:10px">◎ 第一候補</span>':""}<small>相手のタイプ一致技を ${effTxt(o.take)} で受ける</small></div><div class="sc ${o.sc>0?"pos":o.sc<0?"neg":"zero"}">${o.sc>0?"+":""}${o.sc}</div></div>`).join("")
   :`<div class="info" style="margin:0">交代先がいません。</div>`;
- P.innerHTML=`<div class="vs">${ico(fMe)}<div>${fMe}<span class="ty">${me.t.join("・")}</span></div><span class="v">vs</span>${ico(opName)}<div>${opName}<span class="ty">${op.t.join("・")}${op.a?"・"+({levitate:"ふゆう",shadowtag:"かげふみ",disguise:"ばけのかわ",multiscale:"マルチスケイル",regen:"さいせいりょく",goldbody:"おうごんのからだ",tough:"高耐久"}[op.a]||""):""}</span></div></div>
+ P.innerHTML=`<div class="vs">${ico(meName)}<div>${meName}<span class="ty">${me.t.join("・")}</span></div><span class="v">vs</span>${ico(opName)}<div>${opName}<span class="ty">${op.t.join("・")}${op.a?"・"+({levitate:"ふゆう",shadowtag:"かげふみ",disguise:"ばけのかわ",multiscale:"マルチスケイル",regen:"さいせいりょく",goldbody:"おうごんのからだ",tough:"高耐久"}[op.a]||""):""}</span></div></div>
+  ${formNote(meName)}${formNote(opName)}
   <div class="fcard"><div class="fh">A ／ 素早さ</div>
    <div class="myS">自分 <b>${myS}</b>${ms.scarf?' <span style="color:var(--amber)">スカーフ込</span>':""}${rankMe?` <span style="color:var(--amber)">ランク${rankMe>0?"+":""}${rankMe}</span>`:""}<br><small>${ms.src}</small></div>
    <table class="sp">${lines}</table>
    <div class="rk">自分のランク <button data-rk="me:-1">−</button><b>${rankMe>0?"+":""}${rankMe}</b><button data-rk="me:1">＋</button>
     <span style="margin-left:8px">相手のランク</span> <button data-rk="op:-1">−</button><b>${rankOp>0?"+":""}${rankOp}</b><button data-rk="op:1">＋</button></div></div>
   <div class="fcard"><div class="fh">C ／ 技の通り</div>${mvH}
-   <div class="sub-h" style="margin-top:10px">相手のタイプ一致技 → ${fMe}</div><div class="stab">${stabH}</div></div>
+   <div class="sub-h" style="margin-top:10px">相手のタイプ一致技 → ${meName}</div><div class="stab">${stabH}</div></div>
   <div class="fcard"><div class="fh">B ／ 交代先</div>${swH}</div>`}
 const LEADABLE=["ガブリアス","カバルドン","アーマーガア","メガハッサム","ハッサム","キラフロル","ドリュウズ","ドヒドイデ","ウォッシュロトム"];
 function noteFoe(){if(foe.size<6)return;const k=[...foe].sort().join("|");
  foeHist=[[...foe],...foeHist.filter(f=>f.slice().sort().join("|")!==k)].slice(0,5);
  store.set("pc:foes",JSON.stringify(foeHist))}
-function pickThree(rows,opp){
- const n=rows.length;if(n<=3)return rows.map((_,i)=>i);
+/* ---- mega scenarios ----
+   自分: 1戦でメガは1体。3体にメガ候補が2体以上いれば、どれをメガ役にするか自分で選べる（最良割り当て）。
+   相手: 同じく1体。候補ごとに「こいつがメガ」のシナリオを作り、最悪シナリオで評価（ミニマックス）。
+   相手の候補は上位で実際に使われるメガ（Tier SS/S/A）のみ自動対象。トレイで明示指定（メガ想定/メガ無し）可。 */
+const MEGA_OK=t=>t==="SS"||t==="S"||t==="A";
+const foeMega=new Map();let myMegaPick=null,curMega=null,nonMega=new Set();
+const megaState=n=>foeMega.get(n)||"auto";
+function oppCands(names){
+ const yes=names.filter(n=>megaForms(n).length&&megaState(n)==="yes");
+ if(yes.length)return new Set(yes);
+ return new Set(names.filter(n=>megaForms(n).length&&megaState(n)==="auto"&&MEGA_OK(MEGAT[n]||"D")))}
+const SC=new Map();
+function sc2(a,b){const k=a+"|"+b;if(!SC.has(k))SC.set(k,score(M[a],M[b]));return SC.get(k)}
+function oppScenarios(oppNames){const c=oppCands(oppNames);const L=[{j:-1,f:null}];
+ oppNames.forEach((n,j)=>{if(c.has(n))megaForms(n).forEach(f=>L.push({j,f}))});return L}
+function myMegaOptions(trioNames){const mg=trioNames.filter(n=>M[n].mega);return mg.length>=2?mg:[mg[0]||null]}
+function evalTrio(trioNames,oppNames,scen,myMega){
+ const multi=trioNames.filter(n=>M[n].mega).length>=2;
+ const meForm=n=>(multi&&M[n].mega&&n!==myMega)?baseOf(n):n;
+ let cover=0,mx=0,sum=0;
+ oppNames.forEach((on,j)=>{const of=scen.j===j?scen.f:on;
+  const cells=trioNames.map(mn=>sc2(meForm(mn),of));const m=Math.max(...cells);
+  if(m>=1)cover++;mx+=m;sum+=cells.reduce((a,b)=>a+b,0)});
+ return cover*10000+mx*100+sum}
+function bestMegaFor(trioNames,oppNames,scens){let best=null;
+ myMegaOptions(trioNames).forEach(mm=>{const key=Math.min(...scens.map(sc=>evalTrio(trioNames,oppNames,sc,mm)));
+  if(!best||key>best.key)best={mm,key}});return best}
+function pickThree(partyNames,oppNames){
+ const scens=oppScenarios(oppNames);const n=partyNames.length;
+ if(n<=3){const b=bestMegaFor(partyNames,oppNames,scens);return{trio:partyNames.slice(),mega:b?b.mm:null}}
  let best=null;
  for(let a=0;a<n;a++)for(let b=a+1;b<n;b++)for(let c=b+1;c<n;c++){
-  const trio=[a,b,c];let cover=0,mx=0,sum=0;
-  opp.forEach((_,j)=>{const m=Math.max(...trio.map(i=>rows[i].sc[j]));if(m>=1)cover++;mx+=m});
-  trio.forEach(i=>sum+=rows[i].t);
-  const key=cover*10000+mx*100+sum;
-  if(!best||key>best.key)best={trio,key}}
- return best.trio}
+  const t=[partyNames[a],partyNames[b],partyNames[c]];const r=bestMegaFor(t,oppNames,scens);
+  if(!best||r.key>best.key)best={trio:t,mega:r.mm,key:r.key}}
+ return best}
 const cls=v=>v>=2?"p2":v>=1?"p1":v<=-2?"m2":v<=-1?"m1":"z";
 function megaForms(n){return ["メガ"+n,"メガ"+n+"X","メガ"+n+"Y"].filter(x=>M[x]&&M[x].mega)}
-/* 相手がメガ可能なら通常/メガ両方で採点し、こちらに不利な方を採用（見落とすより安全側） */
-function scoreCons(me,op){const vs=[score(me,op),...megaForms(op.n).map(x=>score(me,M[x]))];return Math.min(...vs)}
 function renderSelect(){
  document.getElementById("secParty").classList.toggle("hide",seMode!=="party");
  document.getElementById("secBattle").classList.toggle("hide",seMode!=="battle");
@@ -1122,8 +1159,10 @@ function renderSelect(){
   :`<b>パーティが${party.length}体しか登録されていません。</b>「パーティ登録」から埋めてください。`;
  document.getElementById("partyQuick").innerHTML=BUILDS.map(b=>
   `<button class="pre pb${isBuild(b)?" on":""}" data-p="${b.id}">${b.name}</button>`).join("");
- document.getElementById("foeTray").innerHTML=[...foe].map(n=>`<span class="pill" data-foe="${n}">${ico(n,"sm")}${n}<i>✕</i></span>`).join("")
-  +(foe.size?`<button class="ghost" data-act="foeClear">全部消す</button>`:`<span style="font-size:11px;color:var(--dim)">下の一覧か検索からタップで追加</span>`);
+ document.getElementById("foeTray").innerHTML=[...foe].map(n=>{const st=megaState(n),cap=megaForms(n).length>0;
+  return `<span class="pill"><span class="pn" ${cap?`data-fmg="${n}"`:""}>${ico(n,"sm")}${n}${cap?(st==="yes"?'<b class="yes">メガ想定</b>':st==="no"?'<b class="no">メガ無し</b>':""):""}</span><i data-foe="${n}">✕</i></span>`}).join("")
+  +(foe.size?`<button class="ghost" data-act="foeClear">全部消す</button><div style="flex-basis:100%;font-size:10px;color:var(--dim)">メガ可能な相手は名前タップで「メガ想定／メガ無し」を切替（構築を見てメガ役が分かるとき用）</div>`
+   :`<span style="font-size:11px;color:var(--dim)">下の一覧か検索からタップで追加</span>`);
  document.getElementById("foeQuick").innerHTML=USAGE.slice(0,20).map(n=>
   `<button class="${foe.has(n)?"on":""}" data-se="${n}">${ico(n,"sm")}${n}</button>`).join("");
  document.getElementById("foeHist").innerHTML=foeHist.length
@@ -1132,33 +1171,47 @@ function renderSelect(){
  if(!opp.length||!party.length){res.innerHTML=`<div class="empty"><div class="big">相手のポケモンを選んでください</div>
   <div class="sub">1体からでも判定は出ます。6体そろうと自動で履歴に残ります。</div></div>`}
  else{
-  const rows=party.map(n=>M[n]).filter(Boolean).map(me=>{const sc=opp.map(op=>scoreCons(me,op));return{me,sc,t:sc.reduce((a,b)=>a+b,0)}});
-  const auto=new Set(pickThree(rows,opp));
+  const pn=party.filter(n=>M[n]),on=opp.map(o=>o.n);
+  const cands=oppCands(on);
+  const auto=pickThree(pn,on);
   const manual=my3&&my3.length===3&&my3.every(n=>party.includes(n));
-  const trio=manual?new Set(rows.map((r,i)=>my3.includes(r.me.n)?i:-1).filter(i=>i>=0)):auto;
+  const trioNames=manual?pn.filter(n=>my3.includes(n)):auto.trio;
+  const multi=trioNames.filter(n=>M[n].mega).length>=2;
+  let mega=manual?null:auto.mega;
+  if(multi){if(myMegaPick&&trioNames.includes(myMegaPick)&&M[myMegaPick].mega)mega=myMegaPick;
+   else if(!mega||!trioNames.includes(mega))mega=bestMegaFor(trioNames,on,oppScenarios(on)).mm}
+  curMega=multi?mega:null;nonMega=new Set(multi?trioNames.filter(n=>M[n].mega&&n!==mega):[]);
+  const effOf=n=>nonMega.has(n)?baseOf(n):n;
+  const cellOf=(mn,j)=>{const o=on[j];const forms=cands.has(o)?[o,...megaForms(o)]:[o];return Math.min(...forms.map(f=>sc2(effOf(mn),f)))};
+  const rows=pn.map(n=>{const sc=on.map((_,j)=>cellOf(n,j));return{n,me:M[effOf(n)],sc,t:sc.reduce((a,b)=>a+b,0)}});
+  const trio=new Set(rows.map((r,i)=>trioNames.includes(r.n)?i:-1).filter(i=>i>=0));
   const rec=rows.filter((_,i)=>trio.has(i)).sort((a,b)=>b.t-a.t);
-  curPicks=rec.map(r=>r.me.n);
-  const lc=rec.filter(r=>LEADABLE.includes(r.me.n));
+  curPicks=rec.map(r=>r.n);
+  const lc=rec.filter(r=>LEADABLE.includes(r.n));
   const lead=(lc.length?lc:rec).slice().sort((a,b)=>Math.min(...b.sc)-Math.min(...a.sc))[0];
   const holes=opp.filter((op,j)=>Math.max(...rows.map(r=>r.sc[j]))<=0);
   const oppPick=opp.map((op,j)=>({op,t:-rows.reduce((a,r)=>a+r.sc[j],0)})).sort((a,b)=>b.t-a.t).slice(0,3);
+  const tag=n=>nonMega.has(n)?'<span class="tagn">通常運用</span>':(curMega===n?'<span class="tagm">メガ役</span>':"");
   let w="";
-  if(rec.filter(r=>r.me.mega).length>1)w+=`<div class="warn"><b>推奨3体にメガ枠が2体います。</b>1戦で進化できるのは1体です。入る前に決めてください。</div>`;
+  if(multi)w+=`<div class="warn tip"><b>メガ役は ${curMega}。</b>${[...nonMega].join("・")} は通常形態で運用する前提で採点しています（1戦でメガは1体）。対戦画面で切替できます。</div>`;
   if(holes.length)w+=`<div class="warn"><b>${holes.map(o=>o.n).join("・")}に有利を取れる手持ちがいません。</b>相手のこの枠は数的有利で押し切るか、交代で流す前提で選出を。</div>`;
   else if(rec.every(r=>r.t<0))w+=`<div class="warn"><b>3体とも不利です。</b>押し付けは通りません。耐久寄りで粘って相手のミスを待つ立ち回りに。</div>`;
   else if(rec[0].t>=4)w+=`<div class="warn tip"><b>相性が大きく有利です。</b>変に受けに回らず素直に殴り切る方が事故りません。</div>`;
-  const mx=`<div class="mxwrap"><table class="mx"><tr><th class="me"></th>${opp.map(o=>`<th class="op" title="${o.n}${megaForms(o.n).length?"（メガの可能性を含む）":""}">${ico(o.n,"sm")}<br>${o.n.length>5?o.n.slice(0,5):o.n}${megaForms(o.n).length?'<span class="mgm">M</span>':""}</th>`).join("")}<th>計</th></tr>`
-   +rows.map((r,i)=>`<tr class="${trio.has(i)?"rec":""}"><th class="me" data-pick="${r.me.n}"><span class="pk"></span>${ico(r.me.n,"sm")}${r.me.n}</th>${r.sc.map(v=>`<td class="${cls(v)}">${v>0?"+":""}${v}</td>`).join("")}<td class="tot">${r.t>0?"+":""}${r.t}</td></tr>`).join("")
+  const mx=`<div class="mxwrap"><table class="mx"><tr><th class="me"></th>${opp.map(o=>{const st=megaState(o.n),cap=megaForms(o.n).length>0;
+    const mark=cands.has(o.n)?`<span class="mgm${st==="yes"?" yes":""}">M</span>`:"";
+    const ttl=cands.has(o.n)?"（メガの可能性を含めて採点）":cap?(st==="no"?"（メガ無しと指定）":"（このメガは上位での使用が少ないため想定外。名前タップでメガ想定に）"):"";
+    return `<th class="op" title="${o.n}${ttl}">${ico(o.n,"sm")}<br>${o.n.length>5?o.n.slice(0,5):o.n}${mark}</th>`}).join("")}<th>計</th></tr>`
+   +rows.map((r,i)=>`<tr class="${trio.has(i)?"rec":""}"><th class="me" data-pick="${r.n}"><span class="pk"></span>${ico(r.n,"sm")}${nonMega.has(r.n)?baseOf(r.n)+'<span class="tagn">通常</span>':r.n}</th>${r.sc.map(v=>`<td class="${cls(v)}">${v>0?"+":""}${v}</td>`).join("")}<td class="tot">${r.t>0?"+":""}${r.t}</td></tr>`).join("")
    +`</table></div>`;
   res.innerHTML=w+mx+rec.map(r=>{const isLead=r===lead;
    const good=opp.filter((o,j)=>r.sc[j]>=1).map(o=>o.n),bad=opp.filter((o,j)=>r.sc[j]<=-1).map(o=>o.n);
-   return `<div class="slot ${isLead?"lead":"pick"}"><div class="sh">${isLead?'<span class="badge b-lead">先発</span>':'<span class="badge b-pick">選出</span>'}${ico(r.me.n)}<div class="sn">${r.me.n}</div>
+   return `<div class="slot ${isLead?"lead":"pick"}"><div class="sh">${isLead?'<span class="badge b-lead">先発</span>':'<span class="badge b-pick">選出</span>'}${ico(effOf(r.n))}<div class="sn">${effOf(r.n)}${tag(r.n)}</div>
     <div class="sc ${r.t>0?"pos":r.t<0?"neg":"zero"}">${r.t>0?"+":""}${r.t}</div></div>
     ${good.length?`<div class="mline good"><b>◎ 有利</b> <span>${good.join("・")}</span></div>`:""}
     ${bad.length?`<div class="mline bad"><b>× 不利</b> <span>${bad.join("・")}</span></div>`:""}</div>`}).join("")
    +`<div class="oppick"><b>相手の選出予想</b>　${oppPick.map(o=>o.op.n).join("・")}<br><span style="font-size:10.5px">こちらの6体に対して相性が良い順。先発はこの中から来る前提で。</span></div>`
-   +`<button class="gotbtn" data-act="fight">この3体で対戦に入る → ${curPicks.join("・")}</button>
-   <div class="info"><b>M</b> 印の相手はメガシンカの可能性があるため、通常／メガの両方で採点して<b>こちらに不利な方</b>を表示しています。<br>表の左の名前をタップすると、<b>評価が最も低い枠と入れ替え</b>ます。選出中の名前をタップすると自動推奨に戻ります${manual?"（いま手動選択中）":"（いま自動推奨）"}。</div>`}
+   +`<button class="gotbtn" data-act="fight">この3体で対戦に入る → ${curPicks.map(effOf).join("・")}</button>
+   <div class="info"><b>M</b> 印の相手はメガシンカを想定して「通常／メガのうちこちらに不利な方」を表示。推奨3体は「相手のどれがメガでも」最悪ケースで最良になる組を選び、自分側も<b>メガ役は1体</b>として残りは通常形態で採点します。<br>表の左の名前をタップすると、<b>評価が最も低い枠と入れ替え</b>ます。選出中の名前をタップすると自動推奨に戻ります${manual?"（いま手動選択中）":"（いま自動推奨）"}。</div>`}
  if(seMode==="fight")renderFight();
  const term=document.getElementById("seQ").value.trim();
  let hits=NAMES.filter(n=>match(n,term));
@@ -1208,10 +1261,10 @@ document.addEventListener("click",e=>{
  const bt=e.target.closest("[data-build]");
  if(bt){buildId=bt.dataset.build;store.set("pc:build",buildId);renderBuild();scrollTo({top:0,behavior:"smooth"});return}
  const pr=e.target.closest(".pre");
- if(pr){const b=buildById(pr.dataset.p);party=pr.dataset.p==="clear"?[]:b?b.mons.map(m=>m.n):party;my3=null;
+ if(pr){const b=buildById(pr.dataset.p);party=pr.dataset.p==="clear"?[]:b?b.mons.map(m=>m.n):party;my3=null;myMegaPick=null;
   store.set("pc:party",JSON.stringify(party));renderSelect();renderScout();return}
  const pk=e.target.closest("[data-pick]");
- if(pk){const nm=pk.dataset.pick;const cur=curPicks.slice();
+ if(pk){const nm=pk.dataset.pick;const cur=curPicks.slice();myMegaPick=null;
   if(cur.includes(nm)){my3=null}                          // 選出中をタップ → 自動推奨に戻す
   else if(cur.length>=3){my3=cur.slice(0,2).concat(nm)}    // 評価が最も低い枠（末尾）と入れ替え
   else{my3=null}
@@ -1224,8 +1277,11 @@ document.addEventListener("click",e=>{
  const rk=e.target.closest("[data-rk]");
  if(rk){const[w,d]=rk.dataset.rk.split(":");if(w==="me")rankMe=Math.max(-6,Math.min(6,rankMe+ +d));else rankOp=Math.max(-6,Math.min(6,rankOp+ +d));renderFight();return}
  const ff=e.target.closest("[data-foe]");
- if(ff){foe.delete(ff.dataset.foe);renderSelect();return}
- if(e.target.dataset.act==="foeClear"){foe.clear();my3=null;renderSelect();return}
+ if(ff){foe.delete(ff.dataset.foe);foeMega.delete(ff.dataset.foe);renderSelect();return}
+ const fg=e.target.closest("[data-fmg]");
+ if(fg){const nm=fg.dataset.fmg,st=megaState(nm);foeMega.set(nm,st==="auto"?"yes":st==="yes"?"no":"auto");if(megaState(nm)==="auto")foeMega.delete(nm);renderSelect();return}
+ if(e.target.closest("[data-mymega]")){const mg=curPicks.filter(n=>M[n].mega);if(mg.length>=2){const i=mg.indexOf(curMega);myMegaPick=mg[(i+1)%mg.length];renderSelect()}return}
+ if(e.target.dataset.act==="foeClear"){foe.clear();foeMega.clear();my3=null;myMegaPick=null;renderSelect();return}
  const fh=e.target.closest("[data-hist]");
  if(fh){const f=foeHist[+fh.dataset.hist]||[];foe.clear();f.forEach(n=>foe.add(n));renderSelect();scrollTo({top:0,behavior:"smooth"});return}
  const sx=e.target.closest("[data-sheet]");
