@@ -27,7 +27,7 @@ h2{font-family:"Zen Kaku Gothic New",sans-serif;font-weight:900;font-size:11.5px
 .top{padding:calc(12px + env(safe-area-inset-top)) 0 10px}
 nav{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;background:rgba(11,27,46,.97);
 border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);backdrop-filter:blur(8px)}
-nav button{flex:1;background:none;border:none;color:var(--dim);font-family:inherit;font-size:10.5px;
+nav button{flex:1;background:none;border:none;color:var(--dim);font-family:inherit;font-size:10px;
 font-weight:700;padding:11px 4px 12px;cursor:pointer;line-height:1.3}
 nav button[aria-selected="true"]{color:var(--amber);box-shadow:inset 0 2px 0 var(--amber)}
 .panel{display:none}.panel.on{display:block}
@@ -182,6 +182,18 @@ footer{margin-top:22px;font-size:10px;color:var(--dim);line-height:1.7;border-to
      タイプ相性（攻守両方向）・すばやさ・特性から <b>+2〜−2</b> で自動採点。<b>サブウェポンは考慮していません。</b></div>
  </section>
 
+ <section class="panel" id="p-box">
+   <div class="gap" id="boxCount"></div>
+   <h2>所持中（タップで外す）</h2>
+   <div id="boxOwned"></div>
+   <h2>追加する（タップで所持にする）</h2>
+   <div class="searchbox"><input id="boxQ" type="search" placeholder="頭文字だけでOK（かな／ローマ字）" autocomplete="off" enterkeyhint="search"><button data-clr="boxQ">✕</button></div>
+   <div id="boxList"></div>
+   <div class="info"><div class="t">ここで登録すると</div>
+     スカウト判定で<b>所持済みは候補から自動的に除外</b>されます。同じポケモンに2,500VPを払う事故を防げます。<br><br>
+     内容は自動保存されます。Claudeアプリとホーム画面版では保存先が別なので、それぞれで登録が必要です。</div>
+ </section>
+
  <footer id="ft"></footer>
 </div>
 
@@ -189,6 +201,7 @@ footer{margin-top:22px;font-size:10px;color:var(--dim);line-height:1.7;border-to
   <button role="tab" aria-selected="true" data-p="build">構築<br>シート</button>
   <button role="tab" aria-selected="false" data-p="scout">スカウト<br>判定</button>
   <button role="tab" aria-selected="false" data-p="select">選出<br>補助</button>
+  <button role="tab" aria-selected="false" data-p="box">手持ち<br>管理</button>
 </nav>
 
 <script>
@@ -713,12 +726,32 @@ function renderSelect(){
   `<div class="op${on(n)?" on":""}" data-se="${n}">${n}<small>${M[n].t.join("・")}／S${M[n].s}</small></div>`).join("")+`</div>`
   +(!term?`<div class="info">先頭60件のみ表示。名前を1〜2文字打つと全件から絞り込めます。</div>`:"")}
 
+/* ---- box panel ---- */
+function renderBox(){
+ const own=[...owned].filter(n=>M[n]).sort((a,b)=>(RANK[a]||999)-(RANK[b]||999));
+ const ranked=own.filter(n=>RANK[n]).length;
+ document.getElementById("boxCount").innerHTML=
+  `所持 <b>${own.length}体</b>　うち使用率トップ50が <b>${ranked}体</b>`;
+ document.getElementById("boxOwned").innerHTML=own.length
+  ? `<div class="grid">`+own.map(n=>`<div class="op on" data-box="${n}">${n}<small>${RANK[n]?"使用率"+RANK[n]+"位":"圏外"}／S${M[n].s}</small></div>`).join("")+`</div>`
+  : `<div class="empty"><div class="big">まだ登録がありません</div><div class="sub">下の検索から追加してください。</div></div>`;
+ const term=document.getElementById("boxQ").value.trim();
+ let hits=SCOUTABLE.filter(n=>!owned.has(n)&&match(n,term));
+ hits.sort((a,b)=>rank(a,b,term)||(RANK[a]||999)-(RANK[b]||999));
+ if(!term)hits=hits.slice(0,40);
+ document.getElementById("boxList").innerHTML=
+  (hits.length?`<div class="grid">`+hits.map(n=>`<div class="op" data-box="${n}">${n}<small>${RANK[n]?"使用率"+RANK[n]+"位":"圏外"}／S${M[n].s}</small></div>`).join("")+`</div>`
+   :`<div class="info">該当なし。入力を短くしてみてください。</div>`)
+  +(!term?`<div class="info">使用率の高い順に40件表示中。名前を1〜2文字打つと全235種から絞り込めます。</div>`:"");
+}
+
 /* ---- wiring ---- */
 const TITLES={build:["POKÉMON CHAMPIONS ／ M-4 SINGLE","構築シート"],
- scout:["SCOUT TRIAGE ／ 235種収録","取る？ 見送る？"],select:["SELECTION HELPER","出す3体を決める"]};
+ scout:["SCOUT TRIAGE ／ 235種収録","取る？ 見送る？"],select:["SELECTION HELPER","出す3体を決める"],box:["MY BOX ／ 235種","持っているポケモン"]};
 const FOOT={build:"配分の出どころは各カードの注記を参照。",
  scout:"スカウトプールの全235種を収録。ほしい枠が出なかった場合は、登録パーティの弱点を埋められるかで代替候補を採点しています。",
- select:"登録したパーティは自動保存されます。"};
+ select:"登録したパーティは自動保存されます。",
+ box:"ここで所持登録すると、スカウト判定の候補から自動で除外されます。"};
 function show(p){document.querySelectorAll(".panel").forEach(s=>s.classList.toggle("on",s.id==="p-"+p));
  document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-selected",b.dataset.p===p));
  document.getElementById("eb").textContent=TITLES[p][0];document.getElementById("ttl").textContent=TITLES[p][1];
@@ -733,9 +766,13 @@ document.addEventListener("click",e=>{
  const c=e.target.closest("[data-clr]");
  if(c){const i=document.getElementById(c.dataset.clr);i.value="";i.focus();c.dataset.clr==="scQ"?renderScout():renderSelect();return}
  if(e.target.dataset.act==="scReset"){scSel.clear();renderScout();return}
+ const bx=e.target.closest("[data-box]");
+ if(bx){const n=bx.dataset.box;owned.has(n)?owned.delete(n):owned.add(n);
+  store.set("pc:owned",JSON.stringify([...owned]));document.getElementById("boxQ").value="";
+  renderBox();renderScout();renderSelect();return}
  const ob=e.target.closest("[data-own]");
  if(ob){const n=ob.dataset.own;owned.has(n)?owned.delete(n):owned.add(n);
-  store.set("pc:owned",JSON.stringify([...owned]));renderScout();return}
+  store.set("pc:owned",JSON.stringify([...owned]));renderBox();renderScout();renderSelect();return}
  const sr=e.target.closest("[data-sc]");
  if(sr){const n=sr.dataset.sc;scSel.has(n)?scSel.delete(n):scSel.add(n);
   document.getElementById("scQ").value="";renderScout();return}
@@ -749,6 +786,7 @@ document.addEventListener("click",e=>{
    store.set("pc:party",JSON.stringify(party));renderScout()}
   else{foe.has(n)?foe.delete(n):foe.add(n)}
   document.getElementById("seQ").value="";renderSelect()}});
+document.getElementById("boxQ").addEventListener("input",renderBox);
 document.getElementById("scQ").addEventListener("input",renderScout);
 document.getElementById("seQ").addEventListener("input",renderSelect);
 
@@ -758,7 +796,7 @@ document.getElementById("seQ").addEventListener("input",renderSelect);
  if(p){try{const a=JSON.parse(p);if(Array.isArray(a)&&a.length)party=a.filter(n=>M[n])}catch(e){}}
  const o=await store.get("pc:owned");
  if(o){try{const a=JSON.parse(o);if(Array.isArray(a)){owned.clear();a.forEach(n=>owned.add(n))}}catch(e){}}
- renderBuild();renderScout();renderSelect();show("build")})();
+ renderBuild();renderScout();renderSelect();renderBox();show("build")})();
 </script>
 </body>
 </html>
