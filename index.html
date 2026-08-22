@@ -168,6 +168,45 @@ font-size:11.5px;font-weight:700;padding:9px 5px;border-radius:8px;cursor:pointe
 .mode[aria-selected="true"]{background:var(--amber);border-color:var(--amber);color:#0B1B2E}
 .hide{display:none}
 footer{margin-top:22px;font-size:10px;color:var(--dim);line-height:1.7;border-top:1px solid var(--line);padding-top:11px}
+.badge2{flex:none;font-size:8.5px;font-weight:700;padding:2px 5px;border-radius:4px;margin-left:5px;vertical-align:1px}
+.b-reg{background:var(--amber);color:#0B1B2E}.b-tri{background:var(--violet);color:#0B1B2E}
+.trow{flex-wrap:wrap}
+.trow .tn{flex:1 1 auto}
+.trow .tt{flex:none}
+.trow .tb{display:flex;gap:5px;flex:1 1 100%;margin-top:3px}
+.trow .tb button{flex:1}
+.sheetbg{position:fixed;inset:0;background:rgba(4,12,22,.72);z-index:60;opacity:0;pointer-events:none;transition:opacity .16s}
+.sheetbg.on{opacity:1;pointer-events:auto}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:61;background:var(--surface);border-top:1px solid var(--line);
+border-radius:16px 16px 0 0;padding:16px 14px calc(18px + env(safe-area-inset-bottom));
+transform:translateY(102%);transition:transform .2s ease;max-height:82vh;overflow-y:auto}
+.sheet.on{transform:translateY(0)}
+.sheet .sname{font-family:"Zen Kaku Gothic New",sans-serif;font-weight:900;font-size:19px;line-height:1.25}
+.sheet .scur{font-size:11px;color:var(--dim);margin:3px 0 13px}
+.sheet .sopt{display:block;width:100%;text-align:left;background:var(--surface2);border:1px solid var(--line);
+border-radius:10px;padding:12px 13px;margin-bottom:7px;color:var(--ink);font-family:"Zen Kaku Gothic New",sans-serif;
+font-weight:700;font-size:13.5px;cursor:pointer;line-height:1.35}
+.sheet .sopt small{display:block;font-family:"M PLUS 1 Code",monospace;font-weight:400;font-size:10px;color:var(--dim);margin-top:2px}
+.sheet .sopt.cur{border-color:var(--aqua)}
+.sheet .sopt.cur:after{content:"現在";float:right;font-size:9px;color:var(--aqua);font-family:"M PLUS 1 Code",monospace;font-weight:700}
+.sheet .sopt.danger{border-color:var(--rose);color:var(--rose)}
+.sheet .sopt.danger small{color:#B87A88}
+.sheet .shead{font-size:10px;letter-spacing:.12em;color:var(--dim);margin:4px 0 8px}
+.sheet .ago{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:9px}
+.sheet .ago button{background:var(--surface2);border:1px solid var(--line);color:var(--ink);font-family:inherit;
+font-size:12.5px;padding:12px 6px;border-radius:9px;cursor:pointer}
+.sheet .ago button:active{border-color:var(--violet)}
+.sheet .sback{width:100%;background:none;border:1px dashed var(--line);color:var(--dim);border-radius:9px;
+font-family:inherit;font-size:11.5px;padding:11px;cursor:pointer;margin-top:3px}
+.snack{position:fixed;left:12px;right:12px;bottom:calc(70px + env(safe-area-inset-bottom));z-index:70;
+background:var(--surface2);border:1px solid var(--aqua);border-radius:11px;padding:11px 13px;
+display:flex;align-items:center;gap:10px;font-size:11.5px;box-shadow:0 6px 22px rgba(0,0,0,.45);
+transform:translateY(150%);opacity:0;transition:transform .2s ease,opacity .2s;pointer-events:none}
+.snack.on{transform:translateY(0);opacity:1;pointer-events:auto}
+.snack .stx{flex:1;min-width:0;color:var(--ink)}
+.snack b{color:var(--aqua);font-weight:700}
+.snack button{flex:none;background:var(--aqua);border:none;color:#0B1B2E;font-family:"Zen Kaku Gothic New",sans-serif;
+font-weight:900;font-size:11.5px;padding:7px 12px;border-radius:7px;cursor:pointer}
 </style>
 </head>
 <body>
@@ -226,15 +265,18 @@ footer{margin-top:22px;font-size:10px;color:var(--dim);line-height:1.7;border-to
  <section class="panel" id="p-box">
    <div class="gap" id="boxCount"></div>
    <div id="trialWrap"></div>
-   <h2>正式に所持（タップで外す）</h2>
+   <h2>所持している（タップで状態を変更）</h2>
    <div id="boxOwned"></div>
-   <h2>追加する（タップで所持にする）</h2>
+   <h2>追加する（タップでレギュラー所持に）</h2>
    <div class="searchbox"><input id="boxQ" type="search" placeholder="頭文字だけでOK（かな／ローマ字）" autocomplete="off" enterkeyhint="search"><button data-clr="boxQ">✕</button></div>
    <div id="boxList"></div>
    <div class="info"><div class="t">トライアルの扱い</div>
-     期限は<b>7日</b>で計算しています。<br><br>
-     <b>トライアル個体は能力ポイントを振れません。</b>ランクマの戦力にはならないので、ここでの管理は「戦力リスト」ではなく<b>「期限内にレギュラーするか決める宿題リスト」</b>です。<br><br>
+     期限は<b>7日</b>（ゲーム内表示に準拠）。期限は個体ごとに登録時点の値を保存するので、後から設定を変えても既存の残り時間はズレません。<br><br>
+     <b>トライアル個体は育成が一切できません。</b>能力ポイントだけでなく技・性格の変更も不可なので、ランクマの戦力にはなりません。ここでの管理は「戦力リスト」ではなく<b>「期限内にレギュラーするか決める宿題リスト」</b>です。<br><br>
+     レギュラー化にかかるのは<b>2,500VP または レギュラーチケット1枚</b>。セレクトの紹介は<b>22時間に1回</b>無料で受けられます。<br><br>
+     所持タイル、または試用中の「修正」をタップすると、<b>レギュラー／トライアル／未所持</b>をいつでも直せます。トライアルに戻すときは<b>ゲーム内で取った時刻</b>を選べるので、残り時間がズレません。<br><br>
      期限が切れても<b>自動削除はしません。</b>その後レギュラーで取り直した可能性があるため、確認してから消す形にしています。<br><br>
+     所持リストはタップだけでは消えません。外した場合も数秒間は<b>「元に戻す」</b>で戻せます。<br><br>
      内容は自動保存されます。Claudeアプリとホーム画面版では保存先が別です。</div>
    <div class="durbox hide" id="durBox"></div>
    <h2>データの引き継ぎ</h2>
@@ -262,6 +304,9 @@ footer{margin-top:22px;font-size:10px;color:var(--dim);line-height:1.7;border-to
   <button role="tab" aria-selected="false" data-p="box">手持ち<br>管理</button>
 </nav>
 
+<div class="sheetbg" id="sheetBg"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true"></div>
+<div class="snack" id="snack"><div class="stx" id="snackTx"></div><button id="snackUndo">元に戻す</button></div>
 <script>
 const store={
  async get(k){try{const r=await window.storage.get(k);if(r&&r.value)return r.value}catch(e){}
@@ -690,12 +735,57 @@ function renderBuild(){
 const TO={S:0,A:1,B:2,C:3};
 function saveAll(){store.set("pc:owned",JSON.stringify([...owned]));
  store.set("pc:trial",JSON.stringify(trial));store.set("pc:trialh",String(trialH))}
-function leftMs(t){return t.at+trialH*3600000-Date.now()}
+function leftMs(t){return t.at+(+t.h>0?+t.h:trialH)*3600000-Date.now()}
 function fmtLeft(ms){if(ms<=0)return "期限切れ";
  const h=Math.floor(ms/3600000),m=Math.floor(ms%3600000/60000);
  return h>=24?`残り${Math.floor(h/24)}日${h%24}時間`:h>=1?`残り${h}時間${m}分`:`残り${m}分`}
 const scSel=new Set(),owned=new Set(OWNED_INIT);let lastGot=null,pending=null,trial=[],trialH=168;
 let party=[];
+
+/* ---- undo / snackbar ---- */
+const AGO=[[0,"今"],[12,"半日前"],[24,"1日前"],[48,"2日前"],[72,"3日前"]];
+let undoSnap=null,snackT=null;
+function snapshot(){return{owned:[...owned],trial:JSON.parse(JSON.stringify(trial)),party:[...party]}}
+function restoreSnap(s){owned.clear();s.owned.forEach(x=>owned.add(x));trial=s.trial;party=s.party.filter(x=>M[x]);
+ saveAll();store.set("pc:party",JSON.stringify(party));renderBox();renderScout();renderSelect()}
+function snack(msg,snap){undoSnap=snap;
+ document.getElementById("snackTx").innerHTML=msg;
+ document.getElementById("snack").classList.add("on");
+ clearTimeout(snackT);snackT=setTimeout(hideSnack,8000)}
+function hideSnack(){clearTimeout(snackT);document.getElementById("snack").classList.remove("on");undoSnap=null}
+
+/* ---- owned / trial state ---- */
+function stateOf(n){return owned.has(n)?"reg":trial.some(t=>t.n===n)?"tri":"none"}
+function setState(n,kind,agoH){
+ const before=stateOf(n);if(before===kind&&kind!=="tri")return;
+ const snap=snapshot();
+ owned.delete(n);trial=trial.filter(t=>t.n!==n);
+ if(kind==="reg")owned.add(n);
+ else if(kind==="tri")trial.push({n,at:Date.now()-(+agoH||0)*3600000,h:trialH});
+ saveAll();renderBox();renderScout();renderSelect();
+ const L={reg:"レギュラー",tri:"トライアル",none:"未所持"};
+ snack(`<b>${n}</b> を ${L[kind]} にしました`,snap)}
+
+/* ---- state sheet ---- */
+let sheetN=null,sheetStep=0;
+function openSheet(n){sheetN=n;sheetStep=0;renderSheet()}
+function closeSheet(){sheetN=null;sheetStep=0;renderSheet()}
+function renderSheet(){
+ const bg=document.getElementById("sheetBg"),sh=document.getElementById("sheet");
+ if(!sheetN){bg.classList.remove("on");sh.classList.remove("on");sh.innerHTML="";return}
+ const n=sheetN,st=stateOf(n),t=trial.find(x=>x.n===n);
+ const cur=st==="reg"?"レギュラー（無期限・育成可）":st==="tri"?`トライアル（${fmtLeft(leftMs(t))}）`:"未所持";
+ let h=`<div class="sname">${n}</div><div class="scur">現在：${cur}</div>`;
+ if(sheetStep===1){
+  h+=`<div class="shead">ゲーム内でいつ取りましたか？</div>
+   <div class="ago">${AGO.map(([v,l])=>`<button data-ago="${v}">${l}</button>`).join("")}</div>
+   <button class="sback" data-sheetback="1">戻る</button>`}
+ else{
+  h+=`<button class="sopt${st==="reg"?" cur":""}" data-set="reg">レギュラー<small>2,500VPまたはチケット1枚・無期限・育成可</small></button>
+   <button class="sopt${st==="tri"?" cur":""}" data-settri="1">トライアル${st==="tri"?"（取得時刻を直す）":""}<small>無料・7日で消滅・育成できない</small></button>
+   <button class="sopt danger${st==="none"?" cur":""}" data-set="none">リストから外す<small>所持していない扱いにする</small></button>
+   <button class="sback" data-sheetclose="1">閉じる</button>`}
+ sh.innerHTML=h;bg.classList.add("on");sh.classList.add("on")}
 function holes(){
  const team=party.map(n=>M[n]).filter(Boolean);if(team.length<2)return[];
  return teamWeak(team).filter(r=>r.res===0&&(r.x4||r.x2>=2)).map(r=>r.atk)}
@@ -733,7 +823,7 @@ function scVerdict(){
      <div class="big" style="font-size:16px;color:var(--dim)">紹介された10体を入れてください</div>
      <div class="sub">頭文字を1〜2文字打つだけで候補が絞れます。</div></div>`;return}
  if(!cs.length){el.innerHTML=`<div class="vd skip"><div class="lab">VERDICT</div><div class="big">見送り</div>
-  <div class="sub">全て所持済みです。VPを温存してください。</div><div class="act">2,500VPを使わない</div></div>`;return}
+  <div class="sub">全て所持済みです。VPを温存してください。</div><div class="act">2,500VP／チケットを温存</div></div>`;return}
  const ranked=cs.map(p=>({p,...subEval(p)})).sort((a,b)=>b.s-a.s);
  const b=ranked[0],r=ranked[1];
  let cls,head,act,sub;
@@ -742,23 +832,23 @@ function scVerdict(){
    ? `　※メガは${b.mg.t}帯ですが、ストーンがZA連携限定なので進化できません。`
    : `　<b>メガシンカ${b.mg.t}帯</b>（ストーン2,000VPで購入可）。`):"";
  if((b.rank&&b.rank<=25)||(b.mg&&!b.mg.locked&&(b.mg.t==="SS"||b.mg.t==="S"))){
-  cls="take";head=b.p.n;act="レギュラースカウト（2,500VP）";
+  cls="take";head=b.p.n;act="レギュラースカウト（2,500VP／チケット1枚）";
   sub=(b.rank?`<b>使用率${b.rank}位</b>の環境上位。`:"使用率は圏外ですが、")
    +`${NOTE[b.p.n]||b.p.t.join("・")+"・S"+b.p.s}。${megaTxt}${fixTxt}`}
  else if(b.rank||b.fixed.length||(b.mg&&!b.mg.locked&&b.mg.t==="A")){cls="sub2";head=b.p.n;act="代替として取る価値あり";
   sub=(b.rank?`<b>使用率${b.rank}位</b>。トップ層ではありませんが十分戦えます。`
    :b.fixed.length?`使用率圏外ですが、<b>${b.fixed.join("・")}を半減</b>できるので穴を埋められます。`
    :`使用率は圏外ですが、`)+`${megaTxt}${b.rank?fixTxt:""}`}
- else{cls="skip";head="見送り";act="2,500VPを使わない";
+ else{cls="skip";head="見送り";act="2,500VP／チケットを温存";
   sub=`一番マシなのは${b.p.n}（${b.p.t.join("・")}・S${b.p.s}）ですが、<b>使用率圏外・メガも下位かパーティの穴も埋めません</b>。VPを温存してください。`}
  const others=ranked.slice(1);
  el.innerHTML=`<div class="vd ${cls}"><div class="lab">VERDICT ／ 候補 ${scSel.size}体</div>
   <div class="big">${pending?pending:head}</div>
-  <div class="sub">${pending?"<b>どちらで確保しましたか？</b> トライアルは7日で消えるうえ能力ポイントを振れないので、ランクマの戦力にはなりません。":sub}</div>
+  <div class="sub">${pending?"<b>どちらで確保しましたか？</b> トライアルは7日で消えるうえ育成（技・性格・能力ポイント）が一切できないので、ランクマの戦力にはなりません。":sub}</div>
   ${pending?"":`<div class="act">${act}</div>`}
   ${r?`<div class="next">次点：${r.p.n}${r.rank?`（使用率${r.rank}位）`:"（圏外）"}</div>`:""}
   ${pending?`<div class="two">
-     <button class="reg" data-reg="${pending}">レギュラー<small>2,500VP・無期限</small></button>
+     <button class="reg" data-reg="${pending}">レギュラー<small>2,500VP／チケット1枚・無期限</small></button>
      <button class="tri" data-tri="${pending}">トライアル<small>無料・7日で消滅</small></button>
    </div><button class="cancel" data-cancelpick="1">やめる</button>`
    :`<button class="gotbtn" data-got="${b.p.n}">${b.p.n} を取った</button>
@@ -838,7 +928,7 @@ function renderSelect(){
 
 /* ---- box panel ---- */
 function renderBox(){
- const DUR=[[7,"7時間"],[24,"24時間"],[72,"3日"],[168,"1週間"]];
+ const DUR=[[24,"24時間"],[72,"3日"],[168,"1週間"]];
  document.getElementById("durBox").innerHTML=DUR.map(([v,l])=>
   `<button class="${trialH===v?"on":""}" data-dur="${v}">${l}</button>`).join("");
  const tw=document.getElementById("trialWrap");
@@ -851,8 +941,9 @@ function renderBox(){
     const soon=ms>0&&ms<3*86400000;
     return `<div class="trow${ms<=0?" dead":""}" style="${soon?"border-color:var(--amber)":""}"><div class="tn">${t.n}</div>
      <div class="tt" style="${soon?"color:var(--amber)":""}">${fmtLeft(ms)}</div>
-     <button data-trikeep="${t.n}">レギュラー済</button>
-     <button data-tridrop="${t.n}">削除</button></div>`}).join("");
+     <div class="tb"><button data-trikeep="${t.n}">レギュラー済</button>
+     <button data-sheet="${t.n}">修正</button>
+     <button data-tridrop="${t.n}">削除</button></div></div>`}).join("");
  }else tw.innerHTML="";
  const own=[...owned].filter(n=>M[n]).sort((a,b)=>(RANK[a]||999)-(RANK[b]||999));
  const ranked=own.filter(n=>RANK[n]).length;
@@ -860,7 +951,7 @@ function renderBox(){
   `正式所持 <b>${own.length}体</b>　うち使用率トップ50が <b>${ranked}体</b>`
   +(trial.length?`　／ 試用中 <b>${trial.length}体</b>`:"");
  document.getElementById("boxOwned").innerHTML=own.length
-  ? `<div class="grid">`+own.map(n=>`<div class="op on" data-box="${n}">${n}<small>${RANK[n]?"使用率"+RANK[n]+"位":"圏外"}／S${M[n].s}</small></div>`).join("")+`</div>`
+  ? `<div class="grid">`+own.map(n=>`<div class="op on" data-sheet="${n}">${n}<span class="badge2 b-reg">正</span><small>${RANK[n]?"使用率"+RANK[n]+"位":"圏外"}／S${M[n].s}</small></div>`).join("")+`</div>`
   : `<div class="empty"><div class="big">まだ登録がありません</div><div class="sub">下の検索から追加してください。</div></div>`;
  const term=document.getElementById("boxQ").value.trim();
  let hits=SCOUTABLE.filter(n=>!owned.has(n)&&match(n,term));
@@ -878,7 +969,7 @@ const TITLES={build:["POKÉMON CHAMPIONS ／ M-4 SINGLE","構築シート"],
 const FOOT={build:"配分の出どころは各カードの注記を参照。",
  scout:"スカウトプールの全235種を収録。ほしい枠が出なかった場合は、登録パーティの弱点を埋められるかで代替候補を採点しています。",
  select:"登録したパーティは自動保存されます。",
- box:"ここで所持登録すると、スカウト判定の候補から自動で除外されます。"};
+ box:"ここで所持登録すると、スカウト判定の候補から自動で除外されます。タイルをタップすると状態を変更できます。"};
 function show(p){document.querySelectorAll(".panel").forEach(s=>s.classList.toggle("on",s.id==="p-"+p));
  document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-selected",b.dataset.p===p));
  document.getElementById("eb").textContent=TITLES[p][0];document.getElementById("ttl").textContent=TITLES[p][1];
@@ -889,7 +980,18 @@ document.querySelectorAll(".mode").forEach(b=>b.addEventListener("click",()=>{
  seMode=b.dataset.m;document.getElementById("seQ").value="";renderSelect();scrollTo({top:0})}));
 document.querySelectorAll(".pre").forEach(b=>b.addEventListener("click",()=>{
  party=b.dataset.p==="clear"?[]:[...PRE[b.dataset.p]];store.set("pc:party",JSON.stringify(party));renderSelect();renderScout()}));
+document.getElementById("snackUndo").addEventListener("click",()=>{
+ if(undoSnap){const s=undoSnap;hideSnack();restoreSnap(s)}});
 document.addEventListener("click",e=>{
+ const sx=e.target.closest("[data-sheet]");
+ if(sx){openSheet(sx.dataset.sheet);return}
+ if(e.target.id==="sheetBg"||e.target.closest("[data-sheetclose]")){closeSheet();return}
+ if(e.target.closest("[data-sheetback]")){sheetStep=0;renderSheet();return}
+ if(e.target.closest("[data-settri]")){sheetStep=1;renderSheet();return}
+ const sag=e.target.closest("[data-ago]");
+ if(sag){const n=sheetN;closeSheet();setState(n,"tri",sag.dataset.ago);return}
+ const sst=e.target.closest("[data-set]");
+ if(sst){const n=sheetN;closeSheet();setState(n,sst.dataset.set);return}
  const c=e.target.closest("[data-clr]");
  if(c){const i=document.getElementById(c.dataset.clr);i.value="";i.focus();c.dataset.clr==="scQ"?renderScout():renderSelect();return}
  if(e.target.dataset.act==="scReset"){scSel.clear();renderScout();return}
@@ -902,15 +1004,16 @@ document.addEventListener("click",e=>{
   document.getElementById("scQ").value="";
   renderBox();renderScout();renderSelect();scrollTo({top:0,behavior:"smooth"});return}
  const tr=e.target.closest("[data-tri]");
- if(tr){const n=tr.dataset.tri;if(!trial.some(t=>t.n===n))trial.push({n,at:Date.now()});
+ if(tr){const n=tr.dataset.tri;if(!trial.some(t=>t.n===n))trial.push({n,at:Date.now(),h:trialH});
   scSel.clear();pending=null;lastGot=n+"（トライアル）";saveAll();
   document.getElementById("scQ").value="";
   renderBox();renderScout();renderSelect();scrollTo({top:0,behavior:"smooth"});return}
  const tk=e.target.closest("[data-trikeep]");
- if(tk){const n=tk.dataset.trikeep;owned.add(n);trial=trial.filter(t=>t.n!==n);saveAll();
-  renderBox();renderScout();renderSelect();return}
+ if(tk){const n=tk.dataset.trikeep,snap=snapshot();owned.add(n);trial=trial.filter(t=>t.n!==n);saveAll();
+  renderBox();renderScout();renderSelect();snack(`<b>${n}</b> をレギュラーにしました`,snap);return}
  const td=e.target.closest("[data-tridrop]");
- if(td){trial=trial.filter(t=>t.n!==td.dataset.tridrop);saveAll();renderBox();renderScout();return}
+ if(td){const n=td.dataset.tridrop,snap=snapshot();trial=trial.filter(t=>t.n!==n);saveAll();
+  renderBox();renderScout();renderSelect();snack(`<b>${n}</b> を試用中から削除`,snap);return}
  const io=e.target.closest("[data-io]");
  if(io){const ta=document.getElementById("ioBox"),msg=document.getElementById("ioMsg");
   if(io.dataset.io==="export"){
@@ -922,25 +1025,33 @@ document.addEventListener("click",e=>{
   }else{
    try{const d=JSON.parse(ta.value.trim());
     if(!d||!Array.isArray(d.owned))throw 0;
+    const snap=snapshot();
     owned.clear();d.owned.filter(n=>M[n]).forEach(n=>owned.add(n));
-    trial=Array.isArray(d.trial)?d.trial.filter(t=>t&&M[t.n]):[];
+    trial=Array.isArray(d.trial)?d.trial.filter(t=>t&&M[t.n]).map(t=>({n:t.n,at:t.at,h:+t.h>0?+t.h:trialH})):[];
     if(Array.isArray(d.party))party=d.party.filter(n=>M[n]);
     saveAll();store.set("pc:party",JSON.stringify(party));
     msg.textContent=`読み込みました。手持ち${owned.size}体・試用中${trial.length}体・パーティ${party.length}体。`;
     msg.className="iomsg ok";ta.value="";
     renderBox();renderScout();renderSelect();
+    snack("読み込みで手持ちを上書きしました",snap);
    }catch(err){msg.textContent="読み込めませんでした。書き出したデータを丸ごと貼り付けてください。";msg.className="iomsg ng"}
   }
   return}
  const dh=e.target.closest("[data-dur]");
  if(dh){trialH=+dh.dataset.dur;saveAll();renderBox();return}
  const bx=e.target.closest("[data-box]");
- if(bx){const n=bx.dataset.box;owned.has(n)?owned.delete(n):owned.add(n);
-  store.set("pc:owned",JSON.stringify([...owned]));document.getElementById("boxQ").value="";
-  renderBox();renderScout();renderSelect();return}
+ if(bx){const n=bx.dataset.box;
+  if(!owned.has(n)){const snap=snapshot();owned.add(n);trial=trial.filter(t=>t.n!==n);saveAll();
+   document.getElementById("boxQ").value="";renderBox();renderScout();renderSelect();
+   snack(`<b>${n}</b> をレギュラー所持に追加`,snap)}
+  else openSheet(n);
+  return}
  const ob=e.target.closest("[data-own]");
- if(ob){const n=ob.dataset.own;owned.has(n)?owned.delete(n):owned.add(n);
-  store.set("pc:owned",JSON.stringify([...owned]));renderBox();renderScout();renderSelect();return}
+ if(ob){const n=ob.dataset.own;
+  if(stateOf(n)!=="none")openSheet(n);
+  else{const snap=snapshot();owned.add(n);saveAll();renderBox();renderScout();renderSelect();
+   snack(`<b>${n}</b> をレギュラー所持に追加`,snap)}
+  return}
  const sr=e.target.closest("[data-sc]");
  if(sr){lastGot=null;const n=sr.dataset.sc;scSel.has(n)?scSel.delete(n):scSel.add(n);
   document.getElementById("scQ").value="";renderScout();return}
@@ -964,9 +1075,10 @@ document.getElementById("seQ").addEventListener("input",renderSelect);
  if(p){try{const a=JSON.parse(p);if(Array.isArray(a)&&a.length)party=a.filter(n=>M[n])}catch(e){}}
  const o=await store.get("pc:owned");
  if(o){try{const a=JSON.parse(o);if(Array.isArray(a)){owned.clear();a.forEach(n=>owned.add(n))}}catch(e){}}
- const tj=await store.get("pc:trial");
- if(tj){try{const a=JSON.parse(tj);if(Array.isArray(a))trial=a.filter(t=>t&&M[t.n])}catch(e){}}
  const th=await store.get("pc:trialh");if(th&&+th)trialH=+th;
+ const tj=await store.get("pc:trial");
+ if(tj){try{const a=JSON.parse(tj);if(Array.isArray(a))
+  trial=a.filter(t=>t&&M[t.n]).map(t=>({n:t.n,at:t.at,h:+t.h>0?+t.h:trialH}))}catch(e){}}
  setInterval(()=>{if(document.getElementById("p-box").classList.contains("on"))renderBox()},60000);
  renderBuild();renderScout();renderSelect();renderBox();show("build")})();
 </script>
