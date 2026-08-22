@@ -86,6 +86,14 @@ font-size:11px;font-family:inherit;cursor:pointer}
 .vd.take{border-color:var(--amber)}.vd.take .big{color:var(--amber)}.vd.take .act{background:var(--amber);color:#0B1B2E}
 .vd.sub2{border-color:var(--violet)}.vd.sub2 .big{color:var(--violet)}.vd.sub2 .act{background:var(--violet);color:#0B1B2E}
 .vd.skip{border-color:var(--rose)}.vd.skip .big{color:var(--rose)}.vd.skip .act{background:var(--rose);color:#0B1B2E}
+.gotbtn{display:block;width:100%;margin-top:11px;background:var(--aqua);border:none;border-radius:9px;
+color:#0B1B2E;font-family:"Zen Kaku Gothic New",sans-serif;font-weight:900;font-size:14px;padding:12px 8px;cursor:pointer}
+.gotbtn:active{opacity:.8}
+.gotalt{margin-top:9px;border-top:1px dashed var(--line);padding-top:8px}
+.gotalt .lbl{font-size:10px;color:var(--dim);margin-bottom:5px}
+.gotalt .row2{display:flex;flex-wrap:wrap;gap:5px}
+.gotalt button{background:var(--surface2);border:1px solid var(--line);color:var(--ink);font-family:inherit;
+font-size:11px;padding:5px 9px;border-radius:7px;cursor:pointer}
 .vd .next{font-size:11px;color:var(--dim);margin-top:8px;border-top:1px dashed var(--line);padding-top:7px}
 .row{display:flex;gap:10px;align-items:center;background:var(--surface);border:1px solid var(--line);
 border-radius:11px;padding:9px 11px;margin-bottom:6px;cursor:pointer}
@@ -611,7 +619,7 @@ function renderBuild(){
 
 /* ---- scout panel ---- */
 const TO={S:0,A:1,B:2,C:3};
-const scSel=new Set(),owned=new Set(OWNED_INIT);
+const scSel=new Set(),owned=new Set(OWNED_INIT);let lastGot=null;
 let party=[];
 function holes(){
  const team=party.map(n=>M[n]).filter(Boolean);if(team.length<2)return[];
@@ -636,9 +644,13 @@ function whyOf(n){const r=RANK[n],e=subEval(M[n]);const bits=[];
 function scVerdict(){
  const el=document.getElementById("scVerdict");
  const cs=[...scSel].map(n=>M[n]).filter(p=>!owned.has(p.n));
- if(!scSel.size){el.innerHTML=`<div class="vd"><div class="lab">STANDBY</div>
-  <div class="big" style="font-size:16px;color:var(--dim)">紹介された10体を入れてください</div>
-  <div class="sub">頭文字を1〜2文字打つだけで候補が絞れます。</div></div>`;return}
+ if(!scSel.size){
+  el.innerHTML=lastGot
+   ?`<div class="vd sub2"><div class="lab">記録しました</div><div class="big">${lastGot} を手持ちに追加</div>
+     <div class="sub">候補もリセットしました。次の紹介を受けたら、また10体を入力してください。</div></div>`
+   :`<div class="vd"><div class="lab">STANDBY</div>
+     <div class="big" style="font-size:16px;color:var(--dim)">紹介された10体を入れてください</div>
+     <div class="sub">頭文字を1〜2文字打つだけで候補が絞れます。</div></div>`;return}
  if(!cs.length){el.innerHTML=`<div class="vd skip"><div class="lab">VERDICT</div><div class="big">見送り</div>
   <div class="sub">全て所持済みです。VPを温存してください。</div><div class="act">2,500VPを使わない</div></div>`;return}
  const ranked=cs.map(p=>({p,...subEval(p)})).sort((a,b)=>b.s-a.s);
@@ -652,9 +664,14 @@ function scVerdict(){
    :`使用率圏外ですが、<b>${b.fixed.join("・")}を半減</b>できるので今のパーティの穴を埋められます。`}
  else{cls="skip";head="見送り";act="2,500VPを使わない";
   sub=`一番マシなのは${b.p.n}（${b.p.t.join("・")}・S${b.p.s}）ですが、<b>使用率圏外かつパーティの穴も埋めません</b>。VPを温存してください。`}
+ const others=ranked.slice(1);
  el.innerHTML=`<div class="vd ${cls}"><div class="lab">VERDICT ／ 候補 ${scSel.size}体</div>
   <div class="big">${head}</div><div class="sub">${sub}</div><div class="act">${act}</div>
-  ${r?`<div class="next">次点：${r.p.n}${r.rank?`（使用率${r.rank}位）`:"（圏外）"}</div>`:""}</div>`}
+  ${r?`<div class="next">次点：${r.p.n}${r.rank?`（使用率${r.rank}位）`:"（圏外）"}</div>`:""}
+  <button class="gotbtn" data-got="${b.p.n}">${b.p.n} をスカウトした</button>
+  ${others.length?`<div class="gotalt"><div class="lbl">別のポケモンを取った場合はこちら</div>
+   <div class="row2">${others.map(o=>`<button data-got="${o.p.n}">${o.p.n}</button>`).join("")}</div></div>`:""}
+  </div>`}
 
 function renderScout(){
  const term=document.getElementById("scQ").value.trim();
@@ -766,6 +783,11 @@ document.addEventListener("click",e=>{
  const c=e.target.closest("[data-clr]");
  if(c){const i=document.getElementById(c.dataset.clr);i.value="";i.focus();c.dataset.clr==="scQ"?renderScout():renderSelect();return}
  if(e.target.dataset.act==="scReset"){scSel.clear();renderScout();return}
+ const gt=e.target.closest("[data-got]");
+ if(gt){const n=gt.dataset.got;owned.add(n);scSel.clear();lastGot=n;
+  store.set("pc:owned",JSON.stringify([...owned]));
+  document.getElementById("scQ").value="";
+  renderBox();renderScout();renderSelect();scrollTo({top:0,behavior:"smooth"});return}
  const bx=e.target.closest("[data-box]");
  if(bx){const n=bx.dataset.box;owned.has(n)?owned.delete(n):owned.add(n);
   store.set("pc:owned",JSON.stringify([...owned]));document.getElementById("boxQ").value="";
@@ -774,7 +796,7 @@ document.addEventListener("click",e=>{
  if(ob){const n=ob.dataset.own;owned.has(n)?owned.delete(n):owned.add(n);
   store.set("pc:owned",JSON.stringify([...owned]));renderBox();renderScout();renderSelect();return}
  const sr=e.target.closest("[data-sc]");
- if(sr){const n=sr.dataset.sc;scSel.has(n)?scSel.delete(n):scSel.add(n);
+ if(sr){lastGot=null;const n=sr.dataset.sc;scSel.has(n)?scSel.delete(n):scSel.add(n);
   document.getElementById("scQ").value="";renderScout();return}
  const pl=e.target.closest("#scTray .pill");
  if(pl){scSel.delete(pl.dataset.n);renderScout();return}
