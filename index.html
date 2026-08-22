@@ -203,7 +203,7 @@ font-weight:700;font-size:11.5px;padding:7px 11px;border-radius:9px;cursor:point
 .mx th{font-weight:400;color:var(--dim);padding:0 0 2px;font-size:9px;vertical-align:bottom}
 .mx th.me{text-align:left;font-family:"Zen Kaku Gothic New",sans-serif;font-weight:700;color:var(--ink);font-size:10.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:31%}
 .mx th.me .ico{margin:-6px 2px -6px 0}
-.mx th.op{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:8.5px}
+.mx th.oh{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:8.5px}
 .mx td{text-align:center;border-radius:5px;padding:6px 0;font-weight:700;font-family:"M PLUS 1 Code",monospace;font-variant-numeric:tabular-nums;color:#0B1B2E}
 .mx td.p2{background:var(--green)}.mx td.p1{background:#5FAE5A;color:#EAF5E9}.mx td.z{background:#2A4560;color:var(--dim)}
 .mx td.m1{background:#B0555F;color:#F7E6E9}.mx td.m2{background:var(--rose)}
@@ -259,13 +259,13 @@ font-family:"Zen Kaku Gothic New",sans-serif;font-weight:700;font-size:11.5px;pa
 .mx th.me{cursor:pointer}
 .mx th.me .pk{display:inline-block;width:9px;height:9px;border:1px solid var(--dim);border-radius:3px;margin-right:4px;vertical-align:-1px}
 .mx tr.rec th.me .pk{background:var(--amber);border-color:var(--amber)}
-.mx th.op .mgm{display:inline-block;background:var(--violet);color:#0B1B2E;font-size:8px;font-weight:700;border-radius:3px;padding:0 3px;margin-left:2px;vertical-align:1px}
+.mx th.oh .mgm{display:inline-block;background:var(--violet);color:#0B1B2E;font-size:8px;font-weight:700;border-radius:3px;padding:0 3px;margin-left:2px;vertical-align:1px}
 .fbar button.mg{border-style:dashed;color:var(--violet)}
 .fbar button.mg.on{border-style:solid;border-color:var(--violet);background:var(--surface2)}
 .pill .pn{display:flex;align-items:center;gap:4px}
 .pill .pn b{font-size:9.5px;font-weight:700;margin-left:2px}
 .pill .pn b.yes{color:var(--violet)}.pill .pn b.no{color:var(--dim)}
-.mx th.op .mgm.yes{background:var(--violet);outline:2px solid var(--violet)}
+.mx th.oh .mgm.yes{background:var(--violet);outline:2px solid var(--violet)}
 .tagm{display:inline-block;font-size:9px;font-weight:700;border-radius:4px;padding:1px 5px;margin-left:5px;vertical-align:1px;background:var(--violet);color:#0B1B2E}
 .tagn{display:inline-block;font-size:9px;font-weight:700;border-radius:4px;padding:1px 5px;margin-left:5px;vertical-align:1px;background:#3A566E;color:var(--dim)}
 .fbar button.mm{border-style:dashed;color:var(--amber)}
@@ -1567,7 +1567,7 @@ function renderSelect(){
   const mx=`<div class="mxwrap"><table class="mx"><tr><th class="me"></th>${opp.map(o=>{const st=megaState(o.n),cap=megaForms(o.n).length>0;
     const mark=cands.has(o.n)?`<span class="mgm${st==="yes"?" yes":""}">M</span>`:"";
     const ttl=cands.has(o.n)?"（メガの可能性を含めて採点）":cap?(st==="no"?"（メガ無しと指定）":"（このメガは上位での使用が少ないため想定外。名前タップでメガ想定に）"):"";
-    return `<th class="op" title="${o.n}${ttl}">${ico(o.n,"sm")}<br>${o.n.length>5?o.n.slice(0,5):o.n}${mark}</th>`}).join("")}<th>計</th></tr>`
+    return `<th class="oh" title="${o.n}${ttl}">${ico(o.n,"sm")}<br>${o.n.length>5?o.n.slice(0,5):o.n}${mark}</th>`}).join("")}<th>計</th></tr>`
    +rows.map((r,i)=>`<tr class="${trio.has(i)?"rec":""}"><th class="me" data-pick="${r.n}"><span class="pk"></span>${ico(r.n,"sm")}${nonMega.has(r.n)?baseOf(r.n)+'<span class="tagn">通常</span>':r.n}</th>${r.sc.map((v,j)=>{const alt=duelAlt(r.n,effOf(r.n),formOf(r.n,j));return `<td class="${cls(v)}" data-cell="${r.n}|${formOf(r.n,j)}">${v>0?"+":""}${v}${alt?'<span class="alt">!</span>':""}</td>`}).join("")}<td class="tot">${r.t>0?"+":""}${r.t}</td></tr>`).join("")
    +`</table></div>`;
   res.innerHTML=w+mx+rec.map(r=>{const isLead=r===lead;
