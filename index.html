@@ -221,6 +221,44 @@ padding:6px 9px;border-radius:8px;cursor:pointer;max-width:230px;white-space:now
 .sub-h{font-size:9.5px;letter-spacing:.14em;color:var(--dim);margin:10px 0 5px;font-weight:700}
 .oppick{font-size:11.5px;color:var(--dim);margin:0 0 9px;padding:9px 11px;background:var(--surface);border:1px solid var(--line);border-radius:9px}
 .oppick b{color:var(--rose)}
+.fbar{display:flex;gap:5px;overflow-x:auto;margin-bottom:7px;scrollbar-width:none}
+.fbar::-webkit-scrollbar{display:none}
+.fbar button{flex:none;display:flex;align-items:center;gap:4px;background:var(--surface);border:1px solid var(--line);color:var(--ink);
+font-family:"Zen Kaku Gothic New",sans-serif;font-weight:700;font-size:11.5px;padding:6px 9px 6px 5px;border-radius:9px;cursor:pointer}
+.fbar button.on{border-color:var(--aqua);background:var(--surface2)}
+.fbar.foe button.on{border-color:var(--rose)}
+.fbar button i{font-style:normal;color:var(--rose);font-size:10px;margin-left:2px}
+.fcard{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:9px}
+.fcard .fh{font-size:9.5px;letter-spacing:.14em;color:var(--amber);font-weight:700;margin-bottom:7px}
+.vs{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-family:"Zen Kaku Gothic New",sans-serif;font-weight:900;font-size:15px}
+.vs .v{color:var(--dim);font-size:11px;font-weight:400;margin:0 2px}
+.vs .ty{font-family:"M PLUS 1 Code",monospace;font-size:9.5px;color:var(--dim);font-weight:400;display:block}
+.sp{width:100%;border-collapse:collapse;font-size:11.5px}
+.sp td{padding:6px 4px;border-bottom:1px solid var(--line)}
+.sp td:nth-child(2){text-align:right;font-family:"M PLUS 1 Code",monospace;font-variant-numeric:tabular-nums}
+.sp td:last-child{text-align:right;font-weight:700;width:34%}
+.sp .up{color:var(--green)}.sp .dn{color:var(--rose)}.sp .eq{color:var(--amber)}
+.myS{font-size:12px;margin-bottom:6px}.myS b{font-family:"M PLUS 1 Code",monospace;font-size:16px;color:var(--aqua)}
+.myS small{color:var(--dim);font-size:10px}
+.rk{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--dim);margin-top:9px;flex-wrap:wrap}
+.rk button{background:var(--surface2);border:1px solid var(--line);color:var(--ink);width:28px;height:28px;border-radius:7px;font-family:inherit;cursor:pointer;font-size:14px}
+.rk b{color:var(--ink);min-width:22px;text-align:center;font-family:"M PLUS 1 Code",monospace}
+.mvl{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.mvc{background:var(--surface2);border-radius:7px;padding:6px 8px;font-size:11.5px;display:flex;justify-content:space-between;align-items:center;gap:6px;min-width:0}
+.mvc span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mvc small{color:var(--dim);font-size:9.5px;display:block}
+.mvc b{font-family:"M PLUS 1 Code",monospace;font-size:12.5px;flex:none}
+.gd{color:var(--green)}.bd{color:var(--rose)}.nu{color:var(--ink)}.dm{color:var(--dim)}.zr{color:#5D7590;text-decoration:line-through}
+.stab{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px}
+.stab span{background:var(--surface2);border-radius:6px;padding:4px 8px;font-size:11px}
+.stab b{font-family:"M PLUS 1 Code",monospace;margin-left:4px}
+.sw{display:flex;align-items:center;gap:8px;background:var(--surface2);border-radius:8px;padding:7px 9px;margin-top:5px;font-size:12px}
+.sw .sc{margin-left:auto;font-size:14px}
+.sw small{color:var(--dim);font-size:10px;display:block}
+.fback{width:100%;background:none;border:1px dashed var(--line);color:var(--dim);border-radius:9px;font-family:inherit;font-size:11.5px;padding:11px;cursor:pointer;margin:4px 0 10px}
+.mx th.me{cursor:pointer}
+.mx th.me .pk{display:inline-block;width:9px;height:9px;border:1px solid var(--dim);border-radius:3px;margin-right:4px;vertical-align:-1px}
+.mx tr.rec th.me .pk{background:var(--amber);border-color:var(--amber)}
 </style>
 </head>
 <body>
@@ -271,10 +309,20 @@ padding:6px 9px;border-radius:8px;cursor:pointer;max-width:230px;white-space:now
      <div class="quick" id="foeQuick"></div>
      <div id="foeHist"></div>
    </div>
-   <div class="searchbox"><input id="seQ" type="search" placeholder="頭文字だけでOK（かな／ローマ字）" autocomplete="off" enterkeyhint="search"><button data-clr="seQ">✕</button></div>
+   <div id="secFight" class="hide">
+     <div class="sub-h">自分（タップで場の個体を切替）</div>
+     <div class="fbar" id="fMine"></div>
+     <div class="sub-h">相手（タップで場の個体を切替・出てきた個体に✓）</div>
+     <div class="fbar foe" id="fFoe"></div>
+     <div id="fPanel"></div>
+     <button class="fback" data-act="fightBack">← 選出に戻る</button>
+   </div>
+   <div class="searchbox" id="seSearch"><input id="seQ" type="search" placeholder="頭文字だけでOK（かな／ローマ字）" autocomplete="off" enterkeyhint="search"><button data-clr="seQ">✕</button></div>
    <div id="sePicker"></div>
    <div class="info"><div class="t">スコアの出し方</div>
-     タイプ相性（攻守両方向）・すばやさ・特性から <b>+2〜−2</b> で自動採点。<b>サブウェポンは考慮していません。</b></div>
+     タイプ相性（攻守両方向）・すばやさ・特性から <b>+2〜−2</b> で自動採点。<b>サブウェポンは考慮していません。</b><br><br>
+     <div class="t">対戦画面の実数値</div>
+     Lv50・個体値31相当・<b>能力ポイント1pt＝実数値+2</b>・性格±10%で計算（M-4最終1位記事の公開実数値22件と全件一致）。種族値はPokeAPIの値（メガ後・地方フォーム含む）。自分の値は構築シートの配分、相手は無振り／準速／最速／スカーフの4ラインで比較します。</div>
  </section>
 
  <section class="panel" id="p-box">
@@ -608,6 +656,19 @@ const M={},NAMES=[],SCOUTABLE=[];
 function addAll(txt,isMega){txt.trim().split("\n").forEach(l=>{
  const[n,t,s]=l.split("|");M[n]={n,t:t.split(","),s:+s,mega:isMega};NAMES.push(n);if(!isMega)SCOUTABLE.push(n)})}
 addAll(BASE,false);addAll(MEGA,true);
+
+/* ---- base stats [H,A,B,C,D,S] from PokeAPI (verified against published real stats) ---- */
+const BS={"フシギバナ":[80,82,83,100,100,80],"リザードン":[78,84,78,109,85,100],"カメックス":[79,83,100,85,105,78],"スピアー":[65,90,40,45,80,75],"ピジョット":[83,80,75,70,70,101],"アーボック":[60,95,69,65,79,80],"ピカチュウ":[35,55,40,50,50,90],"ライチュウ":[60,90,55,90,80,110],"ライチュウ(アローラ)":[60,85,50,95,85,110],"ピクシー":[95,70,73,95,90,60],"キュウコン":[73,76,75,81,100,100],"キュウコン(アローラ)":[73,67,75,81,100,109],"ウインディ":[90,110,80,100,80,95],"ウインディ(ヒスイ)":[95,115,80,95,80,90],"フーディン":[55,50,45,135,95,120],"カイリキー":[90,130,80,65,85,55],"ウツボット":[80,105,65,100,70,70],"ヤドラン":[95,75,110,100,80,30],"ヤドラン(ガラル)":[95,100,95,100,70,30],"ゲンガー":[60,65,60,130,75,110],"ガルーラ":[105,95,80,40,80,90],"スターミー":[60,75,85,100,85,115],"カイロス":[65,125,100,55,70,85],"ケンタロス":[75,100,95,40,70,110],"ケンタロス(コンバット)":[75,110,105,30,70,100],"ケンタロス(ブレイズ)":[75,110,105,30,70,100],"ケンタロス(ウォーター)":[75,110,105,30,70,100],"ギャラドス":[95,125,79,60,100,81],"メタモン":[48,48,48,48,48,48],"シャワーズ":[130,65,60,110,95,65],"サンダース":[65,65,60,110,95,130],"ブースター":[65,130,60,95,110,65],"プテラ":[80,105,65,60,75,130],"カビゴン":[160,110,65,65,110,30],"カイリュー":[91,134,95,100,100,80],"メガニウム":[80,82,100,83,100,80],"バクフーン":[78,84,78,109,85,100],"バクフーン(ヒスイ)":[73,84,78,119,85,95],"オーダイル":[85,105,100,79,83,78],"アリアドス":[70,90,70,60,70,40],"デンリュウ":[90,75,85,115,90,55],"マリルリ":[100,50,80,60,80,50],"ニョロトノ":[90,75,75,90,100,70],"エーフィ":[65,65,60,130,95,110],"ブラッキー":[95,65,110,60,130,65],"ヤドキング":[95,75,80,100,110,30],"ヤドキング(ガラル)":[95,65,80,110,110,30],"フォレトス":[75,90,140,60,60,40],"ハガネール":[75,85,200,55,65,30],"ハッサム":[70,130,100,55,80,65],"ヘラクロス":[80,125,75,40,95,85],"エアームド":[65,80,140,40,70,70],"ヘルガー":[75,90,50,110,80,95],"バンギラス":[100,134,110,95,100,61],"ペリッパー":[60,50,100,95,70,65],"サーナイト":[68,65,65,125,115,80],"ヤミラミ":[50,75,75,65,65,50],"ボスゴドラ":[70,110,180,60,60,50],"チャーレム":[60,60,75,60,75,80],"ライボルト":[70,75,60,105,60,105],"サメハダー":[70,120,40,95,40,95],"バクーダ":[70,100,70,105,75,40],"コータス":[70,85,140,85,70,20],"チルタリス":[75,70,90,70,105,80],"ミロカロス":[95,60,79,100,125,81],"ポワルン":[70,70,70,70,70,70],"ジュペッタ":[64,115,65,83,63,65],"チリーン":[75,50,80,95,90,65],"アブソル":[65,130,60,75,60,75],"オニゴーリ":[80,80,80,80,80,80],"ドダイトス":[95,109,105,75,85,56],"ゴウカザル":[76,104,71,104,71,108],"エンペルト":[84,86,88,111,101,60],"レントラー":[80,120,79,95,79,70],"ロズレイド":[60,70,65,125,105,90],"ラムパルド":[97,165,60,65,50,58],"トリデプス":[60,52,168,47,138,30],"ミミロップ":[65,76,84,54,96,105],"ミカルゲ":[50,92,108,92,108,35],"ガブリアス":[108,130,95,80,85,102],"ルカリオ":[70,110,70,115,70,90],"カバルドン":[108,112,118,68,72,47],"ドクロッグ":[83,106,65,86,65,85],"ユキノオー":[90,92,75,92,85,60],"マニューラ":[70,120,65,45,85,125],"ドサイドン":[115,140,130,55,55,40],"リーフィア":[65,110,130,60,65,95],"グレイシア":[65,60,110,130,95,65],"グライオン":[75,95,125,45,75,95],"マンムー":[110,130,80,70,60,80],"エルレイド":[68,125,65,65,115,80],"ユキメノコ":[70,80,70,80,70,110],"ロトム":[50,50,77,95,77,91],"ヒートロトム":[50,65,107,105,107,86],"ウォッシュロトム":[50,65,107,105,107,86],"フロストロトム":[50,65,107,105,107,86],"スピンロトム":[50,65,107,105,107,86],"カットロトム":[50,65,107,105,107,86],"ジャローダ":[75,75,95,75,95,113],"エンブオー":[110,123,65,100,65,65],"ダイケンキ":[95,100,85,108,70,70],"ヒスイダイケンキ":[90,108,80,100,65,85],"ミルホッグ":[60,85,69,60,69,77],"レパルダス":[64,88,50,88,50,106],"ヤナッキー":[75,98,63,98,63,101],"バオッキー":[75,98,63,98,63,101],"ヒヤッキー":[75,98,63,98,63,101],"ドリュウズ":[110,135,60,50,65,88],"タブンネ":[103,60,86,60,86,50],"ローブシン":[105,140,95,55,65,45],"エルフーン":[60,67,85,77,75,116],"ワルビアル":[95,117,80,65,70,92],"デスカーン":[58,50,145,95,105,30],"ダストダス":[80,95,82,60,82,75],"ゾロアーク":[60,105,60,120,60,105],"ゾロアーク(ヒスイ)":[55,100,60,125,60,110],"ランクルス":[110,65,75,125,85,30],"バイバニラ":[71,95,85,110,95,79],"エモンガ":[55,75,60,75,60,103],"シャンデラ":[60,55,90,145,90,80],"ツンベアー":[95,130,80,70,80,50],"マッギョ":[109,66,84,81,99,32],"マッギョ(ガラル)":[109,81,99,66,84,32],"ゴルーグ":[89,124,80,55,80,55],"サザンドラ":[92,105,90,125,90,98],"ウルガモス":[85,60,65,135,105,100],"ブリガロン":[88,107,122,74,75,64],"マフォクシー":[75,69,72,114,100,104],"ゲッコウガ":[72,95,67,103,71,122],"ホルード":[85,56,77,50,77,78],"ファイアロー":[78,81,71,74,69,126],"ビビヨン":[80,52,50,90,50,89],"フラエッテ":[54,45,47,75,98,52],"フラージェス":[78,65,68,112,154,75],"ゴロンダ":[95,124,78,69,71,58],"トリミアン":[75,80,60,65,90,102],"ニャオニクス(オス)":[74,48,76,83,81,104],"ニャオニクス(メス)":[74,48,76,83,81,104],"ギルガルド":[60,50,140,50,140,60],"フレフワン":[101,72,72,99,89,29],"ペロリーム":[82,80,86,85,75,72],"ブロスター":[71,73,88,120,89,59],"エレザード":[62,55,52,109,94,109],"ガチゴラス":[82,121,119,69,59,71],"アマルルガ":[123,77,72,99,92,58],"ニンフィア":[95,65,65,110,130,60],"ルチャブル":[78,92,75,74,63,118],"デデンネ":[67,58,57,81,67,101],"ヌメルゴン":[90,100,70,110,150,80],"ヌメルゴン(ヒスイ)":[80,100,100,110,150,60],"クレッフィ":[57,80,91,80,87,75],"オーロット":[85,110,76,65,82,56],"パンプジン":[65,90,122,58,75,84],"クレベース":[95,117,184,44,46,28],"クレベース(ヒスイ)":[95,127,184,34,36,38],"オンバーン":[85,70,80,97,80,123],"ジュナイパー":[78,107,75,100,100,70],"ジュナイパー(ヒスイ)":[88,112,80,95,95,60],"ガオガエン":[95,115,90,80,90,60],"アシレーヌ":[80,74,74,126,116,60],"ドデカバシ":[80,120,75,75,75,60],"ケケンカニ":[97,132,77,62,67,43],"ルガルガン(まひる)":[75,115,65,55,65,112],"ルガルガン(まよなか)":[85,115,75,55,75,82],"ルガルガン(たそがれ)":[75,117,65,55,65,110],"ドヒドイデ":[50,63,152,53,142,35],"バンバドロ":[100,125,100,55,85,35],"オニシズクモ":[68,70,92,50,132,42],"エンニュート":[68,64,60,111,60,117],"アマージョ":[72,120,98,50,98,72],"ヤレユータン":[90,60,80,90,110,60],"ナゲツケサル":[100,120,90,40,60,80],"ミミッキュ":[55,90,80,50,105,96],"ジジーロン":[78,60,85,135,91,36],"ジャラランガ":[75,110,125,100,105,85],"アーマーガア":[98,87,105,53,85,67],"アップリュー":[70,110,80,95,60,70],"タルップル":[110,85,80,100,80,30],"サダイジャ":[72,107,125,65,70,71],"ポットデス":[60,65,65,134,114,70],"ブリムオン":[57,90,95,136,103,29],"バリコオル":[80,85,75,110,100,70],"デスバーン":[58,95,145,50,105,30],"マホイップ":[65,60,75,110,121,64],"モルペコ":[58,95,58,70,58,97],"ドラパルト":[88,120,75,100,75,142],"アヤシシ":[103,105,72,105,75,65],"バサギリ":[70,135,95,45,70,85],"イダイトウ(オス)":[120,112,65,80,75,78],"イダイトウ(メス)":[120,92,65,100,75,78],"オオニューラ":[80,130,60,40,80,120],"マスカーニャ":[76,110,70,81,70,123],"ラウドボーン":[104,75,100,110,75,66],"ウェーニバル":[85,120,80,85,75,85],"イッカネズミ":[74,75,70,65,75,111],"キョジオーン":[100,100,130,45,90,35],"グレンアルマ":[85,60,100,125,80,75],"ソウブレイズ":[75,125,80,60,100,85],"ハラバリー":[109,64,91,103,83,45],"スコヴィラン":[65,108,65,108,65,75],"クエスパトラ":[95,60,60,101,60,105],"デカヌチャン":[85,75,77,70,105,94],"イルカマン":[100,70,72,53,62,100],"ミミズズ":[70,85,145,60,55,65],"キラフロル":[83,55,90,130,81,86],"リキキリン":[120,90,70,110,70,60],"ドドゲザン":[100,135,120,60,85,50],"ヤバソチャ":[71,60,106,121,80,70],"ブリジュラス":[90,105,130,125,65,85],"カミツオロチ":[106,80,110,120,80,44],"ラフレシア":[75,80,85,110,90,50],"ハリーセン":[65,95,85,55,55,85],"ジュカイン":[70,85,65,105,85,120],"バシャーモ":[80,120,70,110,70,80],"ラグラージ":[100,110,90,85,90,60],"クチート":[50,85,85,55,55,50],"メタグロス":[80,135,130,95,90,70],"ムクホーク":[85,120,70,50,60,100],"ムシャーナ":[116,55,85,107,95,29],"ペンドラー":[60,100,89,55,69,112],"ズルズキン":[65,90,115,45,115,58],"シビルドン":[85,115,80,105,80,50],"カエンジシ":[86,68,72,109,66,106],"カラマネロ":[86,92,88,68,75,73],"ガメノデス":[72,105,115,54,86,68],"ドラミドロ":[65,75,90,97,123,44],"オーロンゲ":[95,120,65,95,75,60],"タイレーツ":[65,100,100,70,60,75],"ハリーマン":[85,115,95,65,65,85],"コノヨザル":[110,115,80,50,90,90],"ハカドッグ":[72,101,100,50,97,68],"サーフゴー":[87,60,95,133,91,84],"メガカイリュー":[91,124,115,145,125,100],"メガゲンガー":[60,65,80,170,95,130],"メガハッサム":[70,150,140,65,100,75],"メガメタグロス":[80,145,150,105,110,110],"メガフラエッテ":[74,85,87,155,148,102],"メガマフォクシー":[75,69,72,159,125,134],"メガギャラドス":[95,155,109,70,130,81],"メガリザードンY":[78,104,78,159,115,100],"メガリザードンX":[78,130,111,130,85,100],"メガルカリオ":[70,145,88,140,70,112],"メガミミロップ":[65,136,94,54,96,135],"メガクチート":[50,105,125,55,95,50],"メガバンギラス":[100,164,150,95,120,71],"メガサーナイト":[68,85,65,165,135,100],"メガガブリアス":[108,170,115,120,95,92],"メガゲッコウガ":[72,125,77,133,81,142],"メガブリガロン":[88,137,172,74,115,44],"メガヤミラミ":[50,85,125,85,115,20],"メガチャーレム":[60,100,85,80,85,100],"メガヘルガー":[75,90,90,140,90,115],"メガライボルト":[70,75,80,135,80,135],"メガガルーラ":[105,125,100,60,100,100],"メガプテラ":[80,135,85,70,95,150],"メガフーディン":[55,50,65,175,105,150],"メガヘラクロス":[80,185,115,40,105,75],"メガボスゴドラ":[70,140,230,60,80,50],"メガエルレイド":[68,165,95,65,115,110],"メガサメハダー":[70,140,70,110,65,105]};
+NAMES.forEach(n=>{if(BS[n])M[n].s=BS[n][5]});
+/* ---- move data: type, power, class ---- */
+const MV={"あくのはどう":["あく",80,"特"],"あくび":["ノーマル",0,"変"],"あまえる":["フェアリー",0,"変"],"いたみわけ":["ノーマル",0,"変"],"うたかたのアリア":["みず",90,"特"],"おにび":["ほのお",0,"変"],"おはかまいり":["ゴースト",50,"物"],"かえんほうしゃ":["ほのお",90,"特"],"かげうち":["ゴースト",40,"物"],"かみくだく":["あく",80,"物"],"かみなりパンチ":["でんき",75,"物"],"かわらわり":["かくとう",75,"物"],"くろいきり":["こおり",0,"変"],"げきりん":["ドラゴン",120,"物"],"こうごうせい":["くさ",0,"変"],"しんそく":["ノーマル",80,"物"],"じこさいせい":["ノーマル",0,"変"],"じしん":["じめん",100,"物"],"じゃれつく":["フェアリー",90,"物"],"せいなるつるぎ":["かくとう",90,"物"],"だいちのちから":["じめん",90,"特"],"つるぎのまい":["ノーマル",0,"変"],"とんぼがえり":["むし",70,"物"],"どくどく":["どく",0,"変"],"なまける":["ノーマル",0,"変"],"ねがいごと":["ノーマル",0,"変"],"ねむる":["エスパー",0,"変"],"のろい":["ゴースト",0,"変"],"はたきおとす":["あく",65,"物"],"はねやすめ":["ひこう",0,"変"],"ひかりのかべ":["エスパー",0,"変"],"ひけん・ちえなみ":["あく",65,"物"],"ふいうち":["あく",70,"物"],"ふきとばし":["ノーマル",0,"変"],"ふぶき":["こおり",110,"特"],"ほのおのキバ":["ほのお",65,"物"],"まきびし":["じめん",0,"変"],"まもる":["ノーマル",0,"変"],"みがわり":["ノーマル",0,"変"],"みちづれ":["ゴースト",0,"変"],"めいそう":["エスパー",0,"変"],"りゅうせいぐん":["ドラゴン",130,"特"],"りゅうのはどう":["ドラゴン",85,"特"],"りゅうのまい":["ドラゴン",0,"変"],"れいとうパンチ":["こおり",75,"物"],"わるだくみ":["あく",0,"変"],"アクアジェット":["みず",40,"物"],"アクアブレイク":["みず",85,"物"],"アンコール":["ノーマル",0,"変"],"インファイト":["かくとう",120,"物"],"ウェザーボール":["ノーマル",50,"特"],"ウェーブタックル":["みず",120,"物"],"オーバーヒート":["ほのお",130,"特"],"オーロラベール":["こおり",0,"変"],"クイックターン":["みず",60,"物"],"コメットパンチ":["はがね",90,"物"],"ゴールドラッシュ":["はがね",120,"特"],"サイコキネシス":["エスパー",90,"特"],"サイコショック":["エスパー",80,"特"],"サイコファング":["エスパー",85,"物"],"シャドークロー":["ゴースト",70,"物"],"シャドーボール":["ゴースト",80,"特"],"スケイルショット":["ドラゴン",25,"物"],"ステルスロック":["いわ",0,"変"],"ソーラービーム":["くさ",120,"特"],"トリック":["エスパー",0,"変"],"トリックフラワー":["くさ",70,"物"],"トリプルアクセル":["こおり",20,"物"],"ドラゴンテール":["ドラゴン",60,"物"],"ドレインキッス":["フェアリー",50,"特"],"ドレインパンチ":["かくとう",75,"物"],"ニトロチャージ":["ほのお",50,"物"],"ハイドロポンプ":["みず",110,"特"],"ハイパーボイス":["ノーマル",90,"特"],"バレットパンチ":["はがね",40,"物"],"パワーウィップ":["くさ",120,"物"],"パワージェム":["いわ",80,"特"],"フリーズドライ":["こおり",70,"特"],"ブレイブバード":["ひこう",120,"物"],"ヘドロばくだん":["どく",90,"特"],"ヘドロウェーブ":["どく",95,"特"],"ボルトチェンジ":["でんき",70,"特"],"マジカルシャイン":["フェアリー",80,"特"],"ムーンフォース":["フェアリー",95,"特"],"10まんボルト":["でんき",90,"特"]};
+/* ---- natures: [+index,-index] into H A B C D S ---- */
+const NAT={おくびょう:[5,1],ひかえめ:[3,1],ようき:[5,3],いじっぱり:[1,3],わんぱく:[2,3],のんき:[2,5],しんちょう:[4,3],ずぶとい:[2,1],
+おだやか:[4,1],れいせい:[3,5],ゆうかん:[1,5],なまいき:[4,5],むじゃき:[5,4],せっかち:[5,2],さみしがり:[1,2],やんちゃ:[1,4],
+おっとり:[3,2],うっかりや:[3,4],おとなしい:[4,2],のうてんき:[2,4]};
+/* Champions: Lv50, IV31, 1pt=+2, nature ±10% (verified: 22/22 stats of M-4 #1 article) */
+function statOf(n,i,pts,nat){const b=BS[n][i];if(i===0)return Math.floor((2*b+31+2*pts)/2)+60;
+ let v=Math.floor((2*b+31+2*pts)/2)+5;const t=NAT[nat];if(t){if(t[0]===i)v=Math.floor(v*1.1);else if(t[1]===i)v=Math.floor(v*0.9)}return v}
 
 /* abilities that matter */
 const AB={ウォッシュロトム:"levitate",ロトム:"levitate",ヒートロトム:"levitate",フロストロトム:"levitate",
@@ -970,6 +1031,50 @@ function renderScout(){
 
 /* ---- select panel ---- */
 let seMode="battle";const foe=new Set();let foeHist=[];
+let my3=null,curPicks=[],fMe=null,fOp=null,rankMe=0,rankOp=0;const seen=new Set();
+function partyBuild(){const k=party.slice().sort().join("|");return BUILDS.find(b=>b.mons.map(m=>m.n).sort().join("|")===k)||null}
+function myBuildMon(n){const b=partyBuild();return b?b.mons.find(m=>m.n===n):null}
+const rankMul=r=>r>=0?(2+r)/2:2/(2-r);
+function mySpeed(n){const m=myBuildMon(n);
+ if(m)return{s:statOf(n,5,m.ev[5],m.nat),scarf:m.it==="こだわりスカーフ",src:`${m.nat}・S${m.ev[5]}pt${m.it==="こだわりスカーフ"?"・スカーフ":""}（構築シートの配分）`};
+ return{s:statOf(n,5,32,"ようき"),scarf:false,src:"最速仮定（32pt＋性格）。構築から読んだパーティなら配分を使います"}}
+function oppLines(n){const L=[["無振り",statOf(n,5,0,"")],["準速（32pt）",statOf(n,5,32,"")],["最速（32pt＋性格）",statOf(n,5,32,"ようき")],["最速スカーフ",Math.floor(statOf(n,5,32,"ようき")*1.5)]];
+ ["メガ"+n,"メガ"+n+"X","メガ"+n+"Y"].forEach(mg=>{if(M[mg]&&M[mg].mega)L.push([mg.replace(n,"")+"（最速）",statOf(mg,5,32,"ようき")])});
+ return L}
+const effTxt=v=>v===0?"×0":v>=4?"×4":v>=2?"×2":v===1?"×1":v>=0.5?"×½":"×¼";
+const effClsAtk=v=>v===0?"zr":v>=2?"gd":v===1?"nu":"dm";
+const effClsDef=v=>v===0?"gd":v>=2?"bd":v===1?"nu":"gd";
+function renderFight(){
+ const mine=curPicks.filter(n=>M[n]);const opps=[...foe].filter(n=>M[n]);
+ if(!fMe||!mine.includes(fMe))fMe=mine[0]||null;if(!fOp||!foe.has(fOp))fOp=opps[0]||null;
+ document.getElementById("fMine").innerHTML=mine.map(n=>`<button class="${n===fMe?"on":""}" data-fme="${n}">${ico(n,"sm")}${n}</button>`).join("");
+ document.getElementById("fFoe").innerHTML=opps.map(n=>`<button class="${n===fOp?"on":""}" data-fop="${n}">${ico(n,"sm")}${n}${seen.has(n)?"<i>✓</i>":""}</button>`).join("");
+ const P=document.getElementById("fPanel");
+ if(!fMe||!fOp){P.innerHTML=`<div class="empty"><div class="big">自分3体と相手を選んでください</div></div>`;return}
+ const me=M[fMe],op=M[fOp];
+ const ms=mySpeed(fMe),myS=Math.floor(ms.s*(ms.scarf?1.5:1)*rankMul(rankMe));
+ const lines=oppLines(fOp).map(([l,v])=>{const ov=Math.floor(v*rankMul(rankOp));
+  return `<tr><td>${l}</td><td>${ov}</td><td class="${myS>ov?"up":myS<ov?"dn":"eq"}">${myS>ov?"▲ 抜ける":myS<ov?"▼ 抜かれる":"＝ 同速"}</td></tr>`}).join("");
+ const bm=myBuildMon(fMe);
+ const mvH=bm?`<div class="mvl">${bm.mv.map(x=>{const d=MV[x];
+   if(!d)return `<div class="mvc"><span>${x}</span><b class="dm">？</b></div>`;
+   if(d[2]==="変")return `<div class="mvc"><span>${x}<small>${d[0]}・変化</small></span><b class="dm">—</b></div>`;
+   const e=eff(d[0],op.t,op.a);const stab=me.t.includes(d[0])?"・一致":"";
+   return `<div class="mvc"><span>${x}<small>${d[0]}${stab}・威力${d[1]}</small></span><b class="${effClsAtk(e)}">${effTxt(e)}</b></div>`}).join("")}</div>`
+  :`<div class="info" style="margin:0">構築から読んだパーティではないので自分の技が分かりません。タイプ相性だけ表示します：${TYPES.filter(t=>eff(t,op.t,op.a)>=2).join("・")||"抜群なし"} が抜群。</div>`;
+ const stabH=op.t.map(t=>{const e=eff(t,me.t,me.a);return `<span>${t}<b class="${effClsDef(e)}">${effTxt(e)}</b></span>`}).join("");
+ const others=mine.filter(n=>n!==fMe).map(n=>{const m=M[n];const take=Math.max(...op.t.map(t=>eff(t,m.t,m.a)));return{n,sc:score(m,op),take}}).sort((a,b)=>b.sc-a.sc||a.take-b.take);
+ const swH=others.length?others.map((o,i)=>`<div class="sw">${ico(o.n,"sm")}<div>${o.n}${i===0?' <span style="color:var(--aqua);font-size:10px">◎ 第一候補</span>':""}<small>相手のタイプ一致技を ${effTxt(o.take)} で受ける</small></div><div class="sc ${o.sc>0?"pos":o.sc<0?"neg":"zero"}">${o.sc>0?"+":""}${o.sc}</div></div>`).join("")
+  :`<div class="info" style="margin:0">交代先がいません。</div>`;
+ P.innerHTML=`<div class="vs">${ico(fMe)}<div>${fMe}<span class="ty">${me.t.join("・")}</span></div><span class="v">vs</span>${ico(fOp)}<div>${fOp}<span class="ty">${op.t.join("・")}</span></div></div>
+  <div class="fcard"><div class="fh">A ／ 素早さ</div>
+   <div class="myS">自分 <b>${myS}</b>${ms.scarf?' <span style="color:var(--amber)">スカーフ込</span>':""}${rankMe?` <span style="color:var(--amber)">ランク${rankMe>0?"+":""}${rankMe}</span>`:""}<br><small>${ms.src}</small></div>
+   <table class="sp">${lines}</table>
+   <div class="rk">自分のランク <button data-rk="me:-1">−</button><b>${rankMe>0?"+":""}${rankMe}</b><button data-rk="me:1">＋</button>
+    <span style="margin-left:8px">相手のランク</span> <button data-rk="op:-1">−</button><b>${rankOp>0?"+":""}${rankOp}</b><button data-rk="op:1">＋</button></div></div>
+  <div class="fcard"><div class="fh">C ／ 技の通り</div>${mvH}
+   <div class="sub-h" style="margin-top:10px">相手のタイプ一致技 → ${fMe}</div><div class="stab">${stabH}</div></div>
+  <div class="fcard"><div class="fh">B ／ 交代先</div>${swH}</div>`}
 const LEADABLE=["ガブリアス","カバルドン","アーマーガア","メガハッサム","ハッサム","キラフロル","ドリュウズ","ドヒドイデ","ウォッシュロトム"];
 function noteFoe(){if(foe.size<6)return;const k=[...foe].sort().join("|");
  foeHist=[[...foe],...foeHist.filter(f=>f.slice().sort().join("|")!==k)].slice(0,5);
@@ -987,7 +1092,10 @@ function pickThree(rows,opp){
 const cls=v=>v>=2?"p2":v>=1?"p1":v<=-2?"m2":v<=-1?"m1":"z";
 function renderSelect(){
  document.getElementById("secParty").classList.toggle("hide",seMode!=="party");
- document.getElementById("secBattle").classList.toggle("hide",seMode==="party");
+ document.getElementById("secBattle").classList.toggle("hide",seMode!=="battle");
+ document.getElementById("secFight").classList.toggle("hide",seMode!=="fight");
+ document.getElementById("seSearch").classList.toggle("hide",seMode==="fight");
+ document.getElementById("sePicker").classList.toggle("hide",seMode==="fight");
  const partyKey=party.slice().sort().join("|");
  const isBuild=b=>b.mons.map(m=>m.n).sort().join("|")===partyKey;
  document.getElementById("presets").innerHTML=BUILDS.map(b=>
@@ -1016,8 +1124,11 @@ function renderSelect(){
   <div class="sub">1体からでも判定は出ます。6体そろうと自動で履歴に残ります。</div></div>`}
  else{
   const rows=party.map(n=>M[n]).filter(Boolean).map(me=>{const sc=opp.map(op=>score(me,op));return{me,sc,t:sc.reduce((a,b)=>a+b,0)}});
-  const trio=new Set(pickThree(rows,opp));
+  const auto=new Set(pickThree(rows,opp));
+  const manual=my3&&my3.length===3&&my3.every(n=>party.includes(n));
+  const trio=manual?new Set(rows.map((r,i)=>my3.includes(r.me.n)?i:-1).filter(i=>i>=0)):auto;
   const rec=rows.filter((_,i)=>trio.has(i)).sort((a,b)=>b.t-a.t);
+  curPicks=rec.map(r=>r.me.n);
   const lc=rec.filter(r=>LEADABLE.includes(r.me.n));
   const lead=(lc.length?lc:rec).slice().sort((a,b)=>Math.min(...b.sc)-Math.min(...a.sc))[0];
   const holes=opp.filter((op,j)=>Math.max(...rows.map(r=>r.sc[j]))<=0);
@@ -1028,7 +1139,7 @@ function renderSelect(){
   else if(rec.every(r=>r.t<0))w+=`<div class="warn"><b>3体とも不利です。</b>押し付けは通りません。耐久寄りで粘って相手のミスを待つ立ち回りに。</div>`;
   else if(rec[0].t>=4)w+=`<div class="warn tip"><b>相性が大きく有利です。</b>変に受けに回らず素直に殴り切る方が事故りません。</div>`;
   const mx=`<div class="mxwrap"><table class="mx"><tr><th class="me"></th>${opp.map(o=>`<th class="op" title="${o.n}">${ico(o.n,"sm")}<br>${o.n.length>5?o.n.slice(0,5):o.n}</th>`).join("")}<th>計</th></tr>`
-   +rows.map((r,i)=>`<tr class="${trio.has(i)?"rec":""}"><th class="me">${ico(r.me.n,"sm")}${r.me.n}</th>${r.sc.map(v=>`<td class="${cls(v)}">${v>0?"+":""}${v}</td>`).join("")}<td class="tot">${r.t>0?"+":""}${r.t}</td></tr>`).join("")
+   +rows.map((r,i)=>`<tr class="${trio.has(i)?"rec":""}"><th class="me" data-pick="${r.me.n}"><span class="pk"></span>${ico(r.me.n,"sm")}${r.me.n}</th>${r.sc.map(v=>`<td class="${cls(v)}">${v>0?"+":""}${v}</td>`).join("")}<td class="tot">${r.t>0?"+":""}${r.t}</td></tr>`).join("")
    +`</table></div>`;
   res.innerHTML=w+mx+rec.map(r=>{const isLead=r===lead;
    const good=opp.filter((o,j)=>r.sc[j]>=1).map(o=>o.n),bad=opp.filter((o,j)=>r.sc[j]<=-1).map(o=>o.n);
@@ -1036,7 +1147,10 @@ function renderSelect(){
     <div class="sc ${r.t>0?"pos":r.t<0?"neg":"zero"}">${r.t>0?"+":""}${r.t}</div></div>
     ${good.length?`<div class="mline good"><b>◎ 有利</b> <span>${good.join("・")}</span></div>`:""}
     ${bad.length?`<div class="mline bad"><b>× 不利</b> <span>${bad.join("・")}</span></div>`:""}</div>`}).join("")
-   +`<div class="oppick"><b>相手の選出予想</b>　${oppPick.map(o=>o.op.n).join("・")}<br><span style="font-size:10.5px">こちらの6体に対して相性が良い順。先発はこの中から来る前提で。</span></div>`}
+   +`<div class="oppick"><b>相手の選出予想</b>　${oppPick.map(o=>o.op.n).join("・")}<br><span style="font-size:10.5px">こちらの6体に対して相性が良い順。先発はこの中から来る前提で。</span></div>`
+   +`<button class="gotbtn" data-act="fight">この3体で対戦に入る → ${curPicks.join("・")}</button>
+   <div class="info">表の左の名前をタップすると、<b>評価が最も低い枠と入れ替え</b>ます。選出中の名前をタップすると自動推奨に戻ります${manual?"（いま手動選択中）":"（いま自動推奨）"}。</div>`}
+ if(seMode==="fight")renderFight();
  const term=document.getElementById("seQ").value.trim();
  let hits=NAMES.filter(n=>match(n,term));
  hits.sort((a,b)=>rank(a,b,term)||NAMES.indexOf(a)-NAMES.indexOf(b));
@@ -1078,18 +1192,30 @@ function show(p){document.querySelectorAll(".panel").forEach(s=>s.classList.togg
 document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()=>show(b.dataset.p)));
 document.querySelectorAll(".mode").forEach(b=>b.addEventListener("click",()=>{
  document.querySelectorAll(".mode").forEach(x=>x.setAttribute("aria-selected",x===b));
- seMode=b.dataset.m;document.getElementById("seQ").value="";renderSelect();scrollTo({top:0})}));
+ seMode=b.dataset.m;my3=null;document.getElementById("seQ").value="";renderSelect();scrollTo({top:0})}));
 document.getElementById("snackUndo").addEventListener("click",()=>{
  if(undoSnap){const s=undoSnap;hideSnack();restoreSnap(s)}});
 document.addEventListener("click",e=>{
  const bt=e.target.closest("[data-build]");
  if(bt){buildId=bt.dataset.build;store.set("pc:build",buildId);renderBuild();scrollTo({top:0,behavior:"smooth"});return}
  const pr=e.target.closest(".pre");
- if(pr){const b=buildById(pr.dataset.p);party=pr.dataset.p==="clear"?[]:b?b.mons.map(m=>m.n):party;
+ if(pr){const b=buildById(pr.dataset.p);party=pr.dataset.p==="clear"?[]:b?b.mons.map(m=>m.n):party;my3=null;
   store.set("pc:party",JSON.stringify(party));renderSelect();renderScout();return}
+ const pk=e.target.closest("[data-pick]");
+ if(pk){const nm=pk.dataset.pick;const cur=curPicks.slice();
+  if(cur.includes(nm)){my3=null}                          // 選出中をタップ → 自動推奨に戻す
+  else if(cur.length>=3){my3=cur.slice(0,2).concat(nm)}    // 評価が最も低い枠（末尾）と入れ替え
+  else{my3=null}
+  renderSelect();return}
+ if(e.target.closest('[data-act="fight"]')){seMode="fight";seen.clear();fMe=curPicks[0]||null;fOp=null;rankMe=rankOp=0;renderSelect();scrollTo({top:0,behavior:"smooth"});return}
+ if(e.target.closest('[data-act="fightBack"]')){seMode="battle";renderSelect();scrollTo({top:0,behavior:"smooth"});return}
+ const fm=e.target.closest("[data-fme]");if(fm){fMe=fm.dataset.fme;renderFight();return}
+ const fo=e.target.closest("[data-fop]");if(fo){fOp=fo.dataset.fop;seen.add(fOp);renderFight();return}
+ const rk=e.target.closest("[data-rk]");
+ if(rk){const[w,d]=rk.dataset.rk.split(":");if(w==="me")rankMe=Math.max(-6,Math.min(6,rankMe+ +d));else rankOp=Math.max(-6,Math.min(6,rankOp+ +d));renderFight();return}
  const ff=e.target.closest("[data-foe]");
  if(ff){foe.delete(ff.dataset.foe);renderSelect();return}
- if(e.target.dataset.act==="foeClear"){foe.clear();renderSelect();return}
+ if(e.target.dataset.act==="foeClear"){foe.clear();my3=null;renderSelect();return}
  const fh=e.target.closest("[data-hist]");
  if(fh){const f=foeHist[+fh.dataset.hist]||[];foe.clear();f.forEach(n=>foe.add(n));renderSelect();scrollTo({top:0,behavior:"smooth"});return}
  const sx=e.target.closest("[data-sheet]");
