@@ -19,23 +19,18 @@
 --sH:#5FD0C5;--sA:#FFB347;--sB:#7EA8E8;--sC:#C9A0FF;--sD:#8FD98A;--sS:#FF7D8F}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{background:var(--base);color:var(--ink);font-family:"M PLUS 1 Code","Zen Kaku Gothic New",monospace;
-font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased;
-padding:0 0 calc(70px + env(safe-area-inset-bottom))}
+font-size:14px;line-height:1.6;-webkit-font-smoothing:antialiased;padding:0 0 calc(72px + env(safe-area-inset-bottom))}
 .wrap{max-width:680px;margin:0 auto;padding:0 14px}
 .eyebrow{font-size:9.5px;letter-spacing:.2em;color:var(--amber);font-weight:700}
 h1{font-family:"Zen Kaku Gothic New",sans-serif;font-weight:900;font-size:16px;margin:2px 0 0}
 h2{font-family:"Zen Kaku Gothic New",sans-serif;font-weight:900;font-size:11.5px;letter-spacing:.08em;color:var(--dim);margin:18px 0 7px}
 .top{padding:calc(12px + env(safe-area-inset-top)) 0 10px}
-
-/* bottom nav */
 nav{position:fixed;left:0;right:0;bottom:0;z-index:40;display:flex;background:rgba(11,27,46,.97);
 border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);backdrop-filter:blur(8px)}
 nav button{flex:1;background:none;border:none;color:var(--dim);font-family:inherit;font-size:10.5px;
 font-weight:700;padding:11px 4px 12px;cursor:pointer;line-height:1.3}
 nav button[aria-selected="true"]{color:var(--amber);box-shadow:inset 0 2px 0 var(--amber)}
 .panel{display:none}.panel.on{display:block}
-
-/* shared bits */
 .card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:13px;margin-bottom:11px}
 .chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:11px}
 .chip{background:var(--surface2);border:1px solid var(--line);border-radius:5px;padding:3px 8px;font-size:11px}
@@ -79,23 +74,17 @@ font-size:11px;font-family:inherit;cursor:pointer}
 .empty{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:18px 14px;text-align:center;margin:14px 0}
 .empty .big{font-family:"Zen Kaku Gothic New",sans-serif;font-weight:900;font-size:15px;color:var(--dim)}
 .empty .sub{font-size:11.5px;color:var(--dim);margin-top:5px}
-
-/* weakness table */
 .wk{width:100%;border-collapse:collapse;font-size:11.5px}
 .wk td{padding:6px 4px;border-bottom:1px solid var(--line)}
 .wk td:first-child{font-weight:700;width:66px}
-.wk .x4{color:var(--rose);font-weight:700}
-.wk .x2{color:var(--amber)}
-.wk .ok{color:var(--green)}
-
-/* verdict */
+.wk .x4{color:var(--rose);font-weight:700}.wk .x2{color:var(--amber)}.wk .ok{color:var(--green)}
 .vd{border-radius:12px;padding:14px;margin-bottom:9px;border:1px solid var(--line);background:var(--surface)}
 .vd .lab{font-size:9px;letter-spacing:.18em;color:var(--dim);margin-bottom:3px}
 .vd .big{font-family:"Zen Kaku Gothic New",sans-serif;font-weight:900;font-size:23px;line-height:1.2}
 .vd .sub{font-size:11.5px;color:var(--dim);margin-top:5px}
 .vd .act{display:inline-block;margin-top:9px;font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px}
 .vd.take{border-color:var(--amber)}.vd.take .big{color:var(--amber)}.vd.take .act{background:var(--amber);color:#0B1B2E}
-.vd.try{border-color:var(--violet)}.vd.try .big{color:var(--violet)}.vd.try .act{background:var(--violet);color:#0B1B2E}
+.vd.sub2{border-color:var(--violet)}.vd.sub2 .big{color:var(--violet)}.vd.sub2 .act{background:var(--violet);color:#0B1B2E}
 .vd.skip{border-color:var(--rose)}.vd.skip .big{color:var(--rose)}.vd.skip .act{background:var(--rose);color:#0B1B2E}
 .vd .next{font-size:11px;color:var(--dim);margin-top:8px;border-top:1px dashed var(--line);padding-top:7px}
 .row{display:flex;gap:10px;align-items:center;background:var(--surface);border:1px solid var(--line);
@@ -103,16 +92,11 @@ border-radius:11px;padding:9px 11px;margin-bottom:6px;cursor:pointer}
 .row.sel{border-color:var(--amber);background:var(--surface2)}
 .row.owned{opacity:.38}.row.owned .rn{text-decoration:line-through}
 .tier{flex:none;width:27px;height:27px;border-radius:7px;display:flex;align-items:center;justify-content:center;
-font-family:"Zen Kaku Gothic New",sans-serif;font-weight:900;font-size:14px;color:#0B1B2E}
-.t-S{background:var(--amber)}.t-A{background:var(--aqua)}.t-B{background:var(--violet)}.t-C{background:#5D7590}
+font-family:"Zen Kaku Gothic New",sans-serif;font-weight:900;font-size:13px;color:#0B1B2E}
+.t-S{background:var(--amber)}.t-A{background:var(--aqua)}.t-B{background:var(--violet)}.t-C{background:#3A566E;color:var(--dim)}
 .rb{flex:1;min-width:0}
 .rn{font-family:"Zen Kaku Gothic New",sans-serif;font-weight:900;font-size:14.5px;line-height:1.3}
-.rw{font-size:11px;color:var(--dim);margin-top:2px}
-.tg{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px}
-.tag{font-size:9px;padding:1px 5px;border-radius:4px;border:1px solid var(--line);color:var(--dim)}
-.tag.home{border-color:var(--green);color:var(--green)}
-.tag.scout{border-color:var(--amber);color:var(--amber)}
-.tag.za{border-color:var(--rose);color:var(--rose)}
+.rw{font-size:10.5px;color:var(--dim);margin-top:2px}
 .ownb{flex:none;font-size:9px;color:var(--dim);border:1px solid var(--line);border-radius:5px;padding:4px 6px;
 background:none;font-family:inherit;cursor:pointer}
 .row.owned .ownb{background:var(--aqua);border-color:var(--aqua);color:#0B1B2E}
@@ -150,38 +134,27 @@ footer{margin-top:22px;font-size:10px;color:var(--dim);line-height:1.7;border-to
 <div class="wrap">
  <div class="top"><div class="eyebrow" id="eb">POKÉMON CHAMPIONS ／ M-4 SINGLE</div><h1 id="ttl">構築シート</h1></div>
 
- <!-- ============ BUILD ============ -->
  <section class="panel on" id="p-build">
-   <div class="warn"><b>最大の弱点はこおりです。</b>こおり技に対して半減が1枚もなく、ガブリアスとメガカイリューが4倍、カバルドンが2倍。<b>6体中3体がこおり技1発で崩れます</b>。マスカーニャのトリプルアクセルやアシレーヌのれいとうビームが刺さる相手には、選出段階で覚悟が要ります。</div>
-   <div class="warn tip">この6体は「今日組める中でのベスト」であって環境最強ではありません。ドラゴンとエスパーにも2枚ずつ弱点を抱えています。ただし<b>こおり4倍2枚は目標構築②でも残る</b>ので、上位構築もそこを承知で使っている構造的リスクだと理解してください。</div>
+   <div class="warn"><b>最大の弱点はこおりです。</b>半減が1枚もなく、ガブリアスとメガカイリューが4倍、カバルドンが2倍。<b>6体中3体がこおり技1発で崩れます</b>。</div>
    <div id="buildList"></div>
    <h2>構築全体の弱点</h2>
    <div class="card"><table class="wk" id="wkTable"></table></div>
-   <div class="info">
-     <div class="t">配分の出どころ</div>
-     メガカイリューとキラフロルは<b>M-4 最終7位</b>、アーマーガアは<b>M-4 最終1位</b>の構築記事に載っていた数値をそのまま使っています。<br><br>
-     ガブリアス・カバルドン・メガゲンガーは私が組んだ型です。特に<b>メガゲンガーは参照できる上位構築が存在しません</b>（M-4の1位も7位も不採用）。実績のない枠だと理解した上で使ってください。
-   </div>
-   <div class="info">
-     <div class="t">完成までのVP</div>
-     カイリューナイト 2,000／ゲンガナイト 2,000／能力ポイント 6体で1,980／技変更 最大6,000。持ち物は所持済みなので<b>合計およそ12,000VP</b>です。
-   </div>
+   <div class="info"><div class="t">配分の出どころ</div>
+     メガカイリューとキラフロルは<b>M-4 最終7位</b>、アーマーガアは<b>M-4 最終1位</b>の構築記事の数値そのままです。ガブリアス・カバルドン・メガゲンガーは私が組んだ型で、特に<b>メガゲンガーは参照できる上位構築が存在しません</b>。</div>
+   <div class="info"><div class="t">完成までのVP</div>
+     カイリューナイト 2,000／ゲンガナイト 2,000／能力ポイント 6体で1,980／技変更 最大6,000。持ち物は所持済みなので<b>合計およそ12,000VP</b>。</div>
  </section>
 
- <!-- ============ SCOUT ============ -->
  <section class="panel" id="p-scout">
    <div id="scVerdict"></div>
    <div class="tray" id="scTray"></div>
-   <div class="searchbox"><input id="scQ" type="search" placeholder="紹介された10体を順に入力／下から選択" autocomplete="off" enterkeyhint="search"><button data-clr="scQ">✕</button></div>
+   <div class="searchbox"><input id="scQ" type="search" placeholder="頭文字だけでOK（かな／ローマ字）" autocomplete="off" enterkeyhint="search"><button data-clr="scQ">✕</button></div>
    <div id="scList"></div>
-   <div class="info">
-     <div class="t">狙い撃ちはしない</div>
-     セレクトの母数は約213種、1回に見えるのは10体なので<b>特定の1体が出る確率は約4.7%</b>。期待値で21回かかります。狙って待つのではなく<b>出た中の最善を取る</b>方が速く強くなります。<br><br>
-     SやAが出た日だけレギュラースカウト（2,500VP）を切り、それ以外は見送ってVPを温存してください。
-   </div>
+   <div class="info"><div class="t">狙い撃ちはしない</div>
+     M-Bのプールは235種、1回に見えるのは10体なので<b>特定の1体が出る確率は約4.3%</b>、期待23回。狙って待つより<b>出た中の最善を取る</b>方が速く強くなります。<br><br>
+     ほしい枠が出なかった場合は、<b>登録パーティの穴を埋められるか</b>で全235種を自動採点し、代替候補を提示します。</div>
  </section>
 
- <!-- ============ SELECT ============ -->
  <section class="panel" id="p-select">
    <div class="modes" role="tablist">
      <button class="mode" role="tab" aria-selected="true" data-m="battle">対戦で使う</button>
@@ -200,13 +173,10 @@ footer{margin-top:22px;font-size:10px;color:var(--dim);line-height:1.7;border-to
      <div id="myline" class="gap"></div>
      <div id="selRes"></div>
    </div>
-   <div class="searchbox"><input id="seQ" type="search" placeholder="名前で絞り込む" autocomplete="off" enterkeyhint="search"><button data-clr="seQ">✕</button></div>
+   <div class="searchbox"><input id="seQ" type="search" placeholder="頭文字だけでOK（かな／ローマ字）" autocomplete="off" enterkeyhint="search"><button data-clr="seQ">✕</button></div>
    <div id="sePicker"></div>
-   <div class="info">
-     <div class="t">スコアの出し方</div>
-     タイプ相性（攻守の両方向）・すばやさ・特性から <b>+2〜−2</b> で自動採点しています。ばけのかわ／マルチスケイル／かげふみ／さいせいりょく／ふゆう／おうごんのからだは補正済み。<br><br>
-     <b>サブウェポンは考慮していません。</b>れいとうビーム持ちのアシレーヌのような、タイプから読めない打点は乗りません。参考値として使ってください。
-   </div>
+   <div class="info"><div class="t">スコアの出し方</div>
+     タイプ相性（攻守両方向）・すばやさ・特性から <b>+2〜−2</b> で自動採点。<b>サブウェポンは考慮していません。</b></div>
  </section>
 
  <footer id="ft"></footer>
@@ -219,17 +189,12 @@ footer{margin-top:22px;font-size:10px;color:var(--dim);line-height:1.7;border-to
 </nav>
 
 <script>
-/* ---------- storage: Claude artifact first, browser fallback when hosted ---------- */
 const store={
- async get(k){
-   try{const r=await window.storage.get(k);return r&&r.value?r.value:null}catch(e){}
-   try{return localStorage.getItem(k)}catch(e){return null}},
- async set(k,v){
-   try{await window.storage.set(k,v);return}catch(e){}
-   try{localStorage.setItem(k,v)}catch(e){}}
-};
+ async get(k){try{const r=await window.storage.get(k);if(r&&r.value)return r.value}catch(e){}
+  try{return localStorage.getItem(k)}catch(e){return null}},
+ async set(k,v){try{await window.storage.set(k,v);return}catch(e){}
+  try{localStorage.setItem(k,v)}catch(e){}}};
 
-/* ---------- type chart ---------- */
 const T={
 ノーマル:{いわ:.5,ゴースト:0,はがね:.5},
 ほのお:{ほのお:.5,みず:.5,くさ:2,こおり:2,むし:2,いわ:.5,ドラゴン:.5,はがね:2},
@@ -251,257 +216,527 @@ const T={
 フェアリー:{ほのお:.5,かくとう:2,どく:.5,ドラゴン:2,あく:2,はがね:.5}};
 const TYPES=Object.keys(T);
 
-/* ---------- dex: name, types, spd, ability, role, tier, route, why ---------- */
-const DEX=[
-["ガブリアス",["ドラゴン","じめん"],102,"","襷でステロを残す初手枠","S","own","両構築に採用。①は耐久カゴ型、②は帯対面型"],
-["メガカイリュー",["ドラゴン","ひこう"],80,"multiscale","竜波＋しんそくのエース","S","own","②のメイン。初手投げで1.5体は削れる"],
-["カイリュー",["ドラゴン","ひこう"],80,"multiscale","非メガ運用","S","own","メガ枠を他に譲る時の形"],
-["メガゲンガー",["ゴースト","どく"],130,"shadowtag","かげふみで退路を断つ対受け枠","C","own","上位2構築とも不採用。実績のない枠"],
-["ゲンガー",["ゴースト","どく"],110,"levitate","高速特殊。じめんを透かす","C","own","①はシャドーボールを耐える側で調整＝仮想敵"],
-["ミミッキュ",["ゴースト","フェアリー"],96,"disguise","ばけのかわで積みが1回確約","C","own","使用率上位だが上位2構築とも不採用"],
-["アーマーガア",["ひこう","はがね"],67,"tough","物理受け兼クッション","A","own","①の物理受け。最遅とんぼが本体"],
-["カバルドン",["じめん"],47,"tough","あくび＋ステロの展開枠","B","own","②が「1番重い」と名指しする強さ"],
-["キラフロル",["いわ","どく"],79,"","スカーフが読まれない奇襲枠","A","own","どくげしょうで殴りつつ自動どくびし"],
-["メガハッサム",["むし","はがね"],75,"","後攻とんぼのクッション","S","home","②のメガ枠2。ストライクはパルデア本編にいるが進化に通信交換が必要"],
-["ハッサム",["むし","はがね"],65,"","非メガ運用","S","home","GTSなら進化済みを直接リクエストできる"],
-["マスカーニャ",["くさ","あく"],123,"","襷枠。ふいうちとトリフラ","A","home","②の襷枠。SVでニャオハを選べば確定。みず半減で今の穴を埋める"],
-["ヒスイダイケンキ",["みず","あく"],70,"","受け崩し。剣舞＋千重波","S","scout","過去作から送れないのでスカウトが唯一のルート。みず・こおり半減"],
-["ドヒドイデ",["どく","みず"],35,"regen","特殊受け。どくどく黒霧再生","B","home","①の軸。今の構築には不要"],
-["メガフラエッテ",["フェアリー"],102,"","あまえる＋めいそうの積みエース","C","za","ストーンがZA連携限定。本体だけ取っても動かない"],
-["フラエッテ（えいえんのはな）",["フェアリー"],92,"","非メガ運用","C","za","同上"],
-["ニンフィア",["フェアリー"],60,"tough","あくび＋ねがいごとの展開枠","C","home",""],
-["メガメタグロス",["エスパー","はがね"],110,"","かたいツメの高速物理","C","home","①②とも「かみなりパンチを耐える」側で調整＝仮想敵"],
-["メタグロス",["エスパー","はがね"],70,"","非メガ運用","C","home",""],
-["ギルガルド",["ゴースト","はがね"],60,"tough","キングシールドで受けつつ殴る","B","home","流行の並びの一角"],
-["サーフゴー",["はがね","ゴースト"],84,"goldbody","変化技を透かす崩し枠","C","home","①②ではダイケンキに殴られる側"],
-["ドドゲザン",["あく","はがね"],70,"","ふいうち＋剣舞","C","home","ヒスイダイケンキの代役候補"],
-["ウォッシュロトム",["でんき","みず"],86,"levitate","おにび＋ボルチェンの受け","C","home","今の構築が重い相手"],
-["ハラバリー",["でんき"],10,"","壁下で機能する高火力特殊","C","home",""],
-["アシレーヌ",["みず","フェアリー"],60,"","うたかたのアリア＋ムーンフォース","C","home","今の構築が重い相手。れいとうビームに注意"],
-["イダイトウ",["みず","ゴースト"],72,"","てきおうりょくの高火力","C","scout","今の構築が最も重い相手"],
-["ブリジュラス",["はがね","ドラゴン"],85,"","高耐久特殊","C","home",""],
-["サザンドラ",["あく","ドラゴン"],98,"levitate","スカーフで上から制圧","C","home",""],
-["メガギャラドス",["みず","あく"],81,"","いかく＋りゅうのまい","C","home","今の構築が重い相手"],
-["ギャラドス",["みず","ひこう"],81,"","非メガ運用","C","home",""],
-["メガリザードンY",["ほのお","ひこう"],100,"","ひでり下のウェザーボール","C","home","アーマーガアが触れない相手"],
-["リザードン",["ほのお","ひこう"],100,"","非メガ運用","C","home",""],
-["メガマフォクシー",["ほのお","エスパー"],104,"levitate","オバヒ＋わるだくみ","C","za","ストーンがZA連携限定"],
-["マフォクシー",["ほのお","エスパー"],104,"","","C","za","同上"],
-["ラウドボーン",["ほのお","ゴースト"],66,"tough","高耐久の起点回避枠","C","home",""],
-["ソウブレイズ",["ほのお","ゴースト"],84,"","ポルターガイストが刺さる","C","home",""],
-["ブラッキー",["あく"],65,"tough","受けループの主","C","home","崩し手段がないと詰む"],
-["メガルカリオ",["かくとう","はがね"],112,"","剣舞しんそくの全抜き役","C","home",""],
-["ルカリオ",["かくとう","はがね"],90,"","","C","home",""],
-["メガミミロップ",["ノーマル","かくとう"],135,"","最速級。剣舞インファイト","C","home",""],
-["メガクチート",["はがね","フェアリー"],50,"","ちからずく＋不意打ち","C","home","①が「重い」と挙げた枠"],
-["ライチュウ",["でんき"],110,"","高速電気枠","C","home",""],
-["ゲッコウガ",["みず","あく"],122,"","へんげんじざいの高速アタッカー","C","za","ZA産ならストーン無料だが未所持"],
-["ウルガモス",["むし","ほのお"],100,"","ちょうのまいで積むと止まらない","C","home","①が「絶対に無理」と書いた天敵"]
-];
-const M={};DEX.forEach(d=>M[d[0]]={n:d[0],t:d[1],s:d[2],a:d[3],r:d[4],tier:d[5],route:d[6],why:d[7]});
-const NAMES=DEX.map(d=>d[0]);
+const BASE=`フシギバナ|くさ,どく|80
+リザードン|ほのお,ひこう|100
+カメックス|みず|78
+スピアー|むし,どく|75
+ピジョット|ノーマル,ひこう|101
+アーボック|どく|80
+ピカチュウ|でんき|90
+ライチュウ|でんき|110
+ライチュウ(アローラ)|でんき,エスパー|110
+ピクシー|フェアリー|60
+キュウコン|ほのお|100
+キュウコン(アローラ)|こおり,フェアリー|109
+ウインディ|ほのお|95
+ウインディ(ヒスイ)|ほのお,いわ|90
+フーディン|エスパー|120
+カイリキー|かくとう|55
+ウツボット|くさ,どく|70
+ヤドラン|みず,エスパー|30
+ヤドラン(ガラル)|どく,エスパー|30
+ゲンガー|ゴースト,どく|110
+ガルーラ|ノーマル|90
+スターミー|みず,エスパー|115
+カイロス|むし|85
+ケンタロス|ノーマル|110
+ケンタロス(コンバット)|かくとう|100
+ケンタロス(ブレイズ)|かくとう,ほのお|100
+ケンタロス(ウォーター)|かくとう,みず|100
+ギャラドス|みず,ひこう|81
+メタモン|ノーマル|48
+シャワーズ|みず|65
+サンダース|でんき|130
+ブースター|ほのお|65
+プテラ|いわ,ひこう|130
+カビゴン|ノーマル|30
+カイリュー|ドラゴン,ひこう|80
+メガニウム|くさ|80
+バクフーン|ほのお|100
+バクフーン(ヒスイ)|ほのお,ゴースト|100
+オーダイル|みず|78
+アリアドス|むし,どく|40
+デンリュウ|でんき|55
+マリルリ|みず,フェアリー|50
+ニョロトノ|みず|70
+エーフィ|エスパー|110
+ブラッキー|あく|65
+ヤドキング|みず,エスパー|30
+ヤドキング(ガラル)|どく,エスパー|30
+フォレトス|むし,はがね|20
+ハガネール|はがね,じめん|30
+ハッサム|むし,はがね|65
+ヘラクロス|むし,かくとう|85
+エアームド|はがね,ひこう|70
+ヘルガー|あく,ほのお|95
+バンギラス|いわ,あく|61
+ペリッパー|みず,ひこう|65
+サーナイト|エスパー,フェアリー|80
+ヤミラミ|あく,ゴースト|50
+ボスゴドラ|はがね,いわ|50
+チャーレム|かくとう,エスパー|80
+ライボルト|でんき|105
+サメハダー|みず,あく|95
+バクーダ|ほのお,じめん|40
+コータス|ほのお|20
+チルタリス|ドラゴン,ひこう|80
+ミロカロス|みず|81
+ポワルン|ノーマル|70
+ジュペッタ|ゴースト|65
+チリーン|エスパー|65
+アブソル|あく|75
+オニゴーリ|こおり|80
+ドダイトス|くさ,じめん|56
+ゴウカザル|ほのお,かくとう|108
+エンペルト|みず,はがね|60
+レントラー|でんき|70
+ロズレイド|くさ,どく|90
+ラムパルド|いわ|58
+トリデプス|いわ,はがね|30
+ミミロップ|ノーマル|105
+ミカルゲ|ゴースト,あく|20
+ガブリアス|ドラゴン,じめん|102
+ルカリオ|かくとう,はがね|90
+カバルドン|じめん|47
+ドクロッグ|どく,かくとう|85
+ユキノオー|くさ,こおり|60
+マニューラ|あく,こおり|125
+ドサイドン|じめん,いわ|40
+リーフィア|くさ|95
+グレイシア|こおり|65
+グライオン|じめん,ひこう|95
+マンムー|こおり,じめん|80
+エルレイド|エスパー,かくとう|80
+ユキメノコ|こおり,ゴースト|110
+ロトム|でんき,ゴースト|86
+ヒートロトム|でんき,ほのお|86
+ウォッシュロトム|でんき,みず|86
+フロストロトム|でんき,こおり|86
+スピンロトム|でんき,ひこう|86
+カットロトム|でんき,くさ|86
+ジャローダ|くさ|113
+エンブオー|ほのお,かくとう|65
+ダイケンキ|みず|70
+ヒスイダイケンキ|みず,あく|70
+ミルホッグ|ノーマル|77
+レパルダス|あく|106
+ヤナッキー|くさ|101
+バオッキー|ほのお|101
+ヒヤッキー|みず|101
+ドリュウズ|じめん,はがね|88
+タブンネ|ノーマル|50
+ローブシン|かくとう|45
+エルフーン|くさ,フェアリー|116
+ワルビアル|じめん,あく|92
+デスカーン|ゴースト|30
+ダストダス|どく|75
+ゾロアーク|あく|105
+ゾロアーク(ヒスイ)|ノーマル,ゴースト|110
+ランクルス|エスパー|30
+バイバニラ|こおり|59
+エモンガ|でんき,ひこう|104
+シャンデラ|ゴースト,ほのお|80
+ツンベアー|こおり|50
+マッギョ|でんき,じめん|32
+マッギョ(ガラル)|じめん,はがね|27
+ゴルーグ|じめん,ゴースト|55
+サザンドラ|あく,ドラゴン|98
+ウルガモス|むし,ほのお|100
+ブリガロン|くさ,かくとう|64
+マフォクシー|ほのお,エスパー|104
+ゲッコウガ|みず,あく|122
+ホルード|ノーマル,じめん|88
+ファイアロー|ほのお,ひこう|126
+ビビヨン|むし,ひこう|89
+フラエッテ|フェアリー|92
+フラージェス|フェアリー|75
+ゴロンダ|かくとう,あく|58
+トリミアン|ノーマル|102
+ニャオニクス(オス)|エスパー|104
+ニャオニクス(メス)|エスパー|104
+ギルガルド|ゴースト,はがね|60
+フレフワン|フェアリー|60
+ペロリーム|フェアリー|48
+ブロスター|みず,ほのお|43
+エレザード|でんき,ノーマル|102
+ガチゴラス|いわ,ドラゴン|58
+アマルルガ|いわ,こおり|46
+ニンフィア|フェアリー|60
+ルチャブル|かくとう,ひこう|92
+デデンネ|でんき,フェアリー|101
+ヌメルゴン|ドラゴン|60
+ヌメルゴン(ヒスイ)|はがね,ドラゴン|60
+クレッフィ|はがね,フェアリー|88
+オーロット|ゴースト,くさ|56
+パンプジン|ゴースト,くさ|84
+クレベース|こおり|25
+クレベース(ヒスイ)|こおり,いわ|25
+オンバーン|ひこう,ドラゴン|123
+ジュナイパー|くさ,ゴースト|70
+ジュナイパー(ヒスイ)|くさ,かくとう|70
+ガオガエン|ほのお,あく|60
+アシレーヌ|みず,フェアリー|60
+ドデカバシ|ノーマル,ひこう|60
+ケケンカニ|みず,かくとう|42
+ルガルガン(まひる)|いわ|112
+ルガルガン(まよなか)|いわ|82
+ルガルガン(たそがれ)|いわ|110
+ドヒドイデ|どく,みず|35
+バンバドロ|じめん|35
+オニシズクモ|みず,むし|42
+エンニュート|ほのお,どく|109
+アマージョ|くさ|72
+ヤレユータン|ノーマル,エスパー|60
+ナゲツケサル|かくとう|104
+ミミッキュ|ゴースト,フェアリー|96
+ジジーロン|ノーマル,ドラゴン|48
+ジャラランガ|ドラゴン,かくとう|85
+アーマーガア|ひこう,はがね|67
+アップリュー|くさ,ドラゴン|70
+タルップル|くさ,ドラゴン|45
+サダイジャ|じめん|40
+ポットデス|ゴースト|70
+ブリムオン|エスパー,フェアリー|29
+バリコオル|こおり,エスパー|80
+デスバーン|じめん,ゴースト|25
+マホイップ|フェアリー|34
+モルペコ|でんき,あく|97
+ドラパルト|ドラゴン,ゴースト|142
+アヤシシ|ノーマル,エスパー|80
+バサギリ|むし,いわ|70
+イダイトウ(オス)|みず,ゴースト|72
+イダイトウ(メス)|みず,ゴースト|72
+オオニューラ|かくとう,どく|106
+マスカーニャ|くさ,あく|123
+ラウドボーン|ほのお,ゴースト|66
+ウェーニバル|みず,かくとう|97
+イッカネズミ|ノーマル|111
+キョジオーン|いわ|30
+グレンアルマ|ほのお,エスパー|75
+ソウブレイズ|ほのお,ゴースト|84
+ハラバリー|でんき|10
+スコヴィラン|くさ,ほのお|75
+クエスパトラ|エスパー|105
+デカヌチャン|フェアリー,はがね|94
+イルカマン|みず|100
+ミミズズ|はがね|30
+キラフロル|いわ,どく|79
+リキキリン|ノーマル,エスパー|60
+ドドゲザン|あく,はがね|70
+ヤバソチャ|くさ,ゴースト|68
+ブリジュラス|はがね,ドラゴン|85
+カミツオロチ|くさ,ドラゴン|82
+ラフレシア|くさ,どく|50
+ハリーセン|みず,どく|85
+ジュカイン|くさ|120
+バシャーモ|ほのお,かくとう|80
+ラグラージ|みず,じめん|60
+クチート|はがね,フェアリー|50
+メタグロス|エスパー,はがね|70
+ムクホーク|ノーマル,ひこう|100
+ムシャーナ|エスパー|29
+ペンドラー|むし,どく|112
+ズルズキン|あく,かくとう|58
+シビルドン|でんき|46
+カエンジシ|ほのお,ノーマル|106
+カラマネロ|あく,エスパー|73
+ガメノデス|みず,いわ|55
+ドラミドロ|どく,ドラゴン|44
+オーロンゲ|あく,フェアリー|60
+タイレーツ|かくとう|43
+ハリーマン|あく,どく|85
+コノヨザル|かくとう,ゴースト|72
+ハカドッグ|ゴースト|68
+サーフゴー|はがね,ゴースト|84`, MEGA=`メガカイリュー|ドラゴン,ひこう|80
+メガゲンガー|ゴースト,どく|130
+メガハッサム|むし,はがね|75
+メガメタグロス|エスパー,はがね|110
+メガフラエッテ|フェアリー|102
+メガマフォクシー|ほのお,エスパー|104
+メガギャラドス|みず,あく|81
+メガリザードンY|ほのお,ひこう|100
+メガリザードンX|ほのお,ドラゴン|100
+メガルカリオ|かくとう,はがね|112
+メガミミロップ|ノーマル,かくとう|135
+メガクチート|はがね,フェアリー|50
+メガバンギラス|いわ,あく|71
+メガサーナイト|エスパー,フェアリー|100
+メガガブリアス|ドラゴン,じめん|92
+メガゲッコウガ|みず,あく|132
+メガブリガロン|くさ,かくとう|64
+メガヤミラミ|あく,ゴースト|50
+メガチャーレム|かくとう,エスパー|100
+メガヘルガー|あく,ほのお|115
+メガライボルト|でんき|135
+メガガルーラ|ノーマル|100
+メガプテラ|いわ,ひこう|150
+メガフーディン|エスパー|150
+メガヘラクロス|むし,かくとう|75
+メガボスゴドラ|はがね|50
+メガエルレイド|エスパー,かくとう|110
+メガサメハダー|みず,あく|105`;
+const M={},NAMES=[],SCOUTABLE=[];
+function addAll(txt,isMega){txt.trim().split("\n").forEach(l=>{
+ const[n,t,s]=l.split("|");M[n]={n,t:t.split(","),s:+s,mega:isMega};NAMES.push(n);if(!isMega)SCOUTABLE.push(n)})}
+addAll(BASE,false);addAll(MEGA,true);
 
-/* ---------- build sheet ---------- */
-const S6=[["H","--sH"],["A","--sA"],["B","--sB"],["C","--sC"],["D","--sD"],["S","--sS"]];
-const BUILD=[
-{n:"メガカイリュー",role:"MEGA 1 ／ 対面エース",nat:"おくびょう",it:"カイリューナイト",ab:"マルチスケイル",ev:[1,0,1,32,0,32],
- mv:["りゅうのはどう","10まんボルト","かえんほうしゃ","しんそく"],
- note:"最終7位構築の配分。<b>りゅうせいぐんではなく竜波</b>なのは、倒したい相手は竜波＋しんそくで落ちるので特攻ダウンと大事な場面での外しを嫌ったため。おくびょうはミラー意識かつ、いじっぱりガブを抜ける。"},
-{n:"ガブリアス",role:"LEAD ／ 襷ステロ",nat:"ようき",it:"きあいのタスキ",ab:"さめはだ",ev:[2,32,0,0,0,32],
- mv:["じしん","スケイルショット","ステルスロック","つるぎのまい"],
- note:"襷で確実に1回動いてステロを残す枠。相手が受け寄りならつるぎのまいから重ねる。<b>たつじんのおびは②に移行してから</b>検討すれば十分間に合います。"},
-{n:"キラフロル",role:"BREAKER ／ 奇襲スカーフ",nat:"ひかえめ",it:"こだわりスカーフ",ab:"どくげしょう",ev:[1,0,1,32,0,32],
- mv:["パワージェム","ヘドロウェーブ","だいちのちから","マジカルシャイン"],
- note:"最終7位構築の配分。<b>環境のキラフロルは襷・メガ・たべのこしが大半なのでスカーフが読まれません</b>。マジカルシャインでガブ・サザンドラ・メガギャラドス、だいちのちからでメタグロス・ギルガルドに刺さる。ひかえめでもメガマフォクシーとメガミミロップは抜けます。"},
-{n:"アーマーガア",role:"WALL ／ 対面操作",nat:"のんき",it:"オボンのみ",ab:"プレッシャー",ev:[32,1,26,0,7,0],
- mv:["ブレイブバード","とんぼがえり","のろい","はねやすめ"],
- note:"最終1位構築の配分。HBは<b>11n+1</b>、A197メガメタグロスのかみなりパンチ15/16で2耐え。<b>Sは最遅</b>で全員の下からとんぼがえり。のろいはビルドアップと違いSを下げられるので、HDカバルドンのあくびループを下から抜けられます。"},
-{n:"カバルドン",role:"SUPPORT ／ あくび展開",nat:"しんちょう",it:"たべのこし",ab:"すなおこし",ev:[32,0,2,0,32,0],
- mv:["あくび","じしん","ふきとばし","なまける"],
- note:"HD特化。<b>ガブリアスがステロ役なので、こちらはあくび＋ふきとばしの流し役に特化</b>させて役割の重複を避けています。ふきとばしは浮いているみがわり持ち対策。"},
-{n:"メガゲンガー",role:"MEGA 2 ／ 対受けルート",nat:"おくびょう",it:"ゲンガナイト",ab:"かげふみ",ev:[2,0,0,32,0,32],
- mv:["シャドーボール","ヘドロばくだん","10まんボルト","みちづれ"],
- note:"<b>この枠だけ参照できる上位構築がありません。</b>M-4の最終1位も7位もゲンガーを不採用にしているので、実績のない私案です。かげふみで受けを縛り、みちづれで相手のエースを持っていく想定。合わなければミミッキュに差し替えてください。"}];
+/* abilities that matter */
+const AB={ウォッシュロトム:"levitate",ロトム:"levitate",ヒートロトム:"levitate",フロストロトム:"levitate",
+スピンロトム:"levitate",カットロトム:"levitate",ゲンガー:"levitate",サザンドラ:"levitate",
+メガゲンガー:"shadowtag",メガマフォクシー:"levitate",ミミッキュ:"disguise",カイリュー:"multiscale",
+メガカイリュー:"multiscale",ドヒドイデ:"regen",サーフゴー:"goldbody",アーマーガア:"tough",
+カバルドン:"tough",ブラッキー:"tough",ギルガルド:"tough",ラウドボーン:"tough",ニンフィア:"tough",
+カビゴン:"tough",ヌメルゴン:"tough",クレベース:"tough",キョジオーン:"tough"};
+NAMES.forEach(n=>M[n].a=AB[n]||"");
 
-function bar(ev){
- const used=ev.reduce((a,b)=>a+b,0),rest=66-used;let segs="",leg="";
- S6.forEach(([k,c],i)=>{if(ev[i]>0){
-  segs+=`<div class="seg" style="flex-grow:${ev[i]};background:var(${c})">${ev[i]>=6?ev[i]:""}</div>`;
-  leg+=`<span><i class="dot" style="background:var(${c})"></i>${k} <b>${ev[i]}</b></span>`}});
- if(rest>0)segs+=`<div class="seg" style="flex-grow:${rest};background:#22405A"></div>`;
- return `<div class="alloc"><div class="ah"><span>能力ポイント配分</span><span>${used} / 66 pt ・ ${used*5} VP</span></div>
-  <div class="bar">${segs}</div><div class="legend">${leg}</div></div>`;
-}
-function renderBuild(){
- document.getElementById("buildList").innerHTML=BUILD.map(b=>`<article class="card">
-  <div class="role">${b.role}</div><div class="nm" style="margin-bottom:9px">${b.n}</div>
-  <div class="chips"><span class="chip">性格 ${b.nat}</span><span class="chip item">${b.it}</span><span class="chip">特性 ${b.ab}</span></div>
-  ${bar(b.ev)}<div class="moves">${b.mv.map(m=>`<div class="move">${m}</div>`).join("")}</div>
-  <div class="note">${b.note}</div></article>`).join("");
- // weakness table across the 6
- const team=BUILD.map(b=>M[b.n]).filter(Boolean);
- const rows=TYPES.map(atk=>{
-  const mult=team.map(p=>p.a==="levitate"&&atk==="じめん"?0:p.t.reduce((m,d)=>m*((T[atk]||{})[d]??1),1));
-  const x4=mult.filter(v=>v>=4).length,x2=mult.filter(v=>v===2).length,res=mult.filter(v=>v<1).length;
-  return{atk,x4,x2,res,risk:x4*3+x2-res}}).filter(r=>r.x4||r.x2).sort((a,b)=>b.risk-a.risk);
- document.getElementById("wkTable").innerHTML=rows.map(r=>`<tr><td>${r.atk}</td>
-  <td>${r.x4?`<span class="x4">4倍 ${r.x4}枚</span> `:""}${r.x2?`<span class="x2">2倍 ${r.x2}枚</span>`:""}</td>
-  <td style="text-align:right">${r.res?`<span class="ok">半減 ${r.res}枚</span>`:`<span class="x4">半減なし</span>`}</td></tr>`).join("");
-}
+/* ---- kana / romaji search ---- */
+const DAKU={ガ:"カ",ギ:"キ",グ:"ク",ゲ:"ケ",ゴ:"コ",ザ:"サ",ジ:"シ",ズ:"ス",ゼ:"セ",ゾ:"ソ",
+ダ:"タ",ヂ:"チ",ヅ:"ツ",デ:"テ",ド:"ト",バ:"ハ",ビ:"ヒ",ブ:"フ",ベ:"ヘ",ボ:"ホ",
+パ:"ハ",ピ:"ヒ",プ:"フ",ペ:"ヘ",ポ:"ホ",ヴ:"ウ"};
+const RO={ア:"a",イ:"i",ウ:"u",エ:"e",オ:"o",カ:"ka",キ:"ki",ク:"ku",ケ:"ke",コ:"ko",
+サ:"sa",シ:"shi",ス:"su",セ:"se",ソ:"so",タ:"ta",チ:"chi",ツ:"tsu",テ:"te",ト:"to",
+ナ:"na",ニ:"ni",ヌ:"nu",ネ:"ne",ノ:"no",ハ:"ha",ヒ:"hi",フ:"fu",ヘ:"he",ホ:"ho",
+マ:"ma",ミ:"mi",ム:"mu",メ:"me",モ:"mo",ヤ:"ya",ユ:"yu",ヨ:"yo",
+ラ:"ra",リ:"ri",ル:"ru",レ:"re",ロ:"ro",ワ:"wa",ヲ:"o",ン:"n",
+ガ:"ga",ギ:"gi",グ:"gu",ゲ:"ge",ゴ:"go",ザ:"za",ジ:"ji",ズ:"zu",ゼ:"ze",ゾ:"zo",
+ダ:"da",ヂ:"ji",ヅ:"zu",デ:"de",ド:"do",バ:"ba",ビ:"bi",ブ:"bu",ベ:"be",ボ:"bo",
+パ:"pa",ピ:"pi",プ:"pu",ペ:"pe",ポ:"po",ヴ:"vu",
+ャ:"ya",ュ:"yu",ョ:"yo",ァ:"a",ィ:"i",ゥ:"u",ェ:"e",ォ:"o",ッ:"",ー:""};
+const toKata=s=>s.replace(/[\u3041-\u3096]/g,c=>String.fromCharCode(c.charCodeAt(0)+0x60));
+function norm(s){return toKata(s).replace(/[ー・()（）]/g,"").split("").map(c=>DAKU[c]||c).join("")}
+function romaji(s){let o="",k=toKata(s).replace(/[ー・()（）]/g,"");
+ for(let i=0;i<k.length;i++){const nx=k[i+1];
+  if(nx&&"ャュョァィゥェォ".includes(nx)){const b=RO[k[i]]||"";const y=RO[nx]||"";
+   o+=(b.endsWith("i")&&b.length>1?b.slice(0,-1):b)+y;i++;continue}
+  o+=RO[k[i]]??k[i]}
+ return o}
+NAMES.forEach(n=>{M[n].k=norm(n);M[n].ro=romaji(n)});
+function match(n,term){const p=M[n];if(!term)return true;
+ const t=term.trim();if(!t)return true;
+ const nt=norm(t),rt=t.toLowerCase();
+ return p.k.includes(nt)||p.ro.startsWith(rt)||p.ro.includes(rt)||n.includes(t)}
+function rank(a,b,term){if(!term)return 0;
+ const t=norm(term),ra=M[a].k.startsWith(t)?0:1,rb=M[b].k.startsWith(t)?0:1;return ra-rb}
 
-/* ---------- scoring ---------- */
+/* ---- scoring ---- */
 function eff(atk,def,ab){if(ab==="levitate"&&atk==="じめん")return 0;return def.reduce((m,d)=>m*((T[atk]||{})[d]??1),1)}
 const bestM=(types,mon)=>Math.max(...types.map(t=>eff(t,mon.t,mon.a)));
 const lg=v=>v===0?-3:Math.log2(v);
 function score(me,op){
  let s=(lg(bestM(me.t,op))-lg(bestM(op.t,me)))*0.72;
  s+= me.s>op.s?0.4:me.s<op.s?-0.4:0;
- if(me.a==="disguise")s+=0.4; if(me.a==="multiscale")s+=0.35; if(me.a==="regen")s+=0.35;
- if(me.a==="goldbody")s+=0.25; if(me.a==="tough")s+=0.2;
+ if(me.a==="disguise")s+=0.4;if(me.a==="multiscale")s+=0.35;if(me.a==="regen")s+=0.35;
+ if(me.a==="goldbody")s+=0.25;if(me.a==="tough")s+=0.2;
  if(me.a==="shadowtag"&&op.a==="tough")s+=0.6;
- if(op.a==="disguise")s-=0.3; if(op.a==="multiscale")s-=0.25; if(op.a==="tough")s-=0.2;
- return Math.max(-2,Math.min(2,Math.round(s*2)/2));
-}
+ if(op.a==="disguise")s-=0.3;if(op.a==="multiscale")s-=0.25;if(op.a==="tough")s-=0.2;
+ return Math.max(-2,Math.min(2,Math.round(s*2)/2))}
 
-/* ---------- scout panel ---------- */
+/* ---- wanted list ---- */
+const WANT={
+ ヒスイダイケンキ:["S","①②の両方が採用。受け崩しは代替が効かない最重要枠。過去作から送れないのでスカウトが唯一のルート"],
+ ハッサム:["S","②のメガ枠2。GTSでも取れるが、出たら即確保でいい"],
+ マスカーニャ:["A","②の襷枠。みず半減で今の構築の穴も埋まる"],
+ ドヒドイデ:["B","特殊受けの完成形。構築を受け寄りに振るなら"],
+ ドドゲザン:["B","ヒスイダイケンキの代役候補。ふいうち＋剣舞"],
+ ドリュウズ:["B","高速地面枠。ステロ役をガブから移せる"],
+ メタグロス:["B","環境最上位メガの素体。ストーンは購入可"],
+ ギャラドス:["B","いかく＋りゅうのまい。ストーンは購入可"],
+ バンギラス:["B","攻略サイトが「迷ったらこれ」と挙げる完成度の高い枠"]};
+const OWNED_INIT=["ガブリアス","カイリュー","ゲンガー","ミミッキュ","アーマーガア","カバルドン","キラフロル"];
+
+/* ---- build sheet ---- */
+const S6=[["H","--sH"],["A","--sA"],["B","--sB"],["C","--sC"],["D","--sD"],["S","--sS"]];
+const BUILD=[
+{n:"メガカイリュー",role:"MEGA 1 ／ 対面エース",nat:"おくびょう",it:"カイリューナイト",ab:"マルチスケイル",ev:[1,0,1,32,0,32],
+ mv:["りゅうのはどう","10まんボルト","かえんほうしゃ","しんそく"],
+ note:"最終7位構築の配分。<b>竜波なのは外し事故を嫌ったため</b>。おくびょうはミラー意識かついじっぱりガブを抜ける。"},
+{n:"ガブリアス",role:"LEAD ／ 襷ステロ",nat:"ようき",it:"きあいのタスキ",ab:"さめはだ",ev:[2,32,0,0,0,32],
+ mv:["じしん","スケイルショット","ステルスロック","つるぎのまい"],
+ note:"襷で確実に1回動いてステロを残す枠。<b>たつじんのおびは②に移行してから</b>で間に合います。"},
+{n:"キラフロル",role:"BREAKER ／ 奇襲スカーフ",nat:"ひかえめ",it:"こだわりスカーフ",ab:"どくげしょう",ev:[1,0,1,32,0,32],
+ mv:["パワージェム","ヘドロウェーブ","だいちのちから","マジカルシャイン"],
+ note:"最終7位構築の配分。<b>環境のキラフロルは襷・メガ・残飯が大半なのでスカーフが読まれません</b>。"},
+{n:"アーマーガア",role:"WALL ／ 対面操作",nat:"のんき",it:"オボンのみ",ab:"プレッシャー",ev:[32,1,26,0,7,0],
+ mv:["ブレイブバード","とんぼがえり","のろい","はねやすめ"],
+ note:"最終1位構築の配分。HBは<b>11n+1</b>、A197メガメタグロスの雷パンチ15/16で2耐え。最遅で全員の下からとんぼ。"},
+{n:"カバルドン",role:"SUPPORT ／ あくび展開",nat:"しんちょう",it:"たべのこし",ab:"すなおこし",ev:[32,0,2,0,32,0],
+ mv:["あくび","じしん","ふきとばし","なまける"],
+ note:"HD特化。<b>ガブがステロ役なので、こちらは流し役に特化</b>させて役割の重複を避けています。"},
+{n:"メガゲンガー",role:"MEGA 2 ／ 対受けルート",nat:"おくびょう",it:"ゲンガナイト",ab:"かげふみ",ev:[2,0,0,32,0,32],
+ mv:["シャドーボール","ヘドロばくだん","10まんボルト","みちづれ"],
+ note:"<b>この枠だけ参照できる上位構築がありません。</b>実績のない私案です。合わなければミミッキュに差し替えを。"}];
+
+function bar(ev){const used=ev.reduce((a,b)=>a+b,0),rest=66-used;let segs="",leg="";
+ S6.forEach(([k,c],i)=>{if(ev[i]>0){segs+=`<div class="seg" style="flex-grow:${ev[i]};background:var(${c})">${ev[i]>=6?ev[i]:""}</div>`;
+  leg+=`<span><i class="dot" style="background:var(${c})"></i>${k} <b>${ev[i]}</b></span>`}});
+ if(rest>0)segs+=`<div class="seg" style="flex-grow:${rest};background:#22405A"></div>`;
+ return `<div class="alloc"><div class="ah"><span>能力ポイント配分</span><span>${used} / 66 pt ・ ${used*5} VP</span></div>
+  <div class="bar">${segs}</div><div class="legend">${leg}</div></div>`}
+
+function teamWeak(team){
+ return TYPES.map(atk=>{const mult=team.map(p=>eff(atk,p.t,p.a));
+  return{atk,x4:mult.filter(v=>v>=4).length,x2:mult.filter(v=>v===2).length,res:mult.filter(v=>v<1).length}})}
+
+function renderBuild(){
+ document.getElementById("buildList").innerHTML=BUILD.map(b=>`<article class="card">
+  <div class="role">${b.role}</div><div class="nm" style="margin-bottom:9px">${b.n}</div>
+  <div class="chips"><span class="chip">性格 ${b.nat}</span><span class="chip item">${b.it}</span><span class="chip">特性 ${b.ab}</span></div>
+  ${bar(b.ev)}<div class="moves">${b.mv.map(m=>`<div class="move">${m}</div>`).join("")}</div>
+  <div class="note">${b.note}</div></article>`).join("");
+ const rows=teamWeak(BUILD.map(b=>M[b.n])).filter(r=>r.x4||r.x2).sort((a,b)=>(b.x4*3+b.x2-b.res)-(a.x4*3+a.x2-a.res));
+ document.getElementById("wkTable").innerHTML=rows.map(r=>`<tr><td>${r.atk}</td>
+  <td>${r.x4?`<span class="x4">4倍 ${r.x4}枚</span> `:""}${r.x2?`<span class="x2">2倍 ${r.x2}枚</span>`:""}</td>
+  <td style="text-align:right">${r.res?`<span class="ok">半減 ${r.res}枚</span>`:`<span class="x4">半減なし</span>`}</td></tr>`).join("")}
+
+/* ---- scout panel ---- */
 const TO={S:0,A:1,B:2,C:3};
-const ROUTE={home:"SV／GTSで確保可",scout:"スカウトでのみ入手",za:"ZA未所持のため不可",own:"所持済み"};
-const scSel=new Set(),owned=new Set(DEX.filter(d=>d[6]==="own").map(d=>d[0]));
-function scTags(p){let h="";
- if(p.route==="own")return `<span class="tag home">所持済み</span>`;
- h+=`<span class="tag ${p.route==="home"?"home":p.route==="scout"?"scout":"za"}">${ROUTE[p.route]}</span>`;return h}
+const scSel=new Set(),owned=new Set(OWNED_INIT);
+let party=[];
+function holes(){
+ const team=party.map(n=>M[n]).filter(Boolean);if(team.length<2)return[];
+ return teamWeak(team).filter(r=>r.res===0&&(r.x4||r.x2>=2)).map(r=>r.atk)}
+function subEval(p){
+ const H=holes();const fixed=H.filter(t=>eff(t,p.t,p.a)<1);
+ let s=fixed.length*2;
+ if(p.s>=110)s+=1.5;else if(p.s>=100)s+=1;
+ if(WANT[p.n])s+=({S:6,A:4,B:2})[WANT[p.n][0]];
+ const mine=new Set(party.flatMap(n=>M[n]?M[n].t:[]));
+ const fresh=p.t.filter(t=>!mine.has(t)).length;s+=fresh*0.5;
+ return{s,fixed}}
+function tierOf(n){return WANT[n]?WANT[n][0]:"C"}
+function whyOf(n){if(WANT[n])return WANT[n][1];
+ const e=subEval(M[n]);
+ if(e.fixed.length)return `${e.fixed.join("・")}を半減できる。チームの穴埋め候補`;
+ if(M[n].s>=110)return `すばやさ${M[n].s}。今のパーティより速い枠`;
+ return `${M[n].t.join("・")}／S${M[n].s}`}
+
 function scVerdict(){
- const c=[...scSel].map(n=>M[n]).filter(p=>!owned.has(p.n)).sort((a,b)=>TO[a.tier]-TO[b.tier]);
  const el=document.getElementById("scVerdict");
+ const cs=[...scSel].map(n=>M[n]).filter(p=>!owned.has(p.n));
  if(!scSel.size){el.innerHTML=`<div class="vd"><div class="lab">STANDBY</div>
-  <div class="big" style="font-size:16px;color:var(--dim)">候補を入れてください</div>
-  <div class="sub">紹介された10体を順に選ぶと、取るべき1体を判定します。</div></div>`;return}
- if(!c.length){el.innerHTML=`<div class="vd skip"><div class="lab">VERDICT</div><div class="big">見送り</div>
-  <div class="sub">選んだ候補は全て所持済みです。VPを温存してください。</div><div class="act">2,500VPを使わない</div></div>`;return}
- const b=c[0],r=c[1];let cls,head,act,sub;
- const want=b.tier==="S"||b.tier==="A";
- if(want&&b.route==="scout"){cls="take";head=b.n;act="レギュラースカウト（2,500VP）";
-  sub=`${b.why}。<b>過去作から送れないのでスカウトが唯一のルート</b>です。出たら絶対に逃さないでください。`}
- else if(want&&b.route==="home"){cls="try";head=`${b.n} は送れる`;act="スカウトせずGTSを確認";
-  sub=`${b.why}。<b>SVかポケモンHOMEのGTSで確定入手できます</b>。抽選も2,500VPも不要なので、先にそちらを試してください。`}
- else if(b.route==="za"){cls="skip";head=`${b.n} は見送り`;act="2,500VPを使わない";
-  sub=`${b.why}。<b>メガストーンがZA連携限定</b>で、本体を取っても動きません。`}
- else if(b.tier==="B"){cls="try";head=b.n;act="トライアルで様子見";
-  sub=`${b.why}。今の構築には入らないので2,500VPを切る価値は低め。無料のトライアルで感触を見るのが無難です。`}
+  <div class="big" style="font-size:16px;color:var(--dim)">紹介された10体を入れてください</div>
+  <div class="sub">頭文字を1〜2文字打つだけで候補が絞れます。</div></div>`;return}
+ if(!cs.length){el.innerHTML=`<div class="vd skip"><div class="lab">VERDICT</div><div class="big">見送り</div>
+  <div class="sub">全て所持済みです。VPを温存してください。</div><div class="act">2,500VPを使わない</div></div>`;return}
+ const ranked=cs.map(p=>({p,...subEval(p)})).sort((a,b)=>b.s-a.s);
+ const b=ranked[0],r=ranked[1],t=tierOf(b.p.n);
+ let cls,head,act,sub;
+ if(t==="S"||t==="A"){cls="take";head=b.p.n;act="レギュラースカウト（2,500VP）";sub=WANT[b.p.n][1]+"。"}
+ else if(b.s>=3){cls="sub2";head=b.p.n;act="代替として取る価値あり";
+  sub=b.fixed.length?`ほしい枠は出ていませんが、<b>${b.fixed.join("・")}を半減できる</b>ので今のパーティの穴を埋められます。${b.p.t.join("・")}／S${b.p.s}。`
+   :`ほしい枠は出ていませんが、<b>すばやさ${b.p.s}</b>で今のパーティに足りない速度域を埋められます。`}
  else{cls="skip";head="見送り";act="2,500VPを使わない";
-  sub=`一番マシなのが${b.n}ですが、いずれも今の構築では使いません。VPはメガストーンに回してください。`}
+  sub=`一番マシなのは${b.p.n}（${b.p.t.join("・")}／S${b.p.s}）ですが、<b>今のパーティの穴を埋められません</b>。VPを温存してください。`}
  el.innerHTML=`<div class="vd ${cls}"><div class="lab">VERDICT ／ 候補 ${scSel.size}体</div>
   <div class="big">${head}</div><div class="sub">${sub}</div><div class="act">${act}</div>
-  ${r&&cls!=="skip"?`<div class="next">次点：${r.n}（${r.tier}）— ${r.why||r.r}</div>`:""}</div>`;
-}
+  ${r?`<div class="next">次点：${r.p.n}（${r.p.t.join("・")}／S${r.p.s}）</div>`:""}</div>`}
+
 function renderScout(){
  const term=document.getElementById("scQ").value.trim();
  document.getElementById("scTray").innerHTML=[...scSel].map(n=>`<span class="pill" data-n="${n}">${n}<i>✕</i></span>`).join("")
   +(scSel.size?`<button class="ghost" data-act="scReset">全部消す</button>`:"");
- const hits=(term?NAMES.filter(n=>n.includes(term)):NAMES).slice()
-  .sort((a,b)=>{const ao=owned.has(a),bo=owned.has(b);if(ao!==bo)return ao?1:-1;return TO[M[a].tier]-TO[M[b].tier]});
- let h="",last=null;
- hits.forEach(n=>{const p=M[n],o=owned.has(n),key=o?"_own":p.tier;
-  if(!term&&key!==last){h+=`<h2>${{S:"S ─ 出たら必ず取る",A:"A ─ 出たら取る",B:"B ─ 迷ったら",C:"C ─ 今は不要",_own:"所持済み"}[key]}</h2>`;last=key}
+ let hits=SCOUTABLE.filter(n=>match(n,term));
+ hits.sort((a,b)=>{const ao=owned.has(a),bo=owned.has(b);if(ao!==bo)return ao?1:-1;
+  const r=rank(a,b,term);if(r)return r;
+  const d=TO[tierOf(a)]-TO[tierOf(b)];if(d)return d;
+  return subEval(M[b]).s-subEval(M[a]).s});
+ if(!term)hits=hits.slice(0,60);
+ let h="";
+ if(term&&!hits.length)h=`<div class="info" style="border-color:var(--rose)"><div class="t" style="color:var(--rose)">該当なし</div>入力を短くしてみてください。</div>`;
+ hits.forEach(n=>{const p=M[n],o=owned.has(n),t=tierOf(n);
   h+=`<div class="row${scSel.has(n)?" sel":""}${o?" owned":""}" data-sc="${n}">
-   <div class="tier t-${p.tier}">${p.tier}</div>
-   <div class="rb"><div class="rn">${n}</div><div class="rw">${p.why||p.r}</div><div class="tg">${scTags(p)}</div></div>
+   <div class="tier t-${t}">${t}</div>
+   <div class="rb"><div class="rn">${n}</div><div class="rw">${whyOf(n)}</div></div>
    <button class="ownb" data-own="${n}">${o?"所持":"未所持"}</button></div>`});
- document.getElementById("scList").innerHTML=h;scVerdict();
-}
+ if(!term)h+=`<div class="info">先頭60件のみ表示しています。名前を1〜2文字打つと全235種から絞り込めます。</div>`;
+ document.getElementById("scList").innerHTML=h;scVerdict()}
 
-/* ---------- select panel ---------- */
+/* ---- select panel ---- */
 const PRE={now:["メガカイリュー","ガブリアス","キラフロル","アーマーガア","カバルドン","メガゲンガー"],
-           goal:["メガカイリュー","メガハッサム","ガブリアス","マスカーニャ","キラフロル","ヒスイダイケンキ"]};
-let seMode="battle",party=[...PRE.now];const foe=new Set();
-const LEADABLE=["ガブリアス","カバルドン","アーマーガア","メガハッサム","ハッサム","キラフロル"];
+ goal:["メガカイリュー","メガハッサム","ガブリアス","マスカーニャ","キラフロル","ヒスイダイケンキ"]};
+let seMode="battle";const foe=new Set();
+const LEADABLE=["ガブリアス","カバルドン","アーマーガア","メガハッサム","ハッサム","キラフロル","ドリュウズ"];
 function renderSelect(){
  document.getElementById("secParty").classList.toggle("hide",seMode!=="party");
  document.getElementById("secBattle").classList.toggle("hide",seMode==="party");
- document.getElementById("seQ").placeholder=seMode==="party"?"自分のパーティに入れる名前":"相手の名前で絞り込む";
  document.getElementById("slots").innerHTML=Array.from({length:6},(_,i)=>party[i]
   ?`<div class="sl on" data-rm="${party[i]}">${party[i]}<i>✕</i></div>`:`<div class="sl void">空き枠</div>`).join("");
  const miss=PRE.goal.filter(n=>!party.includes(n));
- document.getElementById("gapMsg").innerHTML=miss.length?`目標構築「最終7位 対面構築」まであと <b>${miss.length}体</b>：${miss.join("・")}`:`<b>目標構築が完成しています。</b>`;
+ document.getElementById("gapMsg").innerHTML=miss.length?`目標構築まであと <b>${miss.length}体</b>：${miss.join("・")}`:`<b>目標構築が完成しています。</b>`;
  document.getElementById("myline").innerHTML=party.length===6?`自分：${party.join("・")}`
   :`<b>パーティが${party.length}体しか登録されていません。</b>「パーティ登録」から埋めてください。`;
  const opp=[...foe].map(n=>M[n]),res=document.getElementById("selRes");
  if(!opp.length||!party.length){res.innerHTML=`<div class="empty"><div class="big">相手のポケモンを選んでください</div>
   <div class="sub">1体からでも判定は出ます。</div></div>`}
- else{
-  const rows=party.map(n=>M[n]).filter(Boolean).map(me=>{const good=[],bad=[];let t=0;
-   opp.forEach(op=>{const s=score(me,op);t+=s;if(s>=1)good.push(op.n);if(s<=-1)bad.push(op.n)});
-   return{me,t,good,bad}}).sort((a,b)=>b.t-a.t);
+ else{const rows=party.map(n=>M[n]).filter(Boolean).map(me=>{const good=[],bad=[];let t=0;
+   opp.forEach(op=>{const s=score(me,op);t+=s;if(s>=1)good.push(op.n);if(s<=-1)bad.push(op.n)});return{me,t,good,bad}})
+   .sort((a,b)=>b.t-a.t);
   const top=rows.slice(0,3),lc=top.filter(r=>LEADABLE.includes(r.me.n)),lead=(lc.length?lc:top)[0];
   let w="";
-  if(top.filter(r=>r.me.n.startsWith("メガ")).length>1)
-   w+=`<div class="warn"><b>メガ枠が2体います。</b>1戦で進化できるのは1体だけです。試合に入る前にどちらを進化させるか決めてください。</div>`;
-  if(top.every(r=>r.t<0))w+=`<div class="warn"><b>3体とも不利です。</b>押し付けは通りません。耐久寄りの枠で粘って相手のミスを待つ立ち回りに切り替えてください。</div>`;
+  if(top.filter(r=>r.me.mega).length>1)w+=`<div class="warn"><b>メガ枠が2体います。</b>1戦で進化できるのは1体です。入る前に決めてください。</div>`;
+  if(top.every(r=>r.t<0))w+=`<div class="warn"><b>3体とも不利です。</b>押し付けは通りません。耐久寄りで粘って相手のミスを待つ立ち回りに。</div>`;
   else if(top[0].t>=4)w+=`<div class="warn tip"><b>相性が大きく有利です。</b>変に受けに回らず素直に殴り切る方が事故りません。</div>`;
   res.innerHTML=w+rows.map((r,i)=>{const isTop=i<3,isLead=r===lead;
    const bg=isLead?'<span class="badge b-lead">先発</span>':isTop?'<span class="badge b-pick">選出</span>':'<span class="badge b-bench">控え</span>';
    return `<div class="slot ${isLead?"lead":isTop?"pick":"bench"}"><div class="sh">${bg}<div class="sn">${r.me.n}</div>
     <div class="sc ${r.t>0?"pos":r.t<0?"neg":"zero"}">${r.t>0?"+":""}${r.t}</div></div>
     ${r.good.length?`<div class="mline good"><b>◎ 有利</b> <span>${r.good.join("・")}</span></div>`:""}
-    ${r.bad.length?`<div class="mline bad"><b>× 不利</b> <span>${r.bad.join("・")}</span></div>`:""}
-    ${isTop&&r.me.r?`<div class="mline"><span>${r.me.r}</span></div>`:""}</div>`}).join("");
- }
+    ${r.bad.length?`<div class="mline bad"><b>× 不利</b> <span>${r.bad.join("・")}</span></div>`:""}</div>`}).join("")}
  const term=document.getElementById("seQ").value.trim();
- const hits=term?NAMES.filter(n=>n.includes(term)):NAMES;
+ let hits=NAMES.filter(n=>match(n,term));
+ hits.sort((a,b)=>rank(a,b,term)||NAMES.indexOf(a)-NAMES.indexOf(b));
+ if(!term)hits=hits.slice(0,60);
  const on=n=>seMode==="party"?party.includes(n):foe.has(n);
  document.getElementById("sePicker").innerHTML=`<div class="grid">`+hits.map(n=>
-  `<div class="op${on(n)?" on":""}" data-se="${n}">${n}<small>${M[n].t.join("・")}／S${M[n].s}</small></div>`).join("")+`</div>`;
-}
+  `<div class="op${on(n)?" on":""}" data-se="${n}">${n}<small>${M[n].t.join("・")}／S${M[n].s}</small></div>`).join("")+`</div>`
+  +(!term?`<div class="info">先頭60件のみ表示。名前を1〜2文字打つと全件から絞り込めます。</div>`:"")}
 
-/* ---------- wiring ---------- */
+/* ---- wiring ---- */
 const TITLES={build:["POKÉMON CHAMPIONS ／ M-4 SINGLE","構築シート"],
- scout:["SCOUT TRIAGE","取る？ 見送る？"],select:["SELECTION HELPER","出す3体を決める"]};
-const FOOT={build:"配分の出どころは各カードの注記を参照。持ち物は所持済みのため購入不要です。",
- scout:"判定基準はM-4の最終1位・最終7位の構築記事と環境使用率。リストに無い＝この構築では使わない、という意味です。",
- select:"登録したパーティは自動保存されます。移行期は「現在の手持ち軸」、駒が揃ったら「最終7位 対面構築」に切り替えてください。"};
-function show(p){
- document.querySelectorAll(".panel").forEach(s=>s.classList.toggle("on",s.id==="p-"+p));
+ scout:["SCOUT TRIAGE ／ 235種収録","取る？ 見送る？"],select:["SELECTION HELPER","出す3体を決める"]};
+const FOOT={build:"配分の出どころは各カードの注記を参照。",
+ scout:"スカウトプールの全235種を収録。ほしい枠が出なかった場合は、登録パーティの弱点を埋められるかで代替候補を採点しています。",
+ select:"登録したパーティは自動保存されます。"};
+function show(p){document.querySelectorAll(".panel").forEach(s=>s.classList.toggle("on",s.id==="p-"+p));
  document.querySelectorAll("nav button").forEach(b=>b.setAttribute("aria-selected",b.dataset.p===p));
- document.getElementById("eb").textContent=TITLES[p][0];
- document.getElementById("ttl").textContent=TITLES[p][1];
- document.getElementById("ft").textContent=FOOT[p];
- scrollTo({top:0});
-}
+ document.getElementById("eb").textContent=TITLES[p][0];document.getElementById("ttl").textContent=TITLES[p][1];
+ document.getElementById("ft").textContent=FOOT[p];scrollTo({top:0})}
 document.querySelectorAll("nav button").forEach(b=>b.addEventListener("click",()=>show(b.dataset.p)));
 document.querySelectorAll(".mode").forEach(b=>b.addEventListener("click",()=>{
  document.querySelectorAll(".mode").forEach(x=>x.setAttribute("aria-selected",x===b));
  seMode=b.dataset.m;document.getElementById("seQ").value="";renderSelect();scrollTo({top:0})}));
 document.querySelectorAll(".pre").forEach(b=>b.addEventListener("click",()=>{
- party=b.dataset.p==="clear"?[]:[...PRE[b.dataset.p]];store.set("pc:party",JSON.stringify(party));renderSelect()}));
+ party=b.dataset.p==="clear"?[]:[...PRE[b.dataset.p]];store.set("pc:party",JSON.stringify(party));renderSelect();renderScout()}));
 document.addEventListener("click",e=>{
  const c=e.target.closest("[data-clr]");
  if(c){const i=document.getElementById(c.dataset.clr);i.value="";i.focus();c.dataset.clr==="scQ"?renderScout():renderSelect();return}
  if(e.target.dataset.act==="scReset"){scSel.clear();renderScout();return}
  const ob=e.target.closest("[data-own]");
- if(ob){const n=ob.dataset.own;owned.has(n)?owned.delete(n):owned.add(n);store.set("pc:owned",JSON.stringify([...owned]));renderScout();return}
+ if(ob){const n=ob.dataset.own;owned.has(n)?owned.delete(n):owned.add(n);
+  store.set("pc:owned",JSON.stringify([...owned]));renderScout();return}
  const sr=e.target.closest("[data-sc]");
- if(sr){const n=sr.dataset.sc;scSel.has(n)?scSel.delete(n):scSel.add(n);document.getElementById("scQ").value="";renderScout();return}
+ if(sr){const n=sr.dataset.sc;scSel.has(n)?scSel.delete(n):scSel.add(n);
+  document.getElementById("scQ").value="";renderScout();return}
  const pl=e.target.closest("#scTray .pill");
  if(pl){scSel.delete(pl.dataset.n);renderScout();return}
  const rm=e.target.closest("[data-rm]");
- if(rm){party=party.filter(n=>n!==rm.dataset.rm);store.set("pc:party",JSON.stringify(party));renderSelect();return}
+ if(rm){party=party.filter(n=>n!==rm.dataset.rm);store.set("pc:party",JSON.stringify(party));renderSelect();renderScout();return}
  const se=e.target.closest("[data-se]");
  if(se){const n=se.dataset.se;
   if(seMode==="party"){const i=party.indexOf(n);if(i>=0)party.splice(i,1);else if(party.length<6)party.push(n);
-   store.set("pc:party",JSON.stringify(party))}
+   store.set("pc:party",JSON.stringify(party));renderScout()}
   else{foe.has(n)?foe.delete(n):foe.add(n)}
-  document.getElementById("seQ").value="";renderSelect()}
-});
+  document.getElementById("seQ").value="";renderSelect()}});
 document.getElementById("scQ").addEventListener("input",renderScout);
 document.getElementById("seQ").addEventListener("input",renderSelect);
 
 (async()=>{
  const p=await store.get("pc:party");
+ party=[...PRE.now];
  if(p){try{const a=JSON.parse(p);if(Array.isArray(a)&&a.length)party=a.filter(n=>M[n])}catch(e){}}
  const o=await store.get("pc:owned");
  if(o){try{const a=JSON.parse(o);if(Array.isArray(a)){owned.clear();a.forEach(n=>owned.add(n))}}catch(e){}}
- renderBuild();renderScout();renderSelect();show("build");
-})();
+ renderBuild();renderScout();renderSelect();show("build")})();
 </script>
 </body>
 </html>
