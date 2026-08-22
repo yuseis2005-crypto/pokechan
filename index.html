@@ -259,6 +259,9 @@ font-family:"Zen Kaku Gothic New",sans-serif;font-weight:700;font-size:11.5px;pa
 .mx th.me{cursor:pointer}
 .mx th.me .pk{display:inline-block;width:9px;height:9px;border:1px solid var(--dim);border-radius:3px;margin-right:4px;vertical-align:-1px}
 .mx tr.rec th.me .pk{background:var(--amber);border-color:var(--amber)}
+.mx th.op .mgm{display:inline-block;background:var(--violet);color:#0B1B2E;font-size:8px;font-weight:700;border-radius:3px;padding:0 3px;margin-left:2px;vertical-align:1px}
+.fbar button.mg{border-style:dashed;color:var(--violet)}
+.fbar button.mg.on{border-style:solid;border-color:var(--violet);background:var(--surface2)}
 </style>
 </head>
 <body>
@@ -285,7 +288,7 @@ font-family:"Zen Kaku Gothic New",sans-serif;font-weight:700;font-size:11.5px;pa
    <div class="info"><div class="t">狙い撃ちはしない</div>
      M-Bのプールは235種、1回に見えるのは10体なので<b>特定の1体が出る確率は約4.3%</b>、期待23回。狙って待つより<b>出た中の最善を取る</b>方が速く強くなります。<br><br>
      採点は3軸です。<b>①使用率順位　②メガシンカ後のTier　③登録パーティの穴を埋めるか</b>。<br><br>
-     ②があるので、素体が地味でもメガで化けるポケモンを取り逃しません。ただし<b>ゲッコウガ・フラエッテ・マフォクシー・ブリガロンはストーンがZA連携限定</b>のため、メガ評価を0として扱っています。</div>
+     ②があるので、素体が地味でもメガで化けるポケモンを取り逃しません。ただし<b>フラエッテだけはストーンがZA連携限定</b>（ショップ未販売）のため、メガ評価を0として扱っています。ブリガロン・マフォクシー・ゲッコウガのストーンは2026/6/17の更新でショップ購入可になっています。</div>
  </section>
 
  <section class="panel" id="p-select">
@@ -742,7 +745,7 @@ const MEGAT={メタグロス:"SS",クチート:"SS",ゲンガー:"SS",バシャ�
 "ニャオニクス(オス)":"D","ニャオニクス(メス)":"D",バクーダ:"D",オニゴーリ:"D",デンリュウ:"D",
 ハガネール:"D",ヘルガー:"D",チルタリス:"D",ボスゴドラ:"D",ライボルト:"D",アブソル:"D",タブンネ:"D",
 エルレイド:"D",スピアー:"D",エンブオー:"D",ジュカイン:"D",タイレーツ:"D",カラマネロ:"D",ペンドラー:"D"};
-const ZALOCK=new Set(["ゲッコウガ","フラエッテ","マフォクシー","ブリガロン"]);
+const ZALOCK=new Set(["フラエッテ"]); // 2026/6/17 M-B更新でブリガロナイト・マフォクシナイト・ゲッコウガナイトはショップ購入可に
 const MEGAPT={SS:7,S:5,A:3,B:1.5,C:0,D:0};
 function megaInfo(n){const t=MEGAT[n];if(!t)return null;
  return{t,locked:ZALOCK.has(n),pt:ZALOCK.has(n)?0:MEGAPT[t]}}
@@ -1031,7 +1034,7 @@ function renderScout(){
 
 /* ---- select panel ---- */
 let seMode="battle";const foe=new Set();let foeHist=[];
-let my3=null,curPicks=[],fMe=null,fOp=null,rankMe=0,rankOp=0;const seen=new Set();
+let my3=null,curPicks=[],fMe=null,fOp=null,fMega=0,rankMe=0,rankOp=0;const seen=new Set();
 function partyBuild(){const k=party.slice().sort().join("|");return BUILDS.find(b=>b.mons.map(m=>m.n).sort().join("|")===k)||null}
 function myBuildMon(n){const b=partyBuild();return b?b.mons.find(m=>m.n===n):null}
 const rankMul=r=>r>=0?(2+r)/2:2/(2-r);
@@ -1048,10 +1051,13 @@ function renderFight(){
  const mine=curPicks.filter(n=>M[n]);const opps=[...foe].filter(n=>M[n]);
  if(!fMe||!mine.includes(fMe))fMe=mine[0]||null;if(!fOp||!foe.has(fOp))fOp=opps[0]||null;
  document.getElementById("fMine").innerHTML=mine.map(n=>`<button class="${n===fMe?"on":""}" data-fme="${n}">${ico(n,"sm")}${n}</button>`).join("");
- document.getElementById("fFoe").innerHTML=opps.map(n=>`<button class="${n===fOp?"on":""}" data-fop="${n}">${ico(n,"sm")}${n}${seen.has(n)?"<i>✓</i>":""}</button>`).join("");
+ const forms=fOp?[fOp,...megaForms(fOp)]:[];if(fMega>=forms.length)fMega=0;
+ const opName=forms[fMega]||fOp;
+ document.getElementById("fFoe").innerHTML=opps.map(n=>`<button class="${n===fOp?"on":""}" data-fop="${n}">${ico(n,"sm")}${n}${seen.has(n)?"<i>✓</i>":""}</button>`).join("")
+  +(forms.length>1?`<button class="mg${fMega?" on":""}" data-fmega="1">${fMega?"メガ化中"+(forms.length>2?"（"+opName.slice(-1)+"）":"")+" → 戻す":"メガ化した？"}</button>`:"");
  const P=document.getElementById("fPanel");
  if(!fMe||!fOp){P.innerHTML=`<div class="empty"><div class="big">自分3体と相手を選んでください</div></div>`;return}
- const me=M[fMe],op=M[fOp];
+ const me=M[fMe],op=M[opName];
  const ms=mySpeed(fMe),myS=Math.floor(ms.s*(ms.scarf?1.5:1)*rankMul(rankMe));
  const lines=oppLines(fOp).map(([l,v])=>{const ov=Math.floor(v*rankMul(rankOp));
   return `<tr><td>${l}</td><td>${ov}</td><td class="${myS>ov?"up":myS<ov?"dn":"eq"}">${myS>ov?"▲ 抜ける":myS<ov?"▼ 抜かれる":"＝ 同速"}</td></tr>`}).join("");
@@ -1066,7 +1072,7 @@ function renderFight(){
  const others=mine.filter(n=>n!==fMe).map(n=>{const m=M[n];const take=Math.max(...op.t.map(t=>eff(t,m.t,m.a)));return{n,sc:score(m,op),take}}).sort((a,b)=>b.sc-a.sc||a.take-b.take);
  const swH=others.length?others.map((o,i)=>`<div class="sw">${ico(o.n,"sm")}<div>${o.n}${i===0?' <span style="color:var(--aqua);font-size:10px">◎ 第一候補</span>':""}<small>相手のタイプ一致技を ${effTxt(o.take)} で受ける</small></div><div class="sc ${o.sc>0?"pos":o.sc<0?"neg":"zero"}">${o.sc>0?"+":""}${o.sc}</div></div>`).join("")
   :`<div class="info" style="margin:0">交代先がいません。</div>`;
- P.innerHTML=`<div class="vs">${ico(fMe)}<div>${fMe}<span class="ty">${me.t.join("・")}</span></div><span class="v">vs</span>${ico(fOp)}<div>${fOp}<span class="ty">${op.t.join("・")}</span></div></div>
+ P.innerHTML=`<div class="vs">${ico(fMe)}<div>${fMe}<span class="ty">${me.t.join("・")}</span></div><span class="v">vs</span>${ico(opName)}<div>${opName}<span class="ty">${op.t.join("・")}${op.a?"・"+({levitate:"ふゆう",shadowtag:"かげふみ",disguise:"ばけのかわ",multiscale:"マルチスケイル",regen:"さいせいりょく",goldbody:"おうごんのからだ",tough:"高耐久"}[op.a]||""):""}</span></div></div>
   <div class="fcard"><div class="fh">A ／ 素早さ</div>
    <div class="myS">自分 <b>${myS}</b>${ms.scarf?' <span style="color:var(--amber)">スカーフ込</span>':""}${rankMe?` <span style="color:var(--amber)">ランク${rankMe>0?"+":""}${rankMe}</span>`:""}<br><small>${ms.src}</small></div>
    <table class="sp">${lines}</table>
@@ -1090,6 +1096,9 @@ function pickThree(rows,opp){
   if(!best||key>best.key)best={trio,key}}
  return best.trio}
 const cls=v=>v>=2?"p2":v>=1?"p1":v<=-2?"m2":v<=-1?"m1":"z";
+function megaForms(n){return ["メガ"+n,"メガ"+n+"X","メガ"+n+"Y"].filter(x=>M[x]&&M[x].mega)}
+/* 相手がメガ可能なら通常/メガ両方で採点し、こちらに不利な方を採用（見落とすより安全側） */
+function scoreCons(me,op){const vs=[score(me,op),...megaForms(op.n).map(x=>score(me,M[x]))];return Math.min(...vs)}
 function renderSelect(){
  document.getElementById("secParty").classList.toggle("hide",seMode!=="party");
  document.getElementById("secBattle").classList.toggle("hide",seMode!=="battle");
@@ -1123,7 +1132,7 @@ function renderSelect(){
  if(!opp.length||!party.length){res.innerHTML=`<div class="empty"><div class="big">相手のポケモンを選んでください</div>
   <div class="sub">1体からでも判定は出ます。6体そろうと自動で履歴に残ります。</div></div>`}
  else{
-  const rows=party.map(n=>M[n]).filter(Boolean).map(me=>{const sc=opp.map(op=>score(me,op));return{me,sc,t:sc.reduce((a,b)=>a+b,0)}});
+  const rows=party.map(n=>M[n]).filter(Boolean).map(me=>{const sc=opp.map(op=>scoreCons(me,op));return{me,sc,t:sc.reduce((a,b)=>a+b,0)}});
   const auto=new Set(pickThree(rows,opp));
   const manual=my3&&my3.length===3&&my3.every(n=>party.includes(n));
   const trio=manual?new Set(rows.map((r,i)=>my3.includes(r.me.n)?i:-1).filter(i=>i>=0)):auto;
@@ -1138,7 +1147,7 @@ function renderSelect(){
   if(holes.length)w+=`<div class="warn"><b>${holes.map(o=>o.n).join("・")}に有利を取れる手持ちがいません。</b>相手のこの枠は数的有利で押し切るか、交代で流す前提で選出を。</div>`;
   else if(rec.every(r=>r.t<0))w+=`<div class="warn"><b>3体とも不利です。</b>押し付けは通りません。耐久寄りで粘って相手のミスを待つ立ち回りに。</div>`;
   else if(rec[0].t>=4)w+=`<div class="warn tip"><b>相性が大きく有利です。</b>変に受けに回らず素直に殴り切る方が事故りません。</div>`;
-  const mx=`<div class="mxwrap"><table class="mx"><tr><th class="me"></th>${opp.map(o=>`<th class="op" title="${o.n}">${ico(o.n,"sm")}<br>${o.n.length>5?o.n.slice(0,5):o.n}</th>`).join("")}<th>計</th></tr>`
+  const mx=`<div class="mxwrap"><table class="mx"><tr><th class="me"></th>${opp.map(o=>`<th class="op" title="${o.n}${megaForms(o.n).length?"（メガの可能性を含む）":""}">${ico(o.n,"sm")}<br>${o.n.length>5?o.n.slice(0,5):o.n}${megaForms(o.n).length?'<span class="mgm">M</span>':""}</th>`).join("")}<th>計</th></tr>`
    +rows.map((r,i)=>`<tr class="${trio.has(i)?"rec":""}"><th class="me" data-pick="${r.me.n}"><span class="pk"></span>${ico(r.me.n,"sm")}${r.me.n}</th>${r.sc.map(v=>`<td class="${cls(v)}">${v>0?"+":""}${v}</td>`).join("")}<td class="tot">${r.t>0?"+":""}${r.t}</td></tr>`).join("")
    +`</table></div>`;
   res.innerHTML=w+mx+rec.map(r=>{const isLead=r===lead;
@@ -1149,7 +1158,7 @@ function renderSelect(){
     ${bad.length?`<div class="mline bad"><b>× 不利</b> <span>${bad.join("・")}</span></div>`:""}</div>`}).join("")
    +`<div class="oppick"><b>相手の選出予想</b>　${oppPick.map(o=>o.op.n).join("・")}<br><span style="font-size:10.5px">こちらの6体に対して相性が良い順。先発はこの中から来る前提で。</span></div>`
    +`<button class="gotbtn" data-act="fight">この3体で対戦に入る → ${curPicks.join("・")}</button>
-   <div class="info">表の左の名前をタップすると、<b>評価が最も低い枠と入れ替え</b>ます。選出中の名前をタップすると自動推奨に戻ります${manual?"（いま手動選択中）":"（いま自動推奨）"}。</div>`}
+   <div class="info"><b>M</b> 印の相手はメガシンカの可能性があるため、通常／メガの両方で採点して<b>こちらに不利な方</b>を表示しています。<br>表の左の名前をタップすると、<b>評価が最も低い枠と入れ替え</b>ます。選出中の名前をタップすると自動推奨に戻ります${manual?"（いま手動選択中）":"（いま自動推奨）"}。</div>`}
  if(seMode==="fight")renderFight();
  const term=document.getElementById("seQ").value.trim();
  let hits=NAMES.filter(n=>match(n,term));
@@ -1207,10 +1216,11 @@ document.addEventListener("click",e=>{
   else if(cur.length>=3){my3=cur.slice(0,2).concat(nm)}    // 評価が最も低い枠（末尾）と入れ替え
   else{my3=null}
   renderSelect();return}
- if(e.target.closest('[data-act="fight"]')){seMode="fight";seen.clear();fMe=curPicks[0]||null;fOp=null;rankMe=rankOp=0;renderSelect();scrollTo({top:0,behavior:"smooth"});return}
+ if(e.target.closest('[data-act="fight"]')){seMode="fight";seen.clear();fMe=curPicks[0]||null;fOp=null;fMega=0;rankMe=rankOp=0;renderSelect();scrollTo({top:0,behavior:"smooth"});return}
  if(e.target.closest('[data-act="fightBack"]')){seMode="battle";renderSelect();scrollTo({top:0,behavior:"smooth"});return}
  const fm=e.target.closest("[data-fme]");if(fm){fMe=fm.dataset.fme;renderFight();return}
- const fo=e.target.closest("[data-fop]");if(fo){fOp=fo.dataset.fop;seen.add(fOp);renderFight();return}
+ const fo=e.target.closest("[data-fop]");if(fo){if(fOp!==fo.dataset.fop)fMega=0;fOp=fo.dataset.fop;seen.add(fOp);renderFight();return}
+ if(e.target.closest("[data-fmega]")){fMega++;renderFight();return}
  const rk=e.target.closest("[data-rk]");
  if(rk){const[w,d]=rk.dataset.rk.split(":");if(w==="me")rankMe=Math.max(-6,Math.min(6,rankMe+ +d));else rankOp=Math.max(-6,Math.min(6,rankOp+ +d));renderFight();return}
  const ff=e.target.closest("[data-foe]");
