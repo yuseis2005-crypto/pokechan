@@ -164,6 +164,9 @@ footer{margin-top:22px;font-size:10px;color:var(--dim);line-height:1.7;border-to
      <div class="presets">
        <button class="pre" data-p="now">現在の手持ち軸</button>
        <button class="pre" data-p="goal">最終7位 対面構築</button>
+       <button class="pre" data-p="bal">バランス型</button>
+       <button class="pre" data-p="ten">展開型</button>
+       <button class="pre" data-p="uke">受け寄り</button>
        <button class="pre" data-p="clear">空にする</button>
      </div>
      <div class="slots" id="slots"></div>
@@ -531,17 +534,22 @@ function score(me,op){
  if(op.a==="disguise")s-=0.3;if(op.a==="multiscale")s-=0.25;if(op.a==="tough")s-=0.2;
  return Math.max(-2,Math.min(2,Math.round(s*2)/2))}
 
-/* ---- wanted list ---- */
-const WANT={
- ヒスイダイケンキ:["S","①②の両方が採用。受け崩しは代替が効かない最重要枠。過去作から送れないのでスカウトが唯一のルート"],
- ハッサム:["S","②のメガ枠2。GTSでも取れるが、出たら即確保でいい"],
- マスカーニャ:["A","②の襷枠。みず半減で今の構築の穴も埋まる"],
- ドヒドイデ:["B","特殊受けの完成形。構築を受け寄りに振るなら"],
- ドドゲザン:["B","ヒスイダイケンキの代役候補。ふいうち＋剣舞"],
- ドリュウズ:["B","高速地面枠。ステロ役をガブから移せる"],
- メタグロス:["B","環境最上位メガの素体。ストーンは購入可"],
- ギャラドス:["B","いかく＋りゅうのまい。ストーンは購入可"],
- バンギラス:["B","攻略サイトが「迷ったらこれ」と挙げる完成度の高い枠"]};
+/* ---- usage-based tiers (M-4 single, 2026/8/20) ---- */
+const USAGE=`ガブリアス,アシレーヌ,マスカーニャ,ブリジュラス,ミミッキュ,カバルドン,ギャラドス,マフォクシー,カイリュー,メタグロス,リザードン,アーマーガア,ハッサム,イダイトウ(オス),サザンドラ,ライチュウ,キラフロル,ゲッコウガ,ゲンガー,サーフゴー,ウルガモス,ギルガルド,ヒスイダイケンキ,バシャーモ,ドドゲザン,ウォッシュロトム,ブラッキー,ルカリオ,ムクホーク,ニンフィア,ミミロップ,フシギバナ,キュウコン(アローラ),スターミー,ラウドボーン,ハラバリー,ドヒドイデ,ドラパルト,ラグラージ,フラエッテ,ピクシー,スコヴィラン,ドリュウズ,ソウブレイズ,バンギラス,オーロンゲ,クチート,メガニウム,ペリッパー,カメックス`.split(",");
+const RANK={};USAGE.forEach((n,i)=>{RANK[n]=i+1});
+const NOTE={
+ ヒスイダイケンキ:"受け崩しの完成形。過去作から送れないのでスカウトが唯一のルート",
+ ハッサム:"メガ枠として最有力。GTSでも取れる",
+ マスカーニャ:"スカーフで環境最速クラス。みず半減も噛み合う",
+ サザンドラ:"スカーフで上から制圧。ふゆうで地面を透かせる",
+ ブリジュラス:"弱点2に対して耐性10。特性2種が両方強く型が読まれない",
+ アシレーヌ:"みずフェアリーは耐性7。補完枠としてどんな構築にも入る",
+ メタグロス:"メガ最上位の高速物理。ストーンは購入可",
+ ギャラドス:"いかく＋りゅうのまい。ストーンは購入可",
+ リザードン:"技や努力値の完成度が高く、迷ったら取っていい枠",
+ バンギラス:"同上。即戦力として攻略サイトが名指しで推奨",
+ イダイトウ:"てきおうりょくのおはかまいりが重い",
+ ライチュウ:"メガX/Yで性能が全く違う。ストーンは配布分あり"};
 const OWNED_INIT=["ガブリアス","カイリュー","ゲンガー","ミミッキュ","アーマーガア","カバルドン","キラフロル"];
 
 /* ---- build sheet ---- */
@@ -595,20 +603,22 @@ let party=[];
 function holes(){
  const team=party.map(n=>M[n]).filter(Boolean);if(team.length<2)return[];
  return teamWeak(team).filter(r=>r.res===0&&(r.x4||r.x2>=2)).map(r=>r.atk)}
+function tierOf(n){const r=RANK[n];if(!r)return "C";return r<=10?"S":r<=25?"A":"B"}
+function usagePts(n){const r=RANK[n];if(!r)return 0;return r<=10?8:r<=25?6:4}
 function subEval(p){
  const H=holes();const fixed=H.filter(t=>eff(t,p.t,p.a)<1);
- let s=fixed.length*2;
- if(p.s>=110)s+=1.5;else if(p.s>=100)s+=1;
- if(WANT[p.n])s+=({S:6,A:4,B:2})[WANT[p.n][0]];
+ let s=usagePts(p.n)+fixed.length*2.5;
+ if(p.s>=115)s+=1.5;else if(p.s>=100)s+=0.8;
  const mine=new Set(party.flatMap(n=>M[n]?M[n].t:[]));
- const fresh=p.t.filter(t=>!mine.has(t)).length;s+=fresh*0.5;
- return{s,fixed}}
-function tierOf(n){return WANT[n]?WANT[n][0]:"C"}
-function whyOf(n){if(WANT[n])return WANT[n][1];
- const e=subEval(M[n]);
- if(e.fixed.length)return `${e.fixed.join("・")}を半減できる。チームの穴埋め候補`;
- if(M[n].s>=110)return `すばやさ${M[n].s}。今のパーティより速い枠`;
- return `${M[n].t.join("・")}／S${M[n].s}`}
+ s+=p.t.filter(t=>!mine.has(t)).length*0.5;
+ return{s,fixed,rank:RANK[p.n]||0}}
+function whyOf(n){const r=RANK[n],e=subEval(M[n]);const bits=[];
+ if(r)bits.push(`使用率${r}位`);
+ if(NOTE[n])bits.push(NOTE[n]);
+ else if(e.fixed.length)bits.push(`${e.fixed.join("・")}を半減できる`);
+ else if(!r)bits.push(`使用率圏外／${M[n].t.join("・")}・S${M[n].s}`);
+ else bits.push(`${M[n].t.join("・")}・S${M[n].s}`);
+ return bits.join(" ／ ")}
 
 function scVerdict(){
  const el=document.getElementById("scVerdict");
@@ -619,17 +629,19 @@ function scVerdict(){
  if(!cs.length){el.innerHTML=`<div class="vd skip"><div class="lab">VERDICT</div><div class="big">見送り</div>
   <div class="sub">全て所持済みです。VPを温存してください。</div><div class="act">2,500VPを使わない</div></div>`;return}
  const ranked=cs.map(p=>({p,...subEval(p)})).sort((a,b)=>b.s-a.s);
- const b=ranked[0],r=ranked[1],t=tierOf(b.p.n);
+ const b=ranked[0],r=ranked[1];
  let cls,head,act,sub;
- if(t==="S"||t==="A"){cls="take";head=b.p.n;act="レギュラースカウト（2,500VP）";sub=WANT[b.p.n][1]+"。"}
- else if(b.s>=3){cls="sub2";head=b.p.n;act="代替として取る価値あり";
-  sub=b.fixed.length?`ほしい枠は出ていませんが、<b>${b.fixed.join("・")}を半減できる</b>ので今のパーティの穴を埋められます。${b.p.t.join("・")}／S${b.p.s}。`
-   :`ほしい枠は出ていませんが、<b>すばやさ${b.p.s}</b>で今のパーティに足りない速度域を埋められます。`}
+ const fixTxt=b.fixed.length?`さらに<b>${b.fixed.join("・")}を半減</b>できるので、今のパーティの穴も埋まります。`:"";
+ if(b.rank&&b.rank<=25){cls="take";head=b.p.n;act="レギュラースカウト（2,500VP）";
+  sub=`<b>使用率${b.rank}位</b>の環境上位。${NOTE[b.p.n]||b.p.t.join("・")+"・S"+b.p.s}。${fixTxt}`}
+ else if(b.rank||b.fixed.length){cls="sub2";head=b.p.n;act="代替として取る価値あり";
+  sub=b.rank?`<b>使用率${b.rank}位</b>。トップ層ではありませんが十分戦えます。${fixTxt}`
+   :`使用率圏外ですが、<b>${b.fixed.join("・")}を半減</b>できるので今のパーティの穴を埋められます。`}
  else{cls="skip";head="見送り";act="2,500VPを使わない";
-  sub=`一番マシなのは${b.p.n}（${b.p.t.join("・")}／S${b.p.s}）ですが、<b>今のパーティの穴を埋められません</b>。VPを温存してください。`}
+  sub=`一番マシなのは${b.p.n}（${b.p.t.join("・")}・S${b.p.s}）ですが、<b>使用率圏外かつパーティの穴も埋めません</b>。VPを温存してください。`}
  el.innerHTML=`<div class="vd ${cls}"><div class="lab">VERDICT ／ 候補 ${scSel.size}体</div>
   <div class="big">${head}</div><div class="sub">${sub}</div><div class="act">${act}</div>
-  ${r?`<div class="next">次点：${r.p.n}（${r.p.t.join("・")}／S${r.p.s}）</div>`:""}</div>`}
+  ${r?`<div class="next">次点：${r.p.n}${r.rank?`（使用率${r.rank}位）`:"（圏外）"}</div>`:""}</div>`}
 
 function renderScout(){
  const term=document.getElementById("scQ").value.trim();
@@ -652,8 +664,13 @@ function renderScout(){
  document.getElementById("scList").innerHTML=h;scVerdict()}
 
 /* ---- select panel ---- */
-const PRE={now:["メガカイリュー","ガブリアス","キラフロル","アーマーガア","カバルドン","メガゲンガー"],
- goal:["メガカイリュー","メガハッサム","ガブリアス","マスカーニャ","キラフロル","ヒスイダイケンキ"]};
+const PRE={
+ now:["メガカイリュー","ガブリアス","キラフロル","アーマーガア","カバルドン","メガゲンガー"],
+ goal:["メガカイリュー","メガハッサム","ガブリアス","マスカーニャ","キラフロル","ヒスイダイケンキ"],
+ bal:["メガメタグロス","ガブリアス","アシレーヌ","ミミッキュ","アーマーガア","イダイトウ(オス)"],
+ ten:["カバルドン","メガルカリオ","ガブリアス","ウォッシュロトム","キラフロル","ミミッキュ"],
+ uke:["ドヒドイデ","アーマーガア","ブリジュラス","ガブリアス","メガギャラドス","ヒスイダイケンキ"]};
+const PRENAME={now:"現在の手持ち軸",goal:"最終7位 対面構築",bal:"バランス型",ten:"展開型",uke:"受け寄り"};
 let seMode="battle";const foe=new Set();
 const LEADABLE=["ガブリアス","カバルドン","アーマーガア","メガハッサム","ハッサム","キラフロル","ドリュウズ"];
 function renderSelect(){
@@ -661,8 +678,13 @@ function renderSelect(){
  document.getElementById("secBattle").classList.toggle("hide",seMode==="party");
  document.getElementById("slots").innerHTML=Array.from({length:6},(_,i)=>party[i]
   ?`<div class="sl on" data-rm="${party[i]}">${party[i]}<i>✕</i></div>`:`<div class="sl void">空き枠</div>`).join("");
- const miss=PRE.goal.filter(n=>!party.includes(n));
- document.getElementById("gapMsg").innerHTML=miss.length?`目標構築まであと <b>${miss.length}体</b>：${miss.join("・")}`:`<b>目標構築が完成しています。</b>`;
+ const base=n=>n.startsWith("メガ")?(NAMES.find(x=>!M[x].mega&&(n.slice(2).startsWith(x)||x.startsWith(n.slice(2))))||n):n;
+ const need=party.map(base).filter(n=>!owned.has(n));
+ const ranks=party.map(n=>RANK[base(n)]).filter(Boolean);
+ const avg=ranks.length?Math.round(ranks.reduce((a,b)=>a+b,0)/ranks.length):0;
+ document.getElementById("gapMsg").innerHTML=
+  (avg?`平均使用率順位 <b>${avg}位</b>（低いほど環境上位）　`:"")
+  +(need.length?`未所持 <b>${need.length}体</b>：${need.join("・")}`:`<b>全て所持済み。今すぐ組めます。</b>`);
  document.getElementById("myline").innerHTML=party.length===6?`自分：${party.join("・")}`
   :`<b>パーティが${party.length}体しか登録されていません。</b>「パーティ登録」から埋めてください。`;
  const opp=[...foe].map(n=>M[n]),res=document.getElementById("selRes");
