@@ -92,6 +92,38 @@ color:#0B1B2E;font-family:"Zen Kaku Gothic New",sans-serif;font-weight:900;font-
 .gotalt{margin-top:9px;border-top:1px dashed var(--line);padding-top:8px}
 .gotalt .lbl{font-size:10px;color:var(--dim);margin-bottom:5px}
 .gotalt .row2{display:flex;flex-wrap:wrap;gap:5px}
+.two{display:flex;gap:6px;margin-top:11px}
+.two button{flex:1;border:none;border-radius:9px;font-family:"Zen Kaku Gothic New",sans-serif;font-weight:900;
+font-size:13px;padding:12px 6px;cursor:pointer;line-height:1.3}
+.two .reg{background:var(--amber);color:#0B1B2E}
+.two .tri{background:var(--violet);color:#0B1B2E}
+.two small{display:block;font-family:"M PLUS 1 Code",monospace;font-weight:400;font-size:9px;opacity:.75}
+.cancel{width:100%;margin-top:7px;background:none;border:1px dashed var(--line);color:var(--dim);
+border-radius:8px;font-family:inherit;font-size:11px;padding:7px;cursor:pointer}
+.trow{display:flex;align-items:center;gap:9px;background:var(--surface);border:1px solid var(--violet);
+border-radius:10px;padding:9px 11px;margin-bottom:6px}
+.trow.dead{border-color:var(--rose)}
+.trow .tn{font-family:"Zen Kaku Gothic New",sans-serif;font-weight:900;font-size:14px;flex:1;min-width:0}
+.trow .tt{font-size:11px;color:var(--violet);font-variant-numeric:tabular-nums}
+.trow.dead .tt{color:var(--rose)}
+.trow button{background:var(--surface2);border:1px solid var(--line);color:var(--ink);font-family:inherit;
+font-size:10px;padding:5px 8px;border-radius:6px;cursor:pointer}
+.io{background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:12px;margin:16px 0}
+.io .t{color:var(--ink);font-weight:700;font-size:11.5px;margin-bottom:8px}
+.io textarea{width:100%;height:74px;background:var(--base);border:1px solid var(--line);border-radius:8px;
+color:var(--ink);font-family:"M PLUS 1 Code",monospace;font-size:11px;padding:9px;outline:none;resize:vertical}
+.io textarea:focus{border-color:var(--amber)}
+.iobtns{display:flex;gap:6px;margin-top:8px}
+.iobtns button{flex:1;border:none;border-radius:8px;font-family:"Zen Kaku Gothic New",sans-serif;font-weight:900;
+font-size:12px;padding:10px 6px;cursor:pointer}
+.iobtns .exp{background:var(--aqua);color:#0B1B2E}
+.iobtns .imp{background:var(--violet);color:#0B1B2E}
+.iomsg{font-size:11px;margin-top:8px;color:var(--dim)}
+.iomsg.ok{color:var(--green)}.iomsg.ng{color:var(--rose)}
+.durbox{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
+.durbox button{background:var(--surface);border:1px solid var(--line);color:var(--dim);font-family:inherit;
+font-size:11px;padding:6px 10px;border-radius:7px;cursor:pointer}
+.durbox button.on{border-color:var(--violet);color:var(--violet)}
 .gotalt button{background:var(--surface2);border:1px solid var(--line);color:var(--ink);font-family:inherit;
 font-size:11px;padding:5px 9px;border-radius:7px;cursor:pointer}
 .vd .next{font-size:11px;color:var(--dim);margin-top:8px;border-top:1px dashed var(--line);padding-top:7px}
@@ -160,7 +192,8 @@ footer{margin-top:22px;font-size:10px;color:var(--dim);line-height:1.7;border-to
    <div id="scList"></div>
    <div class="info"><div class="t">狙い撃ちはしない</div>
      M-Bのプールは235種、1回に見えるのは10体なので<b>特定の1体が出る確率は約4.3%</b>、期待23回。狙って待つより<b>出た中の最善を取る</b>方が速く強くなります。<br><br>
-     ほしい枠が出なかった場合は、<b>登録パーティの穴を埋められるか</b>で全235種を自動採点し、代替候補を提示します。</div>
+     採点は3軸です。<b>①使用率順位　②メガシンカ後のTier　③登録パーティの穴を埋めるか</b>。<br><br>
+     ②があるので、素体が地味でもメガで化けるポケモンを取り逃しません。ただし<b>ゲッコウガ・フラエッテ・マフォクシー・ブリガロンはストーンがZA連携限定</b>のため、メガ評価を0として扱っています。</div>
  </section>
 
  <section class="panel" id="p-select">
@@ -192,14 +225,31 @@ footer{margin-top:22px;font-size:10px;color:var(--dim);line-height:1.7;border-to
 
  <section class="panel" id="p-box">
    <div class="gap" id="boxCount"></div>
-   <h2>所持中（タップで外す）</h2>
+   <div id="trialWrap"></div>
+   <h2>正式に所持（タップで外す）</h2>
    <div id="boxOwned"></div>
    <h2>追加する（タップで所持にする）</h2>
    <div class="searchbox"><input id="boxQ" type="search" placeholder="頭文字だけでOK（かな／ローマ字）" autocomplete="off" enterkeyhint="search"><button data-clr="boxQ">✕</button></div>
    <div id="boxList"></div>
-   <div class="info"><div class="t">ここで登録すると</div>
-     スカウト判定で<b>所持済みは候補から自動的に除外</b>されます。同じポケモンに2,500VPを払う事故を防げます。<br><br>
-     内容は自動保存されます。Claudeアプリとホーム画面版では保存先が別なので、それぞれで登録が必要です。</div>
+   <div class="info"><div class="t">トライアルの扱い</div>
+     期限は<b>7日</b>で計算しています。<br><br>
+     <b>トライアル個体は能力ポイントを振れません。</b>ランクマの戦力にはならないので、ここでの管理は「戦力リスト」ではなく<b>「期限内にレギュラーするか決める宿題リスト」</b>です。<br><br>
+     期限が切れても<b>自動削除はしません。</b>その後レギュラーで取り直した可能性があるため、確認してから消す形にしています。<br><br>
+     内容は自動保存されます。Claudeアプリとホーム画面版では保存先が別です。</div>
+   <div class="durbox hide" id="durBox"></div>
+   <h2>データの引き継ぎ</h2>
+   <div class="io">
+     <div class="t">書き出し／読み込み</div>
+     <textarea id="ioBox" placeholder="「書き出す」を押すとここにデータが出ます。別の環境で開いたアプリにそれを貼り付けて「読み込む」を押してください。"></textarea>
+     <div class="iobtns">
+       <button class="exp" data-io="export">書き出す</button>
+       <button class="imp" data-io="import">読み込む</button>
+     </div>
+     <div class="iomsg" id="ioMsg">手持ち・試用中・登録パーティをまとめて移せます。</div>
+   </div>
+   <div class="info"><div class="t">いつ必要になるか</div>
+     <b>GitHub Pages版では、index.htmlを更新しても登録内容は消えません。</b>保存先はファイルではなくドメインに紐づくためです。<br><br>
+     必要になるのは、<b>Claudeアプリ版からGitHub Pages版へ移すとき</b>と、端末を変えるときだけです。</div>
  </section>
 
  <footer id="ft"></footer>
@@ -555,6 +605,25 @@ function score(me,op){
  if(op.a==="disguise")s-=0.3;if(op.a==="multiscale")s-=0.25;if(op.a==="tough")s-=0.2;
  return Math.max(-2,Math.min(2,Math.round(s*2)/2))}
 
+/* ---- mega tier (game8 M-B Tier表) : 素体名 -> Tier ---- */
+const MEGAT={メタグロス:"SS",クチート:"SS",ゲンガー:"SS",バシャーモ:"SS",
+ライチュウ:"S",フラエッテ:"S",ミミロップ:"S",スターミー:"S",マフォクシー:"S",リザードン:"S",
+カイリュー:"S",ギャラドス:"S",ラグラージ:"S",ムクホーク:"S",
+キラフロル:"A",ハッサム:"A",ルカリオ:"A",メガニウム:"A",フシギバナ:"A",カメックス:"A",ドラミドロ:"A",
+ピクシー:"B",エアームド:"B",ヘラクロス:"B",ゲッコウガ:"B",ユキメノコ:"B",ガルーラ:"B",
+ガメノデス:"B",ズルズキン:"B",カエンジシ:"B",
+ウツボット:"C",ドリュウズ:"C",ピジョット:"C",カイロス:"C",チリーン:"C",ヤミラミ:"C",ジュペッタ:"C",
+スコヴィラン:"C",フーディン:"C",チャーレム:"C",ヤドラン:"C",バンギラス:"C",オーダイル:"C",
+ブリガロン:"C",ユキノオー:"C",ガブリアス:"C",サーナイト:"C",シビルドン:"C",
+サメハダー:"D",ルチャブル:"D",シャンデラ:"D",ケケンカニ:"D",ジジーロン:"D",プテラ:"D",ゴルーグ:"D",
+"ニャオニクス(オス)":"D","ニャオニクス(メス)":"D",バクーダ:"D",オニゴーリ:"D",デンリュウ:"D",
+ハガネール:"D",ヘルガー:"D",チルタリス:"D",ボスゴドラ:"D",ライボルト:"D",アブソル:"D",タブンネ:"D",
+エルレイド:"D",スピアー:"D",エンブオー:"D",ジュカイン:"D",タイレーツ:"D",カラマネロ:"D",ペンドラー:"D"};
+const ZALOCK=new Set(["ゲッコウガ","フラエッテ","マフォクシー","ブリガロン"]);
+const MEGAPT={SS:7,S:5,A:3,B:1.5,C:0,D:0};
+function megaInfo(n){const t=MEGAT[n];if(!t)return null;
+ return{t,locked:ZALOCK.has(n),pt:ZALOCK.has(n)?0:MEGAPT[t]}}
+
 /* ---- usage-based tiers (M-4 single, 2026/8/20) ---- */
 const USAGE=`ガブリアス,アシレーヌ,マスカーニャ,ブリジュラス,ミミッキュ,カバルドン,ギャラドス,マフォクシー,カイリュー,メタグロス,リザードン,アーマーガア,ハッサム,イダイトウ(オス),サザンドラ,ライチュウ,キラフロル,ゲッコウガ,ゲンガー,サーフゴー,ウルガモス,ギルガルド,ヒスイダイケンキ,バシャーモ,ドドゲザン,ウォッシュロトム,ブラッキー,ルカリオ,ムクホーク,ニンフィア,ミミロップ,フシギバナ,キュウコン(アローラ),スターミー,ラウドボーン,ハラバリー,ドヒドイデ,ドラパルト,ラグラージ,フラエッテ,ピクシー,スコヴィラン,ドリュウズ,ソウブレイズ,バンギラス,オーロンゲ,クチート,メガニウム,ペリッパー,カメックス`.split(",");
 const RANK={};USAGE.forEach((n,i)=>{RANK[n]=i+1});
@@ -619,22 +688,34 @@ function renderBuild(){
 
 /* ---- scout panel ---- */
 const TO={S:0,A:1,B:2,C:3};
-const scSel=new Set(),owned=new Set(OWNED_INIT);let lastGot=null;
+function saveAll(){store.set("pc:owned",JSON.stringify([...owned]));
+ store.set("pc:trial",JSON.stringify(trial));store.set("pc:trialh",String(trialH))}
+function leftMs(t){return t.at+trialH*3600000-Date.now()}
+function fmtLeft(ms){if(ms<=0)return "期限切れ";
+ const h=Math.floor(ms/3600000),m=Math.floor(ms%3600000/60000);
+ return h>=24?`残り${Math.floor(h/24)}日${h%24}時間`:h>=1?`残り${h}時間${m}分`:`残り${m}分`}
+const scSel=new Set(),owned=new Set(OWNED_INIT);let lastGot=null,pending=null,trial=[],trialH=168;
 let party=[];
 function holes(){
  const team=party.map(n=>M[n]).filter(Boolean);if(team.length<2)return[];
  return teamWeak(team).filter(r=>r.res===0&&(r.x4||r.x2>=2)).map(r=>r.atk)}
-function tierOf(n){const r=RANK[n];if(!r)return "C";return r<=10?"S":r<=25?"A":"B"}
+function tierOf(n){const r=RANK[n],mg=megaInfo(n);
+ let t=!r?"C":r<=10?"S":r<=25?"A":"B";
+ if(mg&&!mg.locked){const mt=mg.t==="SS"?"S":mg.t==="S"?"S":mg.t==="A"?"A":"C";
+  const ord={S:0,A:1,B:2,C:3};if(ord[mt]<ord[t])t=mt}
+ return t}
 function usagePts(n){const r=RANK[n];if(!r)return 0;return r<=10?8:r<=25?6:4}
 function subEval(p){
  const H=holes();const fixed=H.filter(t=>eff(t,p.t,p.a)<1);
- let s=usagePts(p.n)+fixed.length*2.5;
+ const mg=megaInfo(p.n);
+ let s=usagePts(p.n)+fixed.length*2.5+(mg?mg.pt:0);
  if(p.s>=115)s+=1.5;else if(p.s>=100)s+=0.8;
  const mine=new Set(party.flatMap(n=>M[n]?M[n].t:[]));
  s+=p.t.filter(t=>!mine.has(t)).length*0.5;
- return{s,fixed,rank:RANK[p.n]||0}}
-function whyOf(n){const r=RANK[n],e=subEval(M[n]);const bits=[];
+ return{s,fixed,rank:RANK[p.n]||0,mg}}
+function whyOf(n){const r=RANK[n],e=subEval(M[n]),mg=megaInfo(n);const bits=[];
  if(r)bits.push(`使用率${r}位`);
+ if(mg)bits.push(mg.locked?`メガ${mg.t}帯だがストーンがZA限定`:`メガ${mg.t}帯`);
  if(NOTE[n])bits.push(NOTE[n]);
  else if(e.fixed.length)bits.push(`${e.fixed.join("・")}を半減できる`);
  else if(!r)bits.push(`使用率圏外／${M[n].t.join("・")}・S${M[n].s}`);
@@ -657,20 +738,32 @@ function scVerdict(){
  const b=ranked[0],r=ranked[1];
  let cls,head,act,sub;
  const fixTxt=b.fixed.length?`さらに<b>${b.fixed.join("・")}を半減</b>できるので、今のパーティの穴も埋まります。`:"";
- if(b.rank&&b.rank<=25){cls="take";head=b.p.n;act="レギュラースカウト（2,500VP）";
-  sub=`<b>使用率${b.rank}位</b>の環境上位。${NOTE[b.p.n]||b.p.t.join("・")+"・S"+b.p.s}。${fixTxt}`}
- else if(b.rank||b.fixed.length){cls="sub2";head=b.p.n;act="代替として取る価値あり";
-  sub=b.rank?`<b>使用率${b.rank}位</b>。トップ層ではありませんが十分戦えます。${fixTxt}`
-   :`使用率圏外ですが、<b>${b.fixed.join("・")}を半減</b>できるので今のパーティの穴を埋められます。`}
+ const megaTxt=b.mg?(b.mg.locked
+   ? `　※メガは${b.mg.t}帯ですが、ストーンがZA連携限定なので進化できません。`
+   : `　<b>メガシンカ${b.mg.t}帯</b>（ストーン2,000VPで購入可）。`):"";
+ if((b.rank&&b.rank<=25)||(b.mg&&!b.mg.locked&&(b.mg.t==="SS"||b.mg.t==="S"))){
+  cls="take";head=b.p.n;act="レギュラースカウト（2,500VP）";
+  sub=(b.rank?`<b>使用率${b.rank}位</b>の環境上位。`:"使用率は圏外ですが、")
+   +`${NOTE[b.p.n]||b.p.t.join("・")+"・S"+b.p.s}。${megaTxt}${fixTxt}`}
+ else if(b.rank||b.fixed.length||(b.mg&&!b.mg.locked&&b.mg.t==="A")){cls="sub2";head=b.p.n;act="代替として取る価値あり";
+  sub=(b.rank?`<b>使用率${b.rank}位</b>。トップ層ではありませんが十分戦えます。`
+   :b.fixed.length?`使用率圏外ですが、<b>${b.fixed.join("・")}を半減</b>できるので穴を埋められます。`
+   :`使用率は圏外ですが、`)+`${megaTxt}${b.rank?fixTxt:""}`}
  else{cls="skip";head="見送り";act="2,500VPを使わない";
-  sub=`一番マシなのは${b.p.n}（${b.p.t.join("・")}・S${b.p.s}）ですが、<b>使用率圏外かつパーティの穴も埋めません</b>。VPを温存してください。`}
+  sub=`一番マシなのは${b.p.n}（${b.p.t.join("・")}・S${b.p.s}）ですが、<b>使用率圏外・メガも下位かパーティの穴も埋めません</b>。VPを温存してください。`}
  const others=ranked.slice(1);
  el.innerHTML=`<div class="vd ${cls}"><div class="lab">VERDICT ／ 候補 ${scSel.size}体</div>
-  <div class="big">${head}</div><div class="sub">${sub}</div><div class="act">${act}</div>
+  <div class="big">${pending?pending:head}</div>
+  <div class="sub">${pending?"<b>どちらで確保しましたか？</b> トライアルは7日で消えるうえ能力ポイントを振れないので、ランクマの戦力にはなりません。":sub}</div>
+  ${pending?"":`<div class="act">${act}</div>`}
   ${r?`<div class="next">次点：${r.p.n}${r.rank?`（使用率${r.rank}位）`:"（圏外）"}</div>`:""}
-  <button class="gotbtn" data-got="${b.p.n}">${b.p.n} をスカウトした</button>
-  ${others.length?`<div class="gotalt"><div class="lbl">別のポケモンを取った場合はこちら</div>
-   <div class="row2">${others.map(o=>`<button data-got="${o.p.n}">${o.p.n}</button>`).join("")}</div></div>`:""}
+  ${pending?`<div class="two">
+     <button class="reg" data-reg="${pending}">レギュラー<small>2,500VP・無期限</small></button>
+     <button class="tri" data-tri="${pending}">トライアル<small>無料・7日で消滅</small></button>
+   </div><button class="cancel" data-cancelpick="1">やめる</button>`
+   :`<button class="gotbtn" data-got="${b.p.n}">${b.p.n} を取った</button>
+   ${others.length?`<div class="gotalt"><div class="lbl">別のポケモンを取った場合はこちら</div>
+    <div class="row2">${others.map(o=>`<button data-got="${o.p.n}">${o.p.n}</button>`).join("")}</div></div>`:""}`}
   </div>`}
 
 function renderScout(){
@@ -685,10 +778,10 @@ function renderScout(){
  if(!term)hits=hits.slice(0,60);
  let h="";
  if(term&&!hits.length)h=`<div class="info" style="border-color:var(--rose)"><div class="t" style="color:var(--rose)">該当なし</div>入力を短くしてみてください。</div>`;
- hits.forEach(n=>{const p=M[n],o=owned.has(n),t=tierOf(n);
+ hits.forEach(n=>{const p=M[n],o=owned.has(n),t=tierOf(n),tri=trial.some(x=>x.n===n);
   h+=`<div class="row${scSel.has(n)?" sel":""}${o?" owned":""}" data-sc="${n}">
    <div class="tier t-${t}">${t}</div>
-   <div class="rb"><div class="rn">${n}</div><div class="rw">${whyOf(n)}</div></div>
+   <div class="rb"><div class="rn">${n}${tri?' <span style="color:var(--violet);font-size:10px">試用中</span>':""}</div><div class="rw">${whyOf(n)}</div></div>
    <button class="ownb" data-own="${n}">${o?"所持":"未所持"}</button></div>`});
  if(!term)h+=`<div class="info">先頭60件のみ表示しています。名前を1〜2文字打つと全235種から絞り込めます。</div>`;
  document.getElementById("scList").innerHTML=h;scVerdict()}
@@ -745,10 +838,27 @@ function renderSelect(){
 
 /* ---- box panel ---- */
 function renderBox(){
+ const DUR=[[7,"7時間"],[24,"24時間"],[72,"3日"],[168,"1週間"]];
+ document.getElementById("durBox").innerHTML=DUR.map(([v,l])=>
+  `<button class="${trialH===v?"on":""}" data-dur="${v}">${l}</button>`).join("");
+ const tw=document.getElementById("trialWrap");
+ if(trial.length){
+  const rows=trial.slice().sort((a,b)=>leftMs(a)-leftMs(b));
+  const dead=rows.filter(t=>leftMs(t)<=0).length;
+  tw.innerHTML=`<h2>試用中（レギュラーにするか判断）</h2>`
+   +(dead?`<div class="warn"><b>${dead}体が期限切れです。</b>ゲーム内で残っているならレギュラーで確保、消えているなら削除してください。</div>`:"")
+   +rows.map(t=>{const ms=leftMs(t);
+    const soon=ms>0&&ms<3*86400000;
+    return `<div class="trow${ms<=0?" dead":""}" style="${soon?"border-color:var(--amber)":""}"><div class="tn">${t.n}</div>
+     <div class="tt" style="${soon?"color:var(--amber)":""}">${fmtLeft(ms)}</div>
+     <button data-trikeep="${t.n}">レギュラー済</button>
+     <button data-tridrop="${t.n}">削除</button></div>`}).join("");
+ }else tw.innerHTML="";
  const own=[...owned].filter(n=>M[n]).sort((a,b)=>(RANK[a]||999)-(RANK[b]||999));
  const ranked=own.filter(n=>RANK[n]).length;
  document.getElementById("boxCount").innerHTML=
-  `所持 <b>${own.length}体</b>　うち使用率トップ50が <b>${ranked}体</b>`;
+  `正式所持 <b>${own.length}体</b>　うち使用率トップ50が <b>${ranked}体</b>`
+  +(trial.length?`　／ 試用中 <b>${trial.length}体</b>`:"");
  document.getElementById("boxOwned").innerHTML=own.length
   ? `<div class="grid">`+own.map(n=>`<div class="op on" data-box="${n}">${n}<small>${RANK[n]?"使用率"+RANK[n]+"位":"圏外"}／S${M[n].s}</small></div>`).join("")+`</div>`
   : `<div class="empty"><div class="big">まだ登録がありません</div><div class="sub">下の検索から追加してください。</div></div>`;
@@ -784,10 +894,46 @@ document.addEventListener("click",e=>{
  if(c){const i=document.getElementById(c.dataset.clr);i.value="";i.focus();c.dataset.clr==="scQ"?renderScout():renderSelect();return}
  if(e.target.dataset.act==="scReset"){scSel.clear();renderScout();return}
  const gt=e.target.closest("[data-got]");
- if(gt){const n=gt.dataset.got;owned.add(n);scSel.clear();lastGot=n;
-  store.set("pc:owned",JSON.stringify([...owned]));
+ if(gt){pending=gt.dataset.got;scVerdict();scrollTo({top:0,behavior:"smooth"});return}
+ if(e.target.closest("[data-cancelpick]")){pending=null;scVerdict();return}
+ const rg=e.target.closest("[data-reg]");
+ if(rg){const n=rg.dataset.reg;owned.add(n);trial=trial.filter(t=>t.n!==n);
+  scSel.clear();pending=null;lastGot=n+"（レギュラー）";saveAll();
   document.getElementById("scQ").value="";
   renderBox();renderScout();renderSelect();scrollTo({top:0,behavior:"smooth"});return}
+ const tr=e.target.closest("[data-tri]");
+ if(tr){const n=tr.dataset.tri;if(!trial.some(t=>t.n===n))trial.push({n,at:Date.now()});
+  scSel.clear();pending=null;lastGot=n+"（トライアル）";saveAll();
+  document.getElementById("scQ").value="";
+  renderBox();renderScout();renderSelect();scrollTo({top:0,behavior:"smooth"});return}
+ const tk=e.target.closest("[data-trikeep]");
+ if(tk){const n=tk.dataset.trikeep;owned.add(n);trial=trial.filter(t=>t.n!==n);saveAll();
+  renderBox();renderScout();renderSelect();return}
+ const td=e.target.closest("[data-tridrop]");
+ if(td){trial=trial.filter(t=>t.n!==td.dataset.tridrop);saveAll();renderBox();renderScout();return}
+ const io=e.target.closest("[data-io]");
+ if(io){const ta=document.getElementById("ioBox"),msg=document.getElementById("ioMsg");
+  if(io.dataset.io==="export"){
+   ta.value=JSON.stringify({v:1,owned:[...owned],trial,party});
+   ta.select();
+   try{navigator.clipboard.writeText(ta.value);msg.textContent="書き出してコピーしました。移行先で貼り付けてください。";}
+   catch(err){msg.textContent="書き出しました。長押しで全選択してコピーしてください。";}
+   msg.className="iomsg ok";
+  }else{
+   try{const d=JSON.parse(ta.value.trim());
+    if(!d||!Array.isArray(d.owned))throw 0;
+    owned.clear();d.owned.filter(n=>M[n]).forEach(n=>owned.add(n));
+    trial=Array.isArray(d.trial)?d.trial.filter(t=>t&&M[t.n]):[];
+    if(Array.isArray(d.party))party=d.party.filter(n=>M[n]);
+    saveAll();store.set("pc:party",JSON.stringify(party));
+    msg.textContent=`読み込みました。手持ち${owned.size}体・試用中${trial.length}体・パーティ${party.length}体。`;
+    msg.className="iomsg ok";ta.value="";
+    renderBox();renderScout();renderSelect();
+   }catch(err){msg.textContent="読み込めませんでした。書き出したデータを丸ごと貼り付けてください。";msg.className="iomsg ng"}
+  }
+  return}
+ const dh=e.target.closest("[data-dur]");
+ if(dh){trialH=+dh.dataset.dur;saveAll();renderBox();return}
  const bx=e.target.closest("[data-box]");
  if(bx){const n=bx.dataset.box;owned.has(n)?owned.delete(n):owned.add(n);
   store.set("pc:owned",JSON.stringify([...owned]));document.getElementById("boxQ").value="";
@@ -818,6 +964,10 @@ document.getElementById("seQ").addEventListener("input",renderSelect);
  if(p){try{const a=JSON.parse(p);if(Array.isArray(a)&&a.length)party=a.filter(n=>M[n])}catch(e){}}
  const o=await store.get("pc:owned");
  if(o){try{const a=JSON.parse(o);if(Array.isArray(a)){owned.clear();a.forEach(n=>owned.add(n))}}catch(e){}}
+ const tj=await store.get("pc:trial");
+ if(tj){try{const a=JSON.parse(tj);if(Array.isArray(a))trial=a.filter(t=>t&&M[t.n])}catch(e){}}
+ const th=await store.get("pc:trialh");if(th&&+th)trialH=+th;
+ setInterval(()=>{if(document.getElementById("p-box").classList.contains("on"))renderBox()},60000);
  renderBuild();renderScout();renderSelect();renderBox();show("build")})();
 </script>
 </body>
