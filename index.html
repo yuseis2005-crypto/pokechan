@@ -287,6 +287,8 @@ font-family:"Zen Kaku Gothic New",sans-serif;font-weight:700;font-size:11.5px;pa
 <body>
 <div class="wrap">
  <div class="top"><div class="eyebrow" id="eb">POKÉMON CHAMPIONS ／ M-C SINGLE</div><h1 id="ttl">構築シート</h1></div>
+ <div class="info" id="saveStatus" role="status" aria-live="polite">保存データを読み込み中…</div>
+ <div class="info hide" id="originNotice">ここはプレビュー版です。普段は<a href="https://yuseis2005-crypto.github.io/pokechan/">GitHub公開版</a>を同じブラウザで開いてください。手持ちは自動共有されません。「手持ち管理」でバックアップを書き出して移せます。</div>
 
  <section class="panel on" id="p-build">
    <div class="btabs" id="btabs"></div>
@@ -297,7 +299,7 @@ font-family:"Zen Kaku Gothic New",sans-serif;font-weight:700;font-size:11.5px;pa
    <div class="card"><table class="wk" id="wkTable"></table></div>
   <div class="warn tip"><b>M-C（Ver.1.2.0）対応</b>　追加29種＋新メガ6種を収録。スカウト順位は9/10時点のシーズンM-6使用率へ更新済みです。相手の細かな型は統計蓄積中のため、M-C追加組のみタイプ一致技を仮定します。</div>
    <div class="info"><div class="t">配分の出どころ</div>
-     順位付きの構築は<b>出典</b>リンク先の構築記事、それ以外はgame8掲載の上位構築の数値を<b>そのまま転記</b>しています。「自作」だけ私案。<br><br>
+     順位付きの構築は<b>出典</b>リンク先の記事、game8表記の構築は掲載データを参照しています。「独自設計」「自作」は役割の補完から組んだ提案です。仕様リンクは技・特性の確認用で、構築の戦績を示すものではありません。<br><br>
      未所持はMY BOXの所持と連動。費用の目安は<b>レギュラースカウト 2,500VP（またはチケット1枚）／メガストーン 2,000VP／能力ポイント 1体66pt＝330VP</b>で計算しています。技変更の費用は含みません。</div>
  </section>
 
@@ -354,6 +356,7 @@ font-family:"Zen Kaku Gothic New",sans-serif;font-weight:700;font-size:11.5px;pa
 
  <section class="panel" id="p-box">
    <div class="gap" id="boxCount"></div>
+   <div id="ownedPlan"></div>
    <h2>所持している（タップで外す）</h2>
    <div id="boxOwned"></div>
    <h2>追加する（タップで所持にする）</h2>
@@ -363,7 +366,7 @@ font-family:"Zen Kaku Gothic New",sans-serif;font-weight:700;font-size:11.5px;pa
      トライアルで取った個体も期限が切れて消えるわけではないので、<b>レギュラー／トライアルは区別せず「持っているか」だけ</b>を管理します。<br><br>
      レギュラー化にかかるのは<b>2,500VP または レギュラーチケット1枚</b>。セレクトの紹介は<b>22時間に1回</b>無料で受けられます。<br><br>
      所持タイルをタップすると確認シートが開き、<b>「リストから外す」</b>を押したときだけ外れます。外した直後は数秒間<b>「元に戻す」</b>で戻せます。<br><br>
-     内容は自動保存されます。Claudeアプリとホーム画面版では保存先が別です。</div>
+     内容はこのブラウザへ保存されます。更新しても同じ保存キーを使います。保存に失敗した場合はページ上部に表示します。</div>
    <h2>データの引き継ぎ</h2>
    <div class="io">
      <div class="t">書き出し／読み込み</div>
@@ -372,11 +375,17 @@ font-family:"Zen Kaku Gothic New",sans-serif;font-weight:700;font-size:11.5px;pa
        <button class="exp" data-io="export">書き出す</button>
        <button class="imp" data-io="import">読み込む</button>
      </div>
+     <div class="iobtns" style="flex-wrap:wrap;margin-top:8px">
+       <button class="exp" data-io="download">ファイル保存</button>
+       <button class="imp" data-io="file">ファイルを開く</button>
+       <button class="imp" data-io="restore">直前の手持ちを復元</button>
+     </div>
+     <input id="ioFile" type="file" accept=".json,application/json" hidden>
      <div class="iomsg" id="ioMsg">手持ち・登録パーティをまとめて移せます。</div>
    </div>
    <div class="info"><div class="t">いつ必要になるか</div>
-     <b>GitHub Pages版では、index.htmlを更新しても登録内容は消えません。</b>保存先はファイルではなくドメインに紐づくためです。<br><br>
-     必要になるのは、<b>Claudeアプリ版からGitHub Pages版へ移すとき</b>と、端末を変えるときだけです。</div>
+     <b>同じURL・同じブラウザで使えば、サイト更新後も手持ちを引き継ぎます。</b>変更前の手持ちも自動で1世代保管します。<br><br>
+     ローカル版／GitHub版、別ブラウザ、別端末は保存先が別です。端末を移すときやブラウザのデータを消す前は「ファイル保存」でバックアップしてください。サイト更新だけで端末をまたぐ同期はできません。初期の7体を自動登録する処理は廃止しました。</div>
  </section>
 
  <footer id="ft"></footer>
@@ -392,12 +401,19 @@ font-family:"Zen Kaku Gothic New",sans-serif;font-weight:700;font-size:11.5px;pa
 <div class="sheetbg" id="sheetBg"></div>
 <div class="sheet" id="sheet" role="dialog" aria-modal="true"></div>
 <div class="snack" id="snack"><div class="stx" id="snackTx"></div><button id="snackUndo">元に戻す</button></div>
+<script src="persistence.js"></script>
 <script>
-const store={
- async get(k){try{const r=await window.storage.get(k);if(r&&r.value)return r.value}catch(e){}
-  try{return localStorage.getItem(k)}catch(e){return null}},
- async set(k,v){try{await window.storage.set(k,v);return}catch(e){}
-  try{localStorage.setItem(k,v)}catch(e){}}};
+let storageReady=false;
+function renderSaveStatus(){
+ const el=document.getElementById("saveStatus");
+ const issues=store.issues();
+ el.textContent=!storageReady?"保存データを読み込み中…":issues.length?[...new Set(issues)].join(" "):owned.size?`このブラウザに手持ち${owned.size}種を保存。変更前の手持ちも自動バックアップします。`:"このブラウザには手持ちが未登録です。以前のバックアップを読み込むか、手持ちを追加してください。";
+ el.className=issues.length?"warn":"info";
+}
+const store=createPokeStore({storage:()=>window.localStorage,legacy:()=>window.storage,onStatus:()=>{if(storageReady)renderSaveStatus();}});
+document.querySelector(".wrap").inert=true;
+document.querySelector("nav").inert=true;
+if(location.origin!=="https://yuseis2005-crypto.github.io")document.getElementById("originNotice").classList.remove("hide");
 
 const T={
 ノーマル:{いわ:.5,ゴースト:0,はがね:.5},
@@ -882,11 +898,21 @@ const NOTE={
  バンギラス:"同上。即戦力として攻略サイトが名指しで推奨",
  イダイトウ:"てきおうりょくのおはかまいりが重い",
  ライチュウ:"メガX/Yで性能が全く違う。ストーンは配布分あり"};
-const OWNED_INIT=["ガブリアス","カイリュー","ゲンガー","ミミッキュ","アーマーガア","カバルドン","キラフロル"];
 
 /* ---- build sheet ---- */
 const S6=[["H","--sH"],["A","--sA"],["B","--sB"],["C","--sC"],["D","--sD"],["S","--sS"]];
 const BUILDS=[
+{id:"mc-owned-goli",name:"手持ち48種・グソクサイクル",tag:"独自設計 ／ M-C・2026-09-11",src:"https://gamewith.jp/pokemon-champions/575652",srcLabel:"グソクムシャの仕様",
+ concept:"確認済みの手持ちから組む、メガグソクムシャ＋アシレーヌ＋サザンドラの交代技サイクル。であいがしらの再使用を勝ち筋に、アシレーヌで炎・ドラゴンを受け、サザンドラで地面・ゴーストを受けながら高速特殊打点を補う。相手のメガグソクムシャにはウルガモス、接触罰にはガブリアス、設置物にはキラフロルを選ぶ。実戦勝率を検証済みという意味ではなく、役割の補完から設計した現時点の本命。メガストーン・持ち物・特性変更の用意は必要。",
+ basic:["メガグソクムシャ","アシレーヌ","サザンドラ"],
+ pat:"基本はグソクムシャ＋アシレーヌ＋サザンドラ。炎へはアシレーヌ、地面・ゴーストへはサザンドラ、フェアリーへはグソクムシャ。再登場の初ターンにであいがしらを狙うが、炎対面はとんぼがえりを待たず即交代する。相手のグソクムシャが重ければウルガモスを採用。ステロ要員もいる相手へウルガモスを出すならキラフロルを組ませ、除去できない鋼対面では無理にキラースピンを押さない。物理偏重へはガブリアス＋グソクムシャ＋アシレーヌ。サザンドラは相手のであいがしらに2倍弱点なので対面させない。",
+ mons:[
+ {n:"メガグソクムシャ",role:"主軸 ／ 先制・後攻とんぼ",nat:"ゆうかん",it:"グソクムシャナイト",ab:"かたいツメ",ev:[31,32,0,0,3,0],mv:["であいがしら","とんぼがえり","アイアンヘッド","ふいうち"],note:"A特化・S下降で、先制火力と後攻とんぼを両立。であいがしらは登場初ターン限定。とんぼを使う前に炎技で倒される対面は即交代し、ゴツメ・さめはだへの接触回数も抑える。"},
+ {n:"アシレーヌ",role:"炎・ドラゴン受け ／ 再着地",nat:"のんき",it:"たべのこし",ab:"げきりゅう",ev:[32,0,32,0,2,0],mv:["ムーンフォース","うたかたのアリア","クイックターン","アンコール"],note:"HBに寄せてガブリアス・セグレイブへの対面性能を確保。後攻クイックターンで主軸を出し直す。積みや回復はアンコールで制限するが、積み切ったエースを必ず受け切れるわけではない。"},
+ {n:"サザンドラ",role:"高速特殊 ／ 地面・ゴースト補完",nat:"おくびょう",it:"こだわりスカーフ",ab:"ふゆう",ev:[2,0,0,32,0,32],mv:["りゅうせいぐん","あくのはどう","かえんほうしゃ","とんぼがえり"],note:"速さを確保して特殊方面から削る。ゴースト半減・地面無効、呼ぶフェアリーにとんぼ→グソクムシャ。相手のであいがしらは優先度+2なのでスカーフとんぼでも先手を取れない。その対面では通常の交代を使う。"},
+ {n:"ウルガモス",role:"対グソクムシャ ／ 接触牽制",nat:"ずぶとい",it:"オボンのみ",ab:"ほのおのからだ",ev:[32,0,32,0,0,2],mv:["ほのおのまい","おにび","ちょうのまい","あさのひざし"],note:"虫を1/4・鋼を1/2で受け、かたいツメ接触技にはほのおのからだの圧力。変化技でふいうちを透かし、回復と蝶舞で詰める。岩4倍・ステロでHP半減なので選出段階からキラフロルとセットで検討。セグレイブはやけど無効なのでおにびを押さない。"},
+ {n:"ガブリアス",role:"接触罰 ／ ステロ・流し",nat:"わんぱく",it:"ゴツゴツメット",ab:"さめはだ",ev:[32,0,32,0,2,0],mv:["じしん","ステルスロック","ドラゴンテール","ほのおのキバ"],note:"相手のとんぼがえり・接触先制技をさめはだ＋ゴツメで削る。ステロで再登場を罰し、ドラゴンテールで積みを流す。氷技があるセグレイブ・ボーマンダへの安易な後投げはしない。"},
+ {n:"キラフロル",role:"設置物除去 ／ 襷・特殊圧力",nat:"おくびょう",it:"きあいのタスキ",ab:"どくげしょう",ev:[2,0,0,32,0,32],mv:["パワージェム","だいちのちから","キラースピン","ステルスロック"],note:"ウルガモスの致命傷になるステロをキラースピンで除去。鋼には無効で除去も失敗するため、だいちのちからで圧力を掛ける。相手の設置より先に出して襷を守る。ガブリアスとは設置役の選択枠。"}]},
 {id:"mc-firstturn",name:"であいがしら再装填",tag:"独自設計 ／ 先制＋対面操作 ／ 2026-09-11",src:"https://gamewith.jp/pokemon-champions/575652",srcLabel:"技・特性の仕様",
  concept:"メガグソクムシャを居座る積みエースではなく、優先度+2のであいがしらを交代のたびに再装填する主砲として運用する独自設計。A150・タイプ一致・かたいツメが重なる威力195相当の一撃で相手を縛り、受けに来る相手には最遅圏のとんぼがえりで有利対面を作り直す。ステルスロック・あくび・ねがいごとを組み合わせ、相手の交代だけを削り、自分の交代は回復へ変換する。",
  basic:["メガグソクムシャ","ウォッシュロトム","エースバーン"],alt:["ガブリアス","ニンフィア","サーフゴー"],
@@ -1130,7 +1156,7 @@ const BUILDS=[
 {n:"メガゲンガー",role:"MEGA 2 ／ 対受けルート",nat:"おくびょう",it:"ゲンガナイト",ab:"かげふみ",ev:[2,0,0,32,0,32],
  mv:["シャドーボール","ヘドロばくだん","10まんボルト","みちづれ"],
  note:"<b>この枠だけ参照できる上位構築がありません。</b>実績のない私案です。合わなければミミッキュに差し替えを。"}]}];
-let buildId="mc-firstturn";
+let buildId="mc-owned-goli";
 const curBuild=()=>BUILDS.find(b=>b.id===buildId)||BUILDS[0];
 const buildById=id=>BUILDS.find(b=>b.id===id);
 function baseOf(n){return M[n]&&M[n].mega?(NAMES.find(x=>!M[x].mega&&(n.slice(2).startsWith(x)||x.startsWith(n.slice(2))))||n):n}
@@ -1179,9 +1205,9 @@ function renderBuild(){
 
 /* ---- scout panel ---- */
 const TO={S:0,A:1,B:2,C:3};
-function saveAll(){store.set("pc:owned",JSON.stringify([...owned]))}
+function saveAll(){const ok=store.set("pc:owned",JSON.stringify([...owned]));renderSaveStatus();return ok;}
 function rerender(){renderBox();renderScout();renderSelect();renderBuild()}
-const scSel=new Set(),owned=new Set(OWNED_INIT);let lastGot=null;
+const scSel=new Set(),owned=new Set();let lastGot=null;
 let party=[];
 
 /* ---- undo / snackbar ---- */
@@ -1197,11 +1223,35 @@ function hideSnack(){clearTimeout(snackT);document.getElementById("snack").class
 
 /* ---- owned state ---- */
 function setOwned(n,on){
+ syncOwned();
  if(owned.has(n)===on)return;
  const snap=snapshot();
  on?owned.add(n):owned.delete(n);
  saveAll();rerender();
  snack(on?`<b>${n}</b> を所持に追加`:`<b>${n}</b> をリストから外しました`,snap)}
+
+function syncOwned(){
+ if(store.issues().length)return; // Keep unsaved edits available for export on storage failure.
+ const raw=store.current("pc:owned");
+ if(raw!==null){owned.clear();JSON.parse(raw).forEach(n=>owned.add(n));}
+}
+function exportData(){return{v:2,exportedAt:new Date().toISOString(),owned:[...owned],party:[...party],build:buildId,foes:foeHist};}
+function importData(raw){
+ const d=JSON.parse(raw);
+ if(!d||!Array.isArray(d.owned)||d.owned.some(n=>typeof n!=="string"||!M[n]))throw Error("手持ちの名前を確認してください。未対応の名前があるため上書きしていません。");
+ if(d.party!==undefined&&(!Array.isArray(d.party)||d.party.length>6||d.party.some(n=>typeof n!=="string"||!M[n])||new Set(d.party).size!==d.party.length))throw Error("パーティは登録済みの名前で6体以内にしてください。");
+ if(d.trial!==undefined&&(!Array.isArray(d.trial)||d.trial.some(t=>!t||typeof t.n!=="string"||!M[t.n])))throw Error("トライアルのデータが不正です。");
+ const snap=snapshot();
+ owned.clear();d.owned.forEach(n=>owned.add(n));
+ (d.trial||[]).forEach(t=>owned.add(t.n));
+ if(d.party!==undefined)party=d.party.slice();
+ if(typeof d.build==="string"&&buildById(d.build)){buildId=d.build;store.set("pc:build",buildId);}
+ if(Array.isArray(d.foes)&&d.foes.every(f=>Array.isArray(f)&&f.every(n=>typeof n==="string"&&M[n]))){foeHist=d.foes;store.set("pc:foes",JSON.stringify(foeHist));}
+ const ownOK=saveAll(),partyOK=store.set("pc:party",JSON.stringify(party));
+ clearDuelCache();my3=null;myMegaPick=null;rerender();
+ snack("バックアップを読み込みました",snap);
+ return ownOK&&partyOK;
+}
 
 /* ---- confirm sheet ---- */
 let sheetN=null;
@@ -1683,6 +1733,16 @@ function renderBox(){
  const ranked=own.filter(n=>RANK[n]).length;
  document.getElementById("boxCount").innerHTML=
   `所持 <b>${own.length}体</b>　うち使用率トップ50が <b>${ranked}体</b>`;
+ const suggested=buildById("mc-owned-goli");
+ const available=suggested.mons.every(m=>owned.has(baseOf(m.n)));
+ const release=[
+  ["スコヴィラン","この構築の炎枠はウルガモス。メガ枠を使う専用の耐久構築を組まないなら整理優先。"],
+  ["メガニウム","メガ枠がグソクムシャと競合し、草枠はゴリランダー・マスカーニャで補える。"],
+  ["ドラミドロ","低速特殊の役割がアシレーヌと重なり、今回はトリックルームを採用しない。"],
+  ["カメックス","水枠にアシレーヌ・ゲッコウガ・イダイトウがあり、からをやぶる専用構築を使わないなら優先度は低め。"]
+ ].filter(([n])=>owned.has(n));
+ document.getElementById("ownedPlan").innerHTML=(available?`<div class="info"><div class="t">この手持ちで組める本命</div>グソクムシャ・アシレーヌ・サザンドラ・ウルガモス・ガブリアス・キラフロル。<br><button class="fback" data-owned-plan="1">技・配分・選出を開く</button></div>`:"")
+  +(release.length?`<div class="info"><div class="t">今期シングル向けの整理候補（提案のみ）</div>${release.map(([n,why])=>`<p><b>${n}</b>：${why}</p>`).join("")}専用構築で使う予定や個体を残す理由がある場合は保留。所持一覧から自動では外しません。</div>`:"");
  document.getElementById("boxOwned").innerHTML=own.length
   ? `<div class="grid">`+own.map(n=>`<div class="op on" data-sheet="${n}">${ico(n)}<div>${n}<small>${RANK[n]?"使用率"+RANK[n]+"位":"圏外"}／S${M[n].s}</small></div></div>`).join("")+`</div>`
   : `<div class="empty"><div class="big">まだ登録がありません</div><div class="sub">下の検索から追加してください。</div></div>`;
@@ -1714,6 +1774,7 @@ document.querySelectorAll(".mode").forEach(b=>b.addEventListener("click",()=>{
 document.getElementById("snackUndo").addEventListener("click",()=>{
  if(undoSnap){const s=undoSnap;hideSnack();restoreSnap(s)}});
 document.addEventListener("click",e=>{
+ if(e.target.closest("[data-owned-plan]")){buildId="mc-owned-goli";store.set("pc:build",buildId);renderBuild();show("build");return;}
  const bt=e.target.closest("[data-build]");
  if(bt){buildId=bt.dataset.build;store.set("pc:build",buildId);renderBuild();scrollTo({top:0,behavior:"smooth"});return}
  const pr=e.target.closest(".pre");
@@ -1754,33 +1815,38 @@ document.addEventListener("click",e=>{
  if(c){const i=document.getElementById(c.dataset.clr);i.value="";i.focus();c.dataset.clr==="scQ"?renderScout():renderSelect();return}
  if(e.target.dataset.act==="scReset"){scSel.clear();renderScout();return}
  const gt=e.target.closest("[data-got]");
- if(gt){const n=gt.dataset.got,snap=snapshot();owned.add(n);
+ if(gt){syncOwned();const n=gt.dataset.got,snap=snapshot();owned.add(n);
   scSel.clear();lastGot=n;saveAll();
   document.getElementById("scQ").value="";
   rerender();scrollTo({top:0,behavior:"smooth"});
   snack(`<b>${n}</b> を所持に追加`,snap);return}
  const io=e.target.closest("[data-io]");
  if(io){const ta=document.getElementById("ioBox"),msg=document.getElementById("ioMsg");
+  if(io.dataset.io==="file"){document.getElementById("ioFile").click();return;}
+  if(io.dataset.io==="restore"){
+   const raw=store.previous("pc:owned");
+   if(raw===null){msg.textContent="このブラウザには直前のバックアップがありません。保存したファイルを読み込んでください。";msg.className="iomsg ng";return;}
+   const snap=snapshot();owned.clear();JSON.parse(raw).forEach(n=>owned.add(n));
+   const ok=saveAll();rerender();snack("直前の手持ちを復元しました",snap);
+   msg.textContent=ok?`手持ち${owned.size}種を復元して保存しました。`:"復元しましたが端末への保存に失敗しました。ファイル保存してください。";msg.className=ok?"iomsg ok":"iomsg ng";return;
+  }
+  if(io.dataset.io==="download"){
+   const blob=new Blob([JSON.stringify(exportData(),null,2)],{type:"application/json"});
+   const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=`pokechan-backup-${new Date().toISOString().slice(0,10)}.json`;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);
+   msg.textContent="バックアップファイルの保存を開始しました。端末のダウンロード先を確認してください。";msg.className="iomsg ok";return;
+  }
   if(io.dataset.io==="export"){
-   ta.value=JSON.stringify({v:1,owned:[...owned],party});
+   ta.value=JSON.stringify(exportData());
    ta.select();
    msg.className="iomsg ok";
    const manual=()=>{msg.textContent="書き出しました。長押しで全選択してコピーしてください。"};
    try{navigator.clipboard.writeText(ta.value).then(()=>{msg.textContent="書き出してコピーしました。移行先で貼り付けてください。"},manual)}
    catch(err){manual()}
   }else{
-   try{const d=JSON.parse(ta.value.trim());
-    if(!d||!Array.isArray(d.owned))throw 0;
-    const snap=snapshot();
-    owned.clear();d.owned.filter(n=>M[n]).forEach(n=>owned.add(n));
-    if(Array.isArray(d.trial))d.trial.filter(t=>t&&M[t.n]).forEach(t=>owned.add(t.n));
-    if(Array.isArray(d.party))party=d.party.filter(n=>M[n]);
-    saveAll();store.set("pc:party",JSON.stringify(party));
-    msg.textContent=`読み込みました。手持ち${owned.size}体・パーティ${party.length}体。`;
-    msg.className="iomsg ok";ta.value="";
-    rerender();
-    snack("読み込みで手持ちを上書きしました",snap);
-   }catch(err){msg.textContent="読み込めませんでした。書き出したデータを丸ごと貼り付けてください。";msg.className="iomsg ng"}
+   try{const ok=importData(ta.value.trim());
+    msg.textContent=ok?`保存しました。手持ち${owned.size}種・パーティ${party.length}体。`:"読み込みましたが端末に保存できません。ファイル保存してください。";
+    msg.className=ok?"iomsg ok":"iomsg ng";if(ok)ta.value="";
+   }catch(err){msg.textContent=err instanceof SyntaxError?"JSONを読み込めませんでした。書き出したデータを丸ごと貼り付けてください。":err.message;msg.className="iomsg ng"}
   }
   return}
  const bx=e.target.closest("[data-box]");
@@ -1806,11 +1872,27 @@ document.addEventListener("click",e=>{
 document.getElementById("boxQ").addEventListener("input",renderBox);
 document.getElementById("scQ").addEventListener("input",renderScout);
 document.getElementById("seQ").addEventListener("input",renderSelect);
+document.getElementById("ioFile").addEventListener("change",async e=>{
+ const file=e.target.files[0];if(!file)return;
+ const msg=document.getElementById("ioMsg");
+ try{if(file.size>1024*1024)throw Error("ファイルが大きすぎます。pokechanのバックアップJSONを選んでください。");
+  const ok=importData(await file.text());msg.className=ok?"iomsg ok":"iomsg ng";
+  msg.textContent=ok?`保存しました。手持ち${owned.size}種・パーティ${party.length}体。`:"読み込みましたが端末に保存できません。ファイル保存してください。";
+ }catch(err){msg.className="iomsg ng";msg.textContent=err instanceof SyntaxError?"JSON形式のバックアップファイルを選んでください。":err.message;}
+ e.target.value="";
+});
+window.addEventListener("storage",e=>{
+ if(!storageReady||!e.key||!e.key.startsWith("pc:")||!store.valid(e.key,e.newValue))return;
+ if(e.key==="pc:owned"){owned.clear();JSON.parse(e.newValue).forEach(n=>owned.add(n));}
+ else if(e.key==="pc:party"){party=JSON.parse(e.newValue).filter(n=>M[n]);my3=null;myMegaPick=null;clearDuelCache();}
+ else if(e.key==="pc:build"&&buildById(e.newValue))buildId=e.newValue;
+ else return;
+ rerender();renderSaveStatus();
+});
 
 (async()=>{
  const p=await store.get("pc:party");
- party=buildById("mine").mons.map(m=>m.n);
- if(p){try{const a=JSON.parse(p);if(Array.isArray(a)&&a.length)party=a.filter(n=>M[n])}catch(e){}}
+ if(p!==null)party=JSON.parse(p).filter(n=>M[n]);
  const bid=await store.get("pc:build");if(bid&&buildById(bid))buildId=bid;
  const fj=await store.get("pc:foes");
  if(fj){try{const a=JSON.parse(fj);if(Array.isArray(a))foeHist=a.filter(f=>Array.isArray(f)).map(f=>f.filter(n=>M[n])).filter(f=>f.length)}catch(e){}}
@@ -1820,7 +1902,10 @@ document.getElementById("seQ").addEventListener("input",renderSelect);
  if(tj){try{const a=JSON.parse(tj);if(Array.isArray(a)){let mig=false;
   a.filter(t=>t&&M[t.n]&&!owned.has(t.n)).forEach(t=>{owned.add(t.n);mig=true});
   if(mig)saveAll();store.set("pc:trial","[]")}}catch(e){}}
- renderBuild();renderScout();renderSelect();renderBox();show("build")})();
+ storageReady=true;
+ renderBuild();renderScout();renderSelect();renderBox();show("build");renderSaveStatus();
+ document.querySelector(".wrap").inert=false;document.querySelector("nav").inert=false;
+})().catch(()=>{document.getElementById("saveStatus").textContent="読み込みを完了できませんでした。保存データは上書きしていません。ページを再読み込みしてください。";});
 </script>
 </body>
 </html>
