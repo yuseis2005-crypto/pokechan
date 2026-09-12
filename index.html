@@ -902,6 +902,17 @@ const NOTE={
 /* ---- build sheet ---- */
 const S6=[["H","--sH"],["A","--sA"],["B","--sB"],["C","--sC"],["D","--sD"],["S","--sS"]];
 const BUILDS=[
+{id:"mc-owned-heat",name:"手持ち優先・グソクヒトム",tag:"独自設計 ／ M-C・2026-09-12",src:"https://gamewith.jp/pokemon-champions/554982",srcLabel:"ヒートロトムの仕様",
+ concept:"ヒートロトム所持を反映した手持ち優先の改訂案。メガグソクムシャ＋アシレーヌ＋ヒートロトムの3体で、とんぼがえり・クイックターン・ボルトチェンジを回す。炎受けと相手のグソクムシャ対策を同時に確保し、ウルガモスのステロ4倍負担を軽減。除去補助のキラフロル枠は、受け崩しを担うサーフゴーへ。従来案は別シートに残し、保存済みのパーティは勝手に置き換えない。",
+ basic:["メガグソクムシャ","アシレーヌ","ヒートロトム"],
+ pat:"迷ったらグソクムシャ＋アシレーヌ＋ヒートロトム。相手のグソクムシャ・鋼・草が見えればヒートロトム、セグレイブ・ボーマンダにはアシレーヌを優先。高速特殊・ゴーストが重く相手のグソクムシャが出にくい並びならヒートロトム→サザンドラ。接触物理が多い相手にはグソクムシャ＋アシレーヌ＋ガブリアス。受け中心にはサーフゴー＋ヒートロトム＋アシレーヌを候補にし、無理にメガを出さない。相手の6体を見て先発は変更する。",
+ mons:[
+ {n:"メガグソクムシャ",role:"主軸 ／ 先制・後攻とんぼ",nat:"ゆうかん",it:"グソクムシャナイト",ab:"かたいツメ",ev:[31,32,0,0,3,0],mv:["であいがしら","とんぼがえり","アイアンヘッド","ふいうち"],note:"登場初ターンのであいがしらで削り、耐えられる対面では後攻とんぼで味方を出す。炎技を受ける場面は技を待たず通常交代。ふいうちを変化技で透かされる相手には交代技やアイアンヘッドを選ぶ。"},
+ {n:"アシレーヌ",role:"炎・ドラゴン受け ／ 再着地",nat:"のんき",it:"たべのこし",ab:"げきりゅう",ev:[32,0,32,0,2,0],mv:["ムーンフォース","うたかたのアリア","クイックターン","アンコール"],note:"HBとS下降で対物理性能と後攻クイックターンを両立。グソクムシャに向く炎、ヒートロトムに向く水を受けて有利対面を作る。アンコールは積む前後の行動を読んで使い、積み切った相手への万能な後投げはしない。"},
+ {n:"ヒートロトム",role:"対グソクムシャ ／ ボルトチェンジ",nat:"ずぶとい",it:"オボンのみ",ab:"ふゆう",ev:[32,0,32,0,2,0],mv:["オーバーヒート","ボルトチェンジ","おにび","いたみわけ"],note:"虫を半減・鋼を1/4で受け、ふゆうで地面技を透かす。オーバーヒートで相手のメガグソクムシャを牽制し、特攻低下後はボルトチェンジで交代。かたやぶりには地面無効が通らず、セグレイブにはおにびが効かない。ステロは依然HP1/4なので交代し過ぎず、いたみわけを挟む。"},
+ {n:"ガブリアス",role:"接触罰 ／ ステロ・流し",nat:"わんぱく",it:"ゴツゴツメット",ab:"さめはだ",ev:[32,0,32,0,2,0],mv:["じしん","ステルスロック","ドラゴンテール","ほのおのキバ"],note:"さめはだ＋ゴツメとステロで、相手の接触・交代を削りに変える。グソクムシャの先制技圏内へ入れる枠。氷技や特殊火力に薄いため、相手の構成に応じて基本選出の1体と交代する。"},
+ {n:"サザンドラ",role:"高速特殊 ／ 地面・ゴースト補完",nat:"おくびょう",it:"こだわりスカーフ",ab:"ふゆう",ev:[2,0,0,32,0,32],mv:["りゅうせいぐん","あくのはどう","かえんほうしゃ","とんぼがえり"],note:"基本3体に不足する速さとゴースト耐性を足す。相手のであいがしらは2倍弱点かつ優先度+2なので、スカーフとんぼで先に逃げることはできない。グソクムシャ対面では通常交代する。"},
+ {n:"サーフゴー",role:"受け崩し ／ 状態異常対策",nat:"おくびょう",it:"ふうせん",ab:"おうごんのからだ",ev:[2,0,0,32,0,32],mv:["ゴールドラッシュ","シャドーボール","わるだくみ","じこさいせい"],note:"グソクムシャが苦手な状態異常・物理受けを特殊の悪巧みで崩す。風船で地面への着地機会を作るが、攻撃を受けて割れた後は地面を受けられない。炎と悪への引き先を選出時に確保する。"}]},
 {id:"mc-owned-goli",name:"手持ち48種・グソクサイクル",tag:"独自設計 ／ M-C・2026-09-11",src:"https://gamewith.jp/pokemon-champions/575652",srcLabel:"グソクムシャの仕様",
  concept:"確認済みの手持ちから組む、メガグソクムシャ＋アシレーヌ＋サザンドラの交代技サイクル。であいがしらの再使用を勝ち筋に、アシレーヌで炎・ドラゴンを受け、サザンドラで地面・ゴーストを受けながら高速特殊打点を補う。相手のメガグソクムシャにはウルガモス、接触罰にはガブリアス、設置物にはキラフロルを選ぶ。実戦勝率を検証済みという意味ではなく、役割の補完から設計した現時点の本命。メガストーン・持ち物・特性変更の用意は必要。",
  basic:["メガグソクムシャ","アシレーヌ","サザンドラ"],
@@ -1156,7 +1167,7 @@ const BUILDS=[
 {n:"メガゲンガー",role:"MEGA 2 ／ 対受けルート",nat:"おくびょう",it:"ゲンガナイト",ab:"かげふみ",ev:[2,0,0,32,0,32],
  mv:["シャドーボール","ヘドロばくだん","10まんボルト","みちづれ"],
  note:"<b>この枠だけ参照できる上位構築がありません。</b>実績のない私案です。合わなければミミッキュに差し替えを。"}]}];
-let buildId="mc-owned-goli";
+let buildId="mc-owned-heat";
 const curBuild=()=>BUILDS.find(b=>b.id===buildId)||BUILDS[0];
 const buildById=id=>BUILDS.find(b=>b.id===id);
 function baseOf(n){return M[n]&&M[n].mega?(NAMES.find(x=>!M[x].mega&&(n.slice(2).startsWith(x)||x.startsWith(n.slice(2))))||n):n}
@@ -1733,15 +1744,15 @@ function renderBox(){
  const ranked=own.filter(n=>RANK[n]).length;
  document.getElementById("boxCount").innerHTML=
   `所持 <b>${own.length}体</b>　うち使用率トップ50が <b>${ranked}体</b>`;
- const suggested=buildById("mc-owned-goli");
+ const suggested=buildById(owned.has("ヒートロトム")?"mc-owned-heat":"mc-owned-goli");
  const available=suggested.mons.every(m=>owned.has(baseOf(m.n)));
  const release=[
-  ["スコヴィラン","この構築の炎枠はウルガモス。メガ枠を使う専用の耐久構築を組まないなら整理優先。"],
+  ["スコヴィラン","炎枠はヒートロトムやウルガモスで補える。メガ枠を使う専用の耐久構築を組まないなら整理優先。"],
   ["メガニウム","メガ枠がグソクムシャと競合し、草枠はゴリランダー・マスカーニャで補える。"],
   ["ドラミドロ","低速特殊の役割がアシレーヌと重なり、今回はトリックルームを採用しない。"],
   ["カメックス","水枠にアシレーヌ・ゲッコウガ・イダイトウがあり、からをやぶる専用構築を使わないなら優先度は低め。"]
  ].filter(([n])=>owned.has(n));
- document.getElementById("ownedPlan").innerHTML=(available?`<div class="info"><div class="t">この手持ちで組める本命</div>グソクムシャ・アシレーヌ・サザンドラ・ウルガモス・ガブリアス・キラフロル。<br><button class="fback" data-owned-plan="1">技・配分・選出を開く</button></div>`:"")
+ document.getElementById("ownedPlan").innerHTML=(available?`<div class="info"><div class="t">この手持ちで組める本命</div>${suggested.mons.map(m=>baseOf(m.n)).join("・")}。<br><button class="fback" data-owned-plan="${suggested.id}">技・配分・選出を開く</button></div>`:"")
   +(release.length?`<div class="info"><div class="t">今期シングル向けの整理候補（提案のみ）</div>${release.map(([n,why])=>`<p><b>${n}</b>：${why}</p>`).join("")}専用構築で使う予定や個体を残す理由がある場合は保留。所持一覧から自動では外しません。</div>`:"");
  document.getElementById("boxOwned").innerHTML=own.length
   ? `<div class="grid">`+own.map(n=>`<div class="op on" data-sheet="${n}">${ico(n)}<div>${n}<small>${RANK[n]?"使用率"+RANK[n]+"位":"圏外"}／S${M[n].s}</small></div></div>`).join("")+`</div>`
@@ -1774,7 +1785,8 @@ document.querySelectorAll(".mode").forEach(b=>b.addEventListener("click",()=>{
 document.getElementById("snackUndo").addEventListener("click",()=>{
  if(undoSnap){const s=undoSnap;hideSnack();restoreSnap(s)}});
 document.addEventListener("click",e=>{
- if(e.target.closest("[data-owned-plan]")){buildId="mc-owned-goli";store.set("pc:build",buildId);renderBuild();show("build");return;}
+ const ownedPlan=e.target.closest("[data-owned-plan]");
+ if(ownedPlan&&buildById(ownedPlan.dataset.ownedPlan)){buildId=ownedPlan.dataset.ownedPlan;store.set("pc:build",buildId);renderBuild();show("build");return;}
  const bt=e.target.closest("[data-build]");
  if(bt){buildId=bt.dataset.build;store.set("pc:build",buildId);renderBuild();scrollTo({top:0,behavior:"smooth"});return}
  const pr=e.target.closest(".pre");
