@@ -297,7 +297,7 @@ font-family:"Zen Kaku Gothic New",sans-serif;font-weight:700;font-size:11.5px;pa
    <div id="buildList"></div>
    <h2>構築全体の弱点</h2>
    <div class="card"><table class="wk" id="wkTable"></table></div>
-  <div class="warn tip"><b>M-C（Ver.1.2.0）対応</b>　追加29種＋新メガ6種を収録。スカウト順位は9/10時点のシーズンM-6使用率へ更新済みです。相手の細かな型は統計蓄積中のため、M-C追加組のみタイプ一致技を仮定します。</div>
+  <div class="warn tip"><b>9/30更新 ／ M-C対応</b>　スカウト順位・相手候補は<a href="https://pokenavi.jp/ranking/" target="_blank" rel="noopener">ポケナビの9/30シングル上位50</a>を反映（自動更新ではありません）。<br>M-6は10/7 10:59まで、<a href="https://champions-news.pokemon-home.com/ja/page/816.html" target="_blank" rel="noopener">レギュレーションM-C</a>は12/2 10:59まで（日本時間）。<br>順位と相手の型は別データです。相手の技・配分・採用率は旧収録データで、9/30に再取得した統計ではありません。未収録の型はタイプ一致技を仮定します。対戦画面に「おはかまいり」のひんし数切替を追加しました。</div>
    <div class="info"><div class="t">配分の出どころ</div>
      順位付きの構築は<b>出典</b>リンク先の記事、game8表記の構築は掲載データを参照しています。「独自設計」「自作」は役割の補完から組んだ提案です。仕様リンクは技・特性の確認用で、構築の戦績を示すものではありません。<br><br>
      未所持はMY BOXの所持と連動。費用の目安は<b>レギュラースカウト 2,500VP（またはチケット1枚）／メガストーン 2,000VP／能力ポイント 1体66pt＝330VP</b>で計算しています。技変更の費用は含みません。</div>
@@ -347,11 +347,12 @@ font-family:"Zen Kaku Gothic New",sans-serif;font-weight:700;font-size:11.5px;pa
    <div id="sePicker"></div>
    <div class="info"><div class="t">スコアの出し方</div>
      1対1の<b>ダメージ計算</b>で決めます：双方の技で相手を何発で倒せるか（確定数）と実数値の素早さ・先制技から「どちらが先に倒しきるか」を出し、<b>+2〜−2</b> に写像。<br>
-     自分は構築シートの型（技・性格・配分・持ち物・特性）、相手は<b>PChamp DBの統計の最頻型</b>（採用技・持ち物・性格・配分。M-C追加組は統計蓄積前のためタイプ一致技を仮定）。<br>
-     計算式はSV準拠（Lv50・乱数0.86〜1.00）。持ち物（珠・こだわり・おび・襷・チョッキ・オボン）、特性（テクニシャン・てきおうりょく・ちからもち・マルチスケイル・ばけのかわ・がんじょう・きれあじ・いかく・フェアリーオーラ・天候特性 等）、回復技の有無を反映。<br>
+     自分は構築シートの型（技・性格・配分・持ち物・特性）、相手は<b>PChamp DBの旧収録統計の最頻型</b>（9/30再取得なし。未収録の型はタイプ一致技を仮定）。<br>
+     SVの式を基にした概算（Lv50・乱数0.85〜1.00）です。持ち物・主要特性・回復技の有無を反映しますが、実機の全効果や端数処理を再現した厳密計算ではありません。HP減少・状態異常・場の効果・技固定・初ターン限定技などの制約を完全には追跡しません。<br>
+     選出表は開幕（ひんし0体）を想定。対戦画面では自分側・相手側のひんし数0〜2体を指定し、<b>おはかまいりの威力50／100／150</b>を計算できます。復活による累積ひんし回数は非対応。これは技の威力設定で、生存個体や残りHPを管理する機能ではありません。<br>
      マスに <b>!</b> が付いた相手は、持ち物2位（襷／スカーフ等）だと判定が逆転します。<b>マスをタップ</b>すると根拠（技・ダメージ%・確定数・素早さ）を表示。<br><br>
      <div class="t">対戦画面の実数値</div>
-     Lv50・個体値31相当・<b>能力ポイント1pt＝実数値+2</b>・性格±10%で計算（M-4最終1位記事の公開実数値22件と全件一致）。種族値はPokeAPIの値（メガ後・地方フォーム含む）。自分の値は構築シートの配分、相手は無振り／準速／最速／スカーフの4ラインで比較します。</div>
+     Lv50・個体値31相当・<b>能力ポイント1pt＝実数値+1（性格補正前）</b>・性格±10%で計算。種族値はPokeAPI等の収録値（メガ後・地方フォーム含む）。自分の値は構築シートの配分、相手は無振り／準速／最速／スカーフの4ラインで比較します。素早さランクの変更は速度表だけに反映します。</div>
  </section>
 
  <section class="panel" id="p-box">
@@ -797,7 +798,7 @@ Object.assign(BS,{"パンプジン(ちいさい)":[55,85,122,58,75,99],"パン�
 const NAT={おくびょう:[5,1],ひかえめ:[3,1],ようき:[5,3],いじっぱり:[1,3],わんぱく:[2,3],のんき:[2,5],しんちょう:[4,3],ずぶとい:[2,1],
 おだやか:[4,1],れいせい:[3,5],ゆうかん:[1,5],なまいき:[4,5],むじゃき:[5,4],せっかち:[5,2],さみしがり:[1,2],やんちゃ:[1,4],
 おっとり:[3,2],うっかりや:[3,4],おとなしい:[4,2],のうてんき:[2,4]};
-/* Champions: Lv50, IV31, 1pt=+2, nature ±10% (verified: 22/22 stats of M-4 #1 article) */
+/* Champions: Lv50, IV31; 2*pts before division by 2 gives +1 per pt before nature. */
 function statOf(n,i,pts,nat){const b=BS[n][i];if(i===0)return Math.floor((2*b+31+2*pts)/2)+60;
  let v=Math.floor((2*b+31+2*pts)/2)+5;const t=NAT[nat];if(t){if(t[0]===i)v=Math.floor(v*1.1);else if(t[1]===i)v=Math.floor(v*0.9)}return v}
 
@@ -882,8 +883,9 @@ const MEGAPT={SS:7,S:5,A:3,B:1.5,C:0,D:0};
 function megaInfo(n){const t=MEGAT[n];if(!t)return null;
  return{t,locked:ZALOCK.has(n),pt:ZALOCK.has(n)?0:MEGAPT[t]}}
 
-/* ---- usage-based tiers (M-6 single, 2026/9/10) ---- */
-const USAGE=`ガブリアス,ボーマンダ,アシレーヌ,グソクムシャ,カバルドン,ルカリオ,ブリジュラス,セグレイブ,サーフゴー,ギルガルド,ミミッキュ,ゴリランダー,マスカーニャ,アーマーガア,ギャラドス,キラフロル,イダイトウ(オス),リザードン,ゲッコウガ,エースバーン,ウルガモス,キュウコン(アローラ),オオニューラ,ラウドボーン,ウォッシュロトム,カイリュー,マフォクシー,ニンフィア,パーモット,メタグロス,サザンドラ,ゲンガー,アブソル,ドドゲザン,イエッサン(オス),ヒートロトム,フラエッテ,ラグラージ,ハッサム,ライチュウ,ドヒドイデ,バシャーモ,ブラッキー,ハラバリー,マンムー,ヒスイダイケンキ,バイバニラ,ペリッパー,ソウブレイズ,オーロンゲ`.split(",");
+/* M-6 single snapshot: https://pokenavi.jp/ranking/ (visible date + JSON-LD, 2026-09-30). */
+const USAGE_AS_OF="2026-09-30";
+const USAGE=`ガブリアス,ボーマンダ,アシレーヌ,セグレイブ,カバルドン,グソクムシャ,ルカリオ,ブリジュラス,サーフゴー,ゴリランダー,ミミッキュ,マスカーニャ,リザードン,ギャラドス,オオニューラ,エースバーン,キラフロル,アーマーガア,ギルガルド,イダイトウ(オス),メタグロス,イエッサン(オス),ゲッコウガ,カメックス,カイリュー,キュウコン(アローラ),パーモット,ウォッシュロトム,ウルガモス,エンペルト,ラグラージ,ラウドボーン,ゲンガー,サザンドラ,ドドゲザン,ヒートロトム,ニンフィア,ライチュウ,バシャーモ,ブラッキー,マフォクシー,ドヒドイデ,ハッサム,ムクホーク,ジュペッタ,ピクシー,ペリッパー,バンギラス,オーロンゲ,メタモン`.split(",");
 const RANK={};USAGE.forEach((n,i)=>{RANK[n]=i+1});
 const NOTE={
  ヒスイダイケンキ:"受け崩しの完成形。過去作から送れないのでスカウトが唯一のルート",
@@ -905,7 +907,7 @@ const BUILDS=[
 {id:"mc-scarf-basc",name:"スカーフイダイトウ・終盤制圧",tag:"独自設計 ／ 所持制限なし・M-C・2026-09-12",src:"https://gamewith.jp/pokemon-champions/555194",srcLabel:"イダイトウの技・特性の仕様",
  concept:"シングル6→3選出用。主役は最速スカーフ・てきおうりょくのイダイトウ♂。メガミミロップでノーマル・悪を崩し、ヒートロトムで草・鋼・グソクムシャを削ってから、おはかまいりを通す独自設計。味方ひんし0／1／2体で威力50／100／150、一致＋適応力込みで100／200／300相当（与ダメージそのものではない）。無理に味方を捨てず、2体で相手を倒す・削る仕事を済ませてから繋ぐ。手持ち優先版とは別構築で、所持登録や保存中のパーティは自動変更しない。実戦成績による最強の保証ではなく、役割から設計した推奨案。",
  basic:["メガミミロップ","ヒートロトム","イダイトウ(オス)"],
- pat:"基本はメガミミロップ＋ヒートロトム＋イダイトウ。相手のノーマル・悪はミミロップ、グソクムシャ・ゴリランダーはヒートロトムで先に処理し、イダイトウは終盤までHPとスカーフを温存。電気・接触物理中心にはガブリアス＋ミミロップ＋イダイトウ。ドラゴン・悪中心にはミミロップ＋アシレーヌ＋イダイトウ。耐久水・地面中心にはミミロップ＋ジャローダ＋イダイトウ。受けが厚くゴーストの通りも悪い相手にはジャローダ＋アシレーヌ＋ヒートロトムで崩し、イダイトウを無理に選出しない。複数の対策役が必要ならミミロップを外すが、残ったノーマル・悪へ水技が通るかを確認する。先発は対面を見て変更。選出補助の概算は味方ひんし0体・おはかまいり威力50であり、終盤の威力150を評価した結果ではない。",
+ pat:"基本はメガミミロップ＋ヒートロトム＋イダイトウ。相手のノーマル・悪はミミロップ、グソクムシャ・ゴリランダーはヒートロトムで先に処理し、イダイトウは終盤までHPとスカーフを温存。電気・接触物理中心にはガブリアス＋ミミロップ＋イダイトウ。ドラゴン・悪中心にはミミロップ＋アシレーヌ＋イダイトウ。耐久水・地面中心にはミミロップ＋ジャローダ＋イダイトウ。受けが厚くゴーストの通りも悪い相手にはジャローダ＋アシレーヌ＋ヒートロトムで崩し、イダイトウを無理に選出しない。複数の対策役が必要ならミミロップを外すが、残ったノーマル・悪へ水技が通るかを確認する。先発は対面を見て変更。選出補助の概算は味方ひんし0体・おはかまいり威力50であり、終盤の威力150を評価した結果ではない。9/30追加の対戦画面ではひんし数0〜2体を切り替えてダメージを比較できる。",
  mons:[
  {n:"イダイトウ(オス)",role:"主軸 ／ 最速スカーフ・最後の1体",nat:"ようき",it:"こだわりスカーフ",ab:"てきおうりょく",ev:[2,32,0,0,0,32],mv:["おはかまいり","ウェーブタックル","クイックターン","アクアジェット"],note:"Lv50・S32ptで素早さ143、スカーフ込み214。最速メガミミロップ205、最速メガゲッコウガ213を抜く。いじっぱりでは195に落ちるため最速を採用。同速スカーフや加速・竜舞には抜かれ得る。スカーフでもふいうち・グラススライダー等の先制技より早くは動けない。ノーマルが残る間はおはかまいりに固定せず、水技の通りを確認。ウェーブタックルの反動で倒れないようHPを残す。最後の1体では交代による技固定の解除ができない。"},
  {n:"メガミミロップ",role:"悪・ノーマル処理 ／ アンコール",nat:"ようき",it:"ミミロップナイト",ab:"きもったま",ev:[2,32,0,0,0,32],mv:["ねこだまし","インファイト","トリプルアクセル","アンコール"],note:"ドドゲザン・サザンドラ・ノーマルを格闘打点で牽制。きもったまでヒスイゾロアークにも格闘が通る。ねこだましは初ターンの削り、アンコールは回復・積み・ふいうちの固定を狙う。トリプルアクセルはボーマンダ・ガブリアス・草への打点だが3発命中は保証されない。接触反動とインファイト後の耐久低下に注意し、物理受けへ居座らない。"},
@@ -1382,7 +1384,10 @@ Object.assign(MVD,{"びりびりちくちく":["でんき",80,"物",0,0,0,0,0],"
 MVD["であいがしら"][1]=100; // Champions では威力100
 Object.keys(MVD).forEach(k=>{if(!MV[k])MV[k]=MVD[k].slice(0,3)});
 Object.keys(MV).forEach(k=>{if(!MVD[k])MVD[k]=[MV[k][0],MV[k][1],MV[k][2],0,0,0,0,0]});
-const setOf=n=>SETS.S[SETS.dex[n]]||null;
+// Official Ver.1.2.0 move restrictions: champions-news.pokemon-home.com/ja/page/817.html
+const BANNED_MOVES={ブリジュラス:["ミラーコート","メタルバースト"],ニョロトノ:["はたく"]};
+const legalMove=(n,m)=>!(BANNED_MOVES[n]||[]).includes(m);
+const setOf=n=>{const s=SETS.S[SETS.dex[n]];return s?{...s,mv:s.mv.filter(x=>legalMove(n,x[0]))}:null};
 const ITEM={いのちのたま:{dmg:1.3},こだわりハチマキ:{phys:1.5},こだわりメガネ:{spec:1.5},こだわりスカーフ:{spd:1.5},たつじんのおび:{se:1.2},
   きあいのタスキ:{sash:1},とつげきチョッキ:{spdef:1.5},しんかのきせき:{def:1.5,spdef:1.5},オボンのみ:{heal:.25},ゴツゴツメット:{},ふうせん:{balloon:1},ひかりのねんど:{},
  たべのこし:{lefto:1},ラムのみ:{},しろいハーブ:{},ノーマルジュエル:{},イアのみ:{heal:.33},フィラのみ:{heal:.33},ウイのみ:{heal:.33},マゴのみ:{heal:.33},バンジのみ:{heal:.33}};
@@ -1400,6 +1405,11 @@ const PUNCH=new Set(["かみなりパンチ","れいとうパンチ","ほのお�
 const JAW=new Set(["かみくだく","ほのおのキバ","こおりのキバ","かみなりのキバ","サイコファング","エラがみ","くらいつく","どくどくのキバ","かみつく"]);
 const NONCONTACT=new Set(["じしん","いわなだれ","ストーンエッジ","がんせきふうじ","じならし","ねっさのだいち","マグニチュード","いわおとし","かえんボール","ハイパーボイス","サイコファング","はたきおとす","ドラゴンアロー","スケイルショット","つららばり","ロックブラスト","タネマシンガン","ミサイルばり","ばくれつパンチ"]);
 NONCONTACT.delete("サイコファング");NONCONTACT.delete("はたきおとす");NONCONTACT.delete("ばくれつパンチ");
+NONCONTACT.add("おはかまいり");
+// Singles without revival: at most two fainted allies. Invalid input defaults to opening state.
+const faintedCount=n=>Number.isFinite(Number(n))?Math.max(0,Math.min(2,Math.trunc(Number(n)))):0;
+const lastRespectsPower=n=>50+50*faintedCount(n);
+const battlePower=(move,power,fainted=0)=>move==="おはかまいり"?lastRespectsPower(fainted):power;
 const CHARGE={ソーラービーム:"sun",ソーラーブレード:"sun",エレクトロビーム:"rain",ゴッドバード:null,メテオビーム:null,ロケットずつき:null};
 const FIXPOW={くさむすび:60,けたぐり:60,テラバースト:80,ヘビーボンバー:80,ボディプレス:80,イカサマ:95,アクロバット:55,きしかいせい:40,しっぺがえし:50,アシストパワー:20,ふんか:150,しおふき:150,エラがみ:85,じだんだ:75,ウェザーボール:50,トリプルアクセル:120,ダブルウイング:80,ドラゴンアロー:100,ふんどのこぶし:50,からげんき:70};
 const NATIDX={H:0,A:1,B:2,C:3,D:4,S:5};
@@ -1430,20 +1440,20 @@ function sideOf(listed,eff,opts){opts=opts||{};
  const stats=[0,1,2,3,4,5].map(i=>statOf(eff,i,ev[i]||0,nat));
  const F=FORMS[baseOf(eff)];const atk=F?F.st.map((b,i)=>{const bb=BS[eff][i];return i===1||i===3?Math.floor(statOf(eff,i,ev[i]||0,nat)*b/bb):stats[i]}):stats;
  const A=ABIL[ab]||{};const I=ITEM[it]||{};
- const moves=mvs.map(x=>{if(x.startsWith("__stab_")){const[,t,c]=x.split("_");return{n:t+"技",t,pow:80,cls:c,prio:0,heal:0,setup:0,hits:1,stab:true,pseudo:true}}
+ const moves=mvs.filter(x=>legalMove(eff,x)).map(x=>{if(x.startsWith("__stab_")){const[,t,c]=x.split("_");return{n:t+"技",t,pow:80,cls:c,prio:0,heal:0,setup:0,hits:1,stab:true,pseudo:true}}
   const d=MVD[x];if(!d)return{n:x,t:"?",pow:0,cls:"?",prio:0,heal:0,setup:0,hits:1};
   let pow=FIXPOW[x]!==undefined?FIXPOW[x]:d[1];let hits=1;
   if(d[7]>1&&FIXPOW[x]===undefined){hits=d[6]===d[7]?d[6]:(A.skill?5:3)}
   return{n:x,t:d[0],pow,cls:d[2],prio:d[3],heal:d[4],setup:d[5],hits}});
  const heal=moves.some(x=>x.heal)||!!A.regen&&false;
- return{listed,eff,types:m.t,ab,A,it,itRaw,I,nat,ev,stats,atk,moves,heal,src,
+ return{listed,eff,types:m.t,ab,A,it,itRaw,I,nat,ev,stats,atk,moves,heal,src,fainted:faintedCount(opts.fainted),
    spd:Math.floor(stats[5]*(isScarf(it)?1.5:1)),lev:m.a==="levitate"||!!A.lev||!!I.balloon}}
 function weatherOf(a,b){if(a.A.sun||b.A.sun)return"sun";if(a.A.rain||b.A.rain)return"rain";return null}
 /* att の最良技で def を倒すのに必要な発数など */
 function hitsToKO(att,def,wx){
  const HP=def.stats[0];let best=null;
  att.moves.forEach(mvx=>{if(mvx.cls==="変"||mvx.cls==="?")return;
-  let pow=mvx.pow,type=mvx.t;if(pow<=0)return;
+  let pow=battlePower(mvx.n,mvx.pow,att.fainted),type=mvx.t;if(pow<=0)return;
    if(mvx.n==="ウェザーボール"&&wx){pow=100;type=wx==="sun"?"ほのお":"みず"}
    if(att.A.sky&&type==="ノーマル"){type="ひこう";pow=Math.floor(pow*1.2)}
    if(att.A.skin&&type==="ノーマル"){type=att.A.skin;pow=Math.floor(pow*1.2)}
@@ -1485,7 +1495,7 @@ function hitsToKO(att,def,wx){
    if(def.A.filt&&e>1)mod*=0.75;if(att.A.tint&&e<1)mod*=2;if(def.A.ice&&!phys)mod*=0.5;
    if(def.A.contactHalf&&phys&&!NONCONTACT.has(mvx.n))mod*=0.5;
   const base=Math.floor(Math.floor(Math.floor(22*pow*a/d)/50)+2);
-  let dmin=Math.floor(base*0.86*mod)*mvx.hits,dmax=Math.floor(base*mod)*mvx.hits;
+  let dmin=Math.floor(base*0.85*mod)*mvx.hits,dmax=Math.floor(base*mod)*mvx.hits;
   if(dmin<1)dmin=1;if(dmax<1)dmax=1;
   let hp=HP;
   const msk=def.A.ms&&mvx.hits===1; // マルチスケイル: 初撃半減
@@ -1501,9 +1511,9 @@ function hitsToKO(att,def,wx){
   if(!best||cand.h<best.h||(cand.h===best.h&&(cand.hb<best.hb||(cand.hb===best.hb&&cand.pmin>best.pmin))))best=cand});
  return best}
 const DUEL=new Map();
-function duel(meL,meE,opN,opt){opt=opt||{};const key=meL+"|"+meE+"|"+opN+"|"+(opt.item===undefined?"":opt.item);
+function duel(meL,meE,opN,opt){opt=opt||{};const key=meL+"|"+meE+"|"+opN+"|"+(opt.item===undefined?"":opt.item)+"|"+faintedCount(opt.myFainted)+"|"+faintedCount(opt.opFainted);
  if(!opt.nocache&&DUEL.has(key))return DUEL.get(key);
- const me=sideOf(meL,meE),op=sideOf(opN,opN,{build:false,item:opt.item});
+ const me=sideOf(meL,meE,{fainted:opt.myFainted}),op=sideOf(opN,opN,{build:false,item:opt.item,fainted:opt.opFainted});
  let r;
  if(!me||!op)r={s:score(M[meE]||M[meL],M[opN]),why:"データ不足のためタイプ相性のみ"};
  else{
@@ -1549,7 +1559,7 @@ function duelWhy(meL,meE,opN){const r=duel(meL,meE,opN);
   <div class="wh">相手 → 自分</div>${r.B?`<b>${r.B.mv}</b>${r.B.pseudo?"（仮定）":""}：${r.B.pmin}〜${r.B.pmax}% → <b>${hTxt(r.B)}</b>${r.B.e>1?" 効果抜群":r.B.e<1?" いまひとつ":""}`:"有効打なし"}
   <div class="wh">素早さ</div>自分 ${r.meS}${r.me.it==="こだわりスカーフ"?"（スカーフ込）":""} vs 相手 ${r.opS}${r.op.it==="こだわりスカーフ"?"（スカーフ込）":""} → ${f}${r.A&&r.B&&r.A.prio!==r.B.prio?"（先制技で判定）":""}
   ${r.wx?`<br>天候：${r.wx==="sun"?"晴れ":"雨"}`:""}
-  <div class="wh">想定した型</div><span class="setl">自分：${r.me.src}（${r.me.nat}・${r.me.itRaw||"持ち物なし"}・${r.me.ab||"特性不明"}）<br>相手：${r.op.src}（${r.op.nat}・${r.op.itRaw||"持ち物なし"}・${r.op.ab||"特性不明"}）${r.op.src==="統計の最頻型"?"<br>※直近取得済みのPChamp DBシングル集計の最頻値":""}</span>
+  <div class="wh">想定した型</div><span class="setl">自分：${r.me.src}（${r.me.nat}・${r.me.itRaw||"持ち物なし"}・${r.me.ab||"特性不明"}）<br>相手：${r.op.src}（${r.op.nat}・${r.op.itRaw||"持ち物なし"}・${r.op.ab||"特性不明"}）${r.op.src==="統計の最頻型"?"<br>※PChamp DBの旧収録集計（9/30再取得なし）":""}</span>
   ${alt?`<div class="wh">警戒</div><span class="bad">相手が${alt.item}（${alt.pct}%）なら ${alt.s>0?"+":""}${alt.s} に逆転</span>`:""}
   ${r.lines.length?`<div class="wh">補足</div>${r.lines.join("／")}`:""}</div>`}
 function sc3(meL,meE,opN){const r=duel(meL,meE,opN);return r?r.s:0}
@@ -1559,6 +1569,8 @@ function showInfo(html){sheetN=null;const bg=document.getElementById("sheetBg"),
 /* ---- select panel ---- */
 let seMode="battle";const foe=new Set();let foeHist=[];
 let my3=null,curPicks=[],fMe=null,fOp=null,fMega=0,rankMe=0,rankOp=0;const seen=new Set();
+const fightFainted={me:0,op:0};
+function faintedControls(){return `<div class="fcard"><div class="fh">おはかまいり ／ 状況別ダメージ</div>${[["me","自分側"],["op","相手側"]].map(([side,label])=>`<div class="rk">${label}のひんし数 ${[0,1,2].map(n=>`<button data-fainted="${side}:${n}" aria-label="${label}のひんし数 ${n}体" aria-pressed="${fightFainted[side]===n}" style="min-width:44px;min-height:44px;${fightFainted[side]===n?"border-color:var(--aqua);color:var(--aqua)":""}">${n}体</button>`).join(" ")} → 威力${lastRespectsPower(fightFainted[side])}</div>`).join("")}<small>復活なしの3体戦を想定。技の威力だけを切替。選出表・交代候補はひんし0体の評価で、生存個体や残りHPの自動管理はしません。</small></div>`}
 function partyBuild(){const k=party.slice().sort().join("|");return BUILDS.find(b=>b.mons.map(m=>m.n).sort().join("|")===k)||null}
 function myBuildMon(n){const b=partyBuild();return b?b.mons.find(m=>m.n===n):null}
 const rankMul=r=>r>=0?(2+r)/2:2/(2-r);
@@ -1588,7 +1600,7 @@ function renderFight(){
  const P=document.getElementById("fPanel");
  if(!fMe||!fOp){P.innerHTML=`<div class="empty"><div class="big">自分3体と相手を選んでください</div></div>`;return}
  const meName=effMe(fMe),me=M[meName],op=M[opName];
- const R=duel(fMe,meName,opName);const ost=setOf(opName);
+ const R=duel(fMe,meName,opName,{myFainted:fightFainted.me,opFainted:fightFainted.op});const ost=setOf(opName);
  const mvDmg=x=>{if(!R||!R.me||!R.op)return "";const one={...R.me,moves:R.me.moves.filter(m=>m.n===x)};const k=hitsToKO(one,R.op,R.wx);return k?` <b class="${k.h<=1?"gd":k.h<=2?"nu":"dm"}">${k.pmin}〜${k.pmax}%・${hTxt(k)}</b>`:""};
  const ms=mySpeed(fMe,meName),myS=Math.floor(ms.s*(ms.scarf?1.5:1)*rankMul(rankMe));
  const lines=oppLines(fOp).map(([l,v])=>{const ov=Math.floor(v*rankMul(rankOp));
@@ -1598,19 +1610,20 @@ function renderFight(){
    if(!d)return `<div class="mvc"><span>${x}</span><b class="dm">？</b></div>`;
    if(d[2]==="変")return `<div class="mvc"><span>${x}<small>${d[0]}・変化</small></span><b class="dm">—</b></div>`;
    const e=eff(d[0],op.t,op.a);const stab=me.t.includes(d[0])?"・一致":"";
-   return `<div class="mvc"><span>${x}<small>${d[0]}${stab}・威力${d[1]}</small></span><b class="${effClsAtk(e)}">${effTxt(e)}</b>${mvDmg(x)}</div>`}).join("")}</div>`
+   return `<div class="mvc"><span>${x}<small>${d[0]}${stab}・威力${battlePower(x,d[1],fightFainted.me)}</small></span><b class="${effClsAtk(e)}">${effTxt(e)}</b>${mvDmg(x)}</div>`}).join("")}</div>`
   :`<div class="info" style="margin:0">構築から読んだパーティではないので自分の技が分かりません。タイプ相性だけ表示します：${TYPES.filter(t=>eff(t,op.t,op.a)>=2).join("・")||"抜群なし"} が抜群。</div>`;
  const stabH=op.t.map(t=>{const e=eff(t,me.t,me.a);return `<span>${t}<b class="${effClsDef(e)}">${effTxt(e)}</b></span>`}).join("");
  const others=mine.filter(n=>n!==fMe).map(n=>{const m=M[effMe(n)];const take=Math.max(...op.t.map(t=>eff(t,m.t,m.a)));return{n,sc:sc3(n,effMe(n),opName),take}}).sort((a,b)=>b.sc-a.sc||a.take-b.take);
  const oppSetH=ost&&ost.mv.length?`<div class="fcard"><div class="fh">D ／ 相手の想定型（統計）</div>
    <div class="setl">持ち物：${ost.it.slice(0,3).map(x=>`<b>${x[0]}</b> ${x[1]}%`).join("　")}<br>性格：${ost.nat.slice(0,2).map(x=>`<b>${x[0]}</b> ${x[1]}%`).join("　")}　特性：${ost.ab.slice(0,2).map(x=>`<b>${x[0]}</b> ${x[1]}%`).join("　")}${ost.ev[0]?`<br>配分：<b>${ost.ev[0][0].join("-")}</b> ${ost.ev[0][1]}%`:""}</div>
    ${ost.mv.slice(0,6).map(x=>{const d=MVD[x[0]];let dm="";if(d&&d[2]!=="変"&&R&&R.me&&R.op){const one={...R.op,moves:R.op.moves.filter(m=>m.n===x[0])};if(!one.moves.length){const dd=MVD[x[0]];one.moves=[{n:x[0],t:dd[0],pow:FIXPOW[x[0]]!==undefined?FIXPOW[x[0]]:dd[1],cls:dd[2],prio:dd[3],hits:dd[7]>1?(dd[6]===dd[7]?dd[6]:3):1}]}const k=hitsToKO(one,R.me,R.wx);dm=k?`<b class="${k.h<=1?"bd":k.h<=2?"nu":"gd"}">${k.pmin}〜${k.pmax}%・${hTxt(k)}</b>`:`<b class="gd">無効</b>`}
-    return `<div class="dmgl"><span>${x[0]}<small>${d?d[0]+"・"+(d[2]==="変"?"変化":"威力"+d[1]):""}・採用${x[1]}%</small></span>${dm}</div>`}).join("")}
-    <div class="setl" style="margin-top:6px">直近取得済みのPChamp DBシングル集計。技の％は採用率で、同時に4つ持つとは限りません。M-C追加組はタイプ一致技で暫定評価します。</div></div>`:"";
+    return `<div class="dmgl"><span>${x[0]}<small>${d?d[0]+"・"+(d[2]==="変"?"変化":"威力"+battlePower(x[0],d[1],fightFainted.op)):""}・採用${x[1]}%</small></span>${dm}</div>`}).join("")}
+    <div class="setl" style="margin-top:6px">PChamp DBの旧収録集計（9/30再取得なし）。技の％は採用率で、同時に4つ持つとは限りません。未収録の型はタイプ一致技で暫定評価します。</div></div>`:"";
  const swH=others.length?others.map((o,i)=>`<div class="sw">${ico(o.n,"sm")}<div>${o.n}${i===0?' <span style="color:var(--aqua);font-size:10px">◎ 第一候補</span>':""}<small>相手のタイプ一致技を ${effTxt(o.take)} で受ける</small></div><div class="sc ${o.sc>0?"pos":o.sc<0?"neg":"zero"}">${o.sc>0?"+":""}${o.sc}</div></div>`).join("")
   :`<div class="info" style="margin:0">交代先がいません。</div>`;
  P.innerHTML=`<div class="vs">${ico(meName)}<div>${meName}<span class="ty">${me.t.join("・")}</span></div><span class="v">vs</span>${ico(opName)}<div>${opName}<span class="ty">${op.t.join("・")}${op.a?"・"+({levitate:"ふゆう",shadowtag:"かげふみ",disguise:"ばけのかわ",multiscale:"マルチスケイル",regen:"さいせいりょく",goldbody:"おうごんのからだ",tough:"高耐久"}[op.a]||""):""}</span></div></div>
   ${formNote(meName)}${formNote(opName)}
+  ${(R.me?.moves.some(m=>m.n==="おはかまいり")||R.op?.moves.some(m=>m.n==="おはかまいり"))?faintedControls():""}
   <div class="fcard"><div class="fh">A ／ 素早さ</div>
    <div class="myS">自分 <b>${myS}</b>${ms.scarf?' <span style="color:var(--amber)">スカーフ込</span>':""}${rankMe?` <span style="color:var(--amber)">ランク${rankMe>0?"+":""}${rankMe}</span>`:""}<br><small>${ms.src}</small></div>
    <table class="sp">${lines}</table>
@@ -1814,8 +1827,10 @@ document.addEventListener("click",e=>{
   else if(cur.length>=3){my3=cur.slice(0,2).concat(nm)}    // 評価が最も低い枠（末尾）と入れ替え
   else{my3=null}
   renderSelect();return}
- if(e.target.closest('[data-act="fight"]')){seMode="fight";seen.clear();fMe=curPicks[0]||null;fOp=null;fMega=0;rankMe=rankOp=0;renderSelect();scrollTo({top:0,behavior:"smooth"});return}
+ if(e.target.closest('[data-act="fight"]')){seMode="fight";seen.clear();fightFainted.me=fightFainted.op=0;fMe=curPicks[0]||null;fOp=null;fMega=0;rankMe=rankOp=0;renderSelect();scrollTo({top:0,behavior:"smooth"});return}
  if(e.target.closest('[data-act="fightBack"]')){seMode="battle";renderSelect();scrollTo({top:0,behavior:"smooth"});return}
+ const fc=e.target.closest("[data-fainted]");
+ if(fc){const [side,n]=fc.dataset.fainted.split(":");if(side==="me"||side==="op"){fightFainted[side]=faintedCount(n);renderFight()}return}
  const fm=e.target.closest("[data-fme]");if(fm){fMe=fm.dataset.fme;renderFight();return}
  const fo=e.target.closest("[data-fop]");if(fo){if(fOp!==fo.dataset.fop)fMega=0;fOp=fo.dataset.fop;seen.add(fOp);renderFight();return}
  if(e.target.closest("[data-fmega]")){fMega++;renderFight();return}
